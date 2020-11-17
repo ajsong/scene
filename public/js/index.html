@@ -1,0 +1,1990 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0,user-scalable=no,minimal-ui">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="email=no">
+<meta name="format-detection" content="address=no">
+<meta charset="UTF-8">
+<title>Coo脚本集合</title>
+<script type="text/javascript" src="jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="coo.js"></script>
+<link type="text/css" href="../css/datepicker.css" rel="stylesheet">
+<link type="text/css" href="../css/alertUI.css" rel="stylesheet">
+<style>
+html{overflow:auto; overflow-y:scroll;}
+body{background:#f5f5f5; font-size:14px; line-height:26px; margin:0; padding:0; color:#333; font-family:"Microsoft YaHei",Arial; -webkit-font-smoothing:antialiased; font-smoothing:antialiased;}
+body::-webkit-scrollbar{width:5px; height:5px;}
+body::-webkit-scrollbar-track{background:#f5f5f5;}
+body::-webkit-scrollbar-thumb{box-shadow:inset 0 0 6px rgba(0,0,0,0.3); background:rgba(0,0,0,0.1);}
+body::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,0.2);}
+body::-webkit-scrollbar-thumb:active{background:rgba(0,0,0,0.3);}
+input, select, select option, textarea{font-family:"Microsoft YaHei",Arial; outline:none; resize:none;}
+input, textarea, select, a, label, b, span, strong, li, div, p, h1, h2{-webkit-tap-highlight-color:rgba(255,0,0,0);}
+input[type="button"], input[type="submit"], input[type="reset"], input[type="file"]::-webkit-file-upload-button, button{padding:1px 7px; min-height:26px;}
+img{border:none;}
+ul, li, p{list-style:none; margin:0; padding:0;}
+h2, h3{text-shadow:1px 1px 0 #fff;}
+a, a:hover{color:#39C; text-decoration:underline;}
+a:hover{text-decoration:none;}
+.blank{clear:both; overflow:hidden; width:auto; height:10px; font-size:0;}
+.clear{height:0; font-size:0; clear:both; overflow:hidden;}
+#main{margin:20px auto; width:930px; margin-top:15px;}
+.content{background-color:#FFF; border:1px dotted #ddd; padding:10px; margin-bottom:8px; color:#666; border-radius:5px; -webkit-border-radius:5px;}
+.content pre{font-family:"Microsoft YaHei",Arial; margin-left:-28px;}
+.inlist{float:left; width:225px; height:auto; overflow:hidden;}
+select, .input input, .input textarea{height:24px; line-height:23px; padding:0 0 0 3px; border:1px solid #bbb; background-color:#fff; -moz-border-radius:3px; -webkit-border-radius:3px; border-radius:3px; box-shadow:inset 1px 1px 2px rgba(0,0,0,0.1); vertical-align:middle; font-family:"Microsoft YaHei",Arial; -moz-transition:all 300ms ease-out; -webkit-transition:all 300ms ease-out; -o-transition:all 300ms ease-out; transition:all 300ms ease-out;}
+select:focus, .input input:focus, .input textarea:focus{border-color:#1E7BDB;}
+.input input, .input textarea{width:300px; *margin-top:3px;}
+.input textarea{line-height:20px;}
+.colr, .colrf{display:inline-block; *display:inline; *zoom:1; width:20px; height:20px; overflow:hidden; margin-left:10px; margin-bottom:-3px; cursor:pointer; -moz-border-radius:20px; -webkit-border-radius:20px; border-radius:20px; -moz-box-shadow:0 0 5px #444; -webkit-box-shadow:0 0 5px #444; box-shadow:0 0 5px #444;}
+input.reg{border:1px solid #e60000; background:#FFE8E8;}
+.uploadbtn{padding:0; margin:0; margin-bottom:-5px;}
+.agree{color:#F90; margin-left:5px;}
+.note{color:#960000;}
+.tip{color:#f1aa01; margin-left:5px;}
+.error{color:#f00; margin-left:5px; text-shadow:1px 1px 0 #eee; line-height:26px;}
+.success{color:#50a40f; margin-left:5px;}
+.dropbox{width:230px; height:100px; line-height:100px; overflow:hidden; text-align:center; border:5px dashed #ccc; margin:10px 0; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px;}
+.fixed, .fixed:link, .fixed:visited, .fixed:hover{display:block; width:27px; height:70px; line-height:16px; overflow:hidden; padding-left:3px; padding-top:7px; text-align:center; text-decoration:none; position:absolute; z-index:667; top:500px; right:10px; background:#ffc740; font-size:12px; color:#fff; letter-spacing:4px; border:1px solid #ccc; text-shadow:1px 1px 0 #d29502; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px; box-shadow:1px 1px 3px #ccc;}
+.fixed:hover{background:#febc1e;}
+input[type="submit"], input[type="reset"], .bbtn{border:1px solid #135aa4; color:#fff; font:12px/22px "Microsoft YaHei",Arial; width:auto; height:25px; *line-height:18px; *height:23px; padding:0 10px; cursor:pointer; overflow:visible; -moz-border-radius:2px; -webkit-border-radius:2px; border-radius:2px; box-shadow:1px 1px 2px #b7d4f1; text-shadow:0 -1px 0 #135aa4; vertical-align:middle; background:#1f7cdc;
+background:-moz-linear-gradient(top, #1f7cdc 0%, #1666b8 100%);
+background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#1f7cdc), color-stop(100%,#1666b8));
+background:-webkit-linear-gradient(top, #1f7cdc 0%, #1666b8 100%);
+background:-o-linear-gradient(top, #1f7cdc 0%, #1666b8 100%);
+background:-ms-linear-gradient(top, #1f7cdc 0%, #1666b8 100%);
+filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#1f7cdc, endColorstr=#1666b8, gradientType=0);
+background:linear-gradient(top, #1f7cdc 0%, #1666b8 100%);}
+input[type="submit"]:hover, input[type="reset"]:hover, .bbtn:hover{border-color:#135aa4; color:#fff; background:#196dc4;
+background:-moz-linear-gradient(top, #196dc4 0%, #135aa5 100%);
+background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#196dc4), color-stop(100%,#135aa5));
+background:-webkit-linear-gradient(top, #196dc4 0%, #135aa5 100%);
+background:-o-linear-gradient(top, #196dc4 0%, #135aa5 100%);
+background:-ms-linear-gradient(top, #196dc4 0%, #135aa5 100%);
+filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#196dc4, endColorstr=#135aa5, gradientType=0);
+background:linear-gradient(top, #196dc4 0%, #135aa5 100%);}
+input[type="submit"]:active, input[type="reset"]:active, .bbtn:active{box-shadow:inset 0 0 8px 2px #0a4686;}
+input.ybtn{border:1px solid #d4b06a; color:#753d00; font:12px/22px "Microsoft YaHei",Arial; width:auto; height:25px; *line-height:18px; *height:23px; padding:0 10px; cursor:pointer; overflow:visible; -moz-border-radius:2px; -webkit-border-radius:2px; border-radius:2px; box-shadow:1px 1px 2px #fff4ae; text-shadow:0 1px 0 #fff4ae; vertical-align:middle; background:#ffd423;
+background:-moz-linear-gradient(top, #fff7bd 0%, #ffd423 100%);
+background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff7bd), color-stop(100%,#ffd423));
+background:-webkit-linear-gradient(top, #fff7bd 0%, #ffd423 100%);
+background:-o-linear-gradient(top, #fff7bd 0%, #ffd423 100%);
+background:-ms-linear-gradient(top, #fff7bd 0%, #ffd423 100%);
+filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#fff7bd, endColorstr=#ffd423, gradientType=0);
+background:linear-gradient(top, #fff7bd 0%, #ffd423 100%);}
+input.ybtn:hover, input.ybtn.hover{border-color:#c29246; color:#753d00; background:#ffc213;
+background:-moz-linear-gradient(top, #fff4a3 0%, #ffc213 100%);
+background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff4a3), color-stop(100%,#ffc213));
+background:-webkit-linear-gradient(top, #fff4a3 0%, #ffc213 100%);
+background:-o-linear-gradient(top, #fff4a3 0%, #ffc213 100%);
+background:-ms-linear-gradient(top, #fff4a3 0%, #ffc213 100%);
+filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#fff4a3, endColorstr=#ffc213, gradientType=0);
+background:linear-gradient(top, #fff4a3 0%, #ffc213 100%);}
+input.ybtn:active{box-shadow:inset 0 0 8px 2px #ffc213;}
+input.disabled, input.disabled:hover{border-color:#bbb; color:#999; background:#d9d9d9; text-shadow:0 1px 0 #fff; box-shadow:1px 1px 2px #eee; cursor:no-drop;}
+/* 分割线 */
+.ge-top, .ge-bottom, .ge-left, .ge-right{position:relative;}
+.ge-top:before, .ge-bottom:after, .ge-left:before, .ge-right:after{content:""; display:block; position:absolute; z-index:99; background:#c7c7c7;}
+.ge-top:before, .ge-bottom:after{left:0; right:0; height:1px;}
+.wapWeb .ge-top:before, .wapWeb .ge-bottom:after{-webkit-transform:scaleY(0.5); transform:scaleY(0.5);}
+.ge-left:before, .ge-right:after{top:0; bottom:0; width:1px;}
+.wapWeb .ge-left:before, .wapWeb .ge-right:after{-webkit-transform:scaleX(0.5); transform:scaleX(0.5);}
+.ge-top:before{top:0; -webkit-transform-origin:top; transform-origin:top;}
+.ge-bottom:after{bottom:0; -webkit-transform-origin:bottom; transform-origin:bottom;}
+.ge-left:before{left:0; -webkit-transform-origin:left; transform-origin:left;}
+.ge-right:after{right:0; -webkit-transform-origin:right; transform-origin:right;}
+.ge-light:before, .ge-light:after{background:#eaeaea;}
+/*modal填写弹框*/
+.modalView{width:280px; height:auto; overflow:hidden; text-align:center; background:#fff; border-radius:5px;}
+.modalView div{height:30px; line-height:30px;}
+.modalView div span{display:block; height:100%; color:#bbb; font-size:12px; -webkit-transform:scale(0.91); transform:scale(0.91);}
+.modalView label{display:block; margin:0 15px; height:36px; position:relative;}
+.modalView label:nth-child(2){margin-top:10px;}
+.modalView label:not(:nth-child(2)):before{content:""; display:block; position:absolute; z-index:99; background:#eaeaea; top:0; left:0; right:0; height:1px; -webkit-transform:scaleY(0.5); transform:scaleY(0.5); -webkit-transform-origin:top; transform-origin:top;}
+.modalView label input{width:100%; height:100%; font-size:14px; padding:0; margin:0; background-color:transparent; border:none; text-align:left;}
+.modalView a{display:block; height:44px; line-height:44px; margin-top:10px; font-size:14px; color:#007aff; font-weight:500; text-decoration:none;}
+/* 提示框 */
+.load-overlay{position:fixed; left:0; top:0; z-index:887; width:100%; height:100%; background:rgba(0,0,0,0.4); overflow:hidden; text-align:center; opacity:0; -webkit-transition:all 200ms ease-out; transition:all 200ms ease-out;}
+.load-overlay-in{opacity:1;}
+.load-view{position:fixed; top:50%; left:50%; z-index:9999; margin-left:-60px; margin-top:-60px; min-width:120px; max-width:260px; min-height:120px; overflow:hidden; background:rgba(0,0,0,0.6); border-radius:10px; opacity:0; transform:scale(1.185); -webkit-transform:scale(1.185); transition:opacity 200ms ease-out,transform 200ms ease-out; -webkit-transition:opacity 200ms ease-out,-webkit-transform 200ms ease-out;}
+.load-view-in{-webkit-transform:scale(1); transform:scale(1); opacity:1;}
+.load-view-out{-webkit-transform:scale(0.815); transform:scale(0.815); opacity:0;}
+.load-view div{display:block; width:32px; height:32px; margin:0 auto; margin-top:27px; background:no-repeat center center; background-size:cover;}
+.load-view span{display:block; color:#fff; line-height:18px; font-size:14px; padding:10px; text-align:center;}
+.load-view span.text{font-size:14px;}
+/* 提示框.加载动画 */
+.load-view .load-animate, .load-view .load-success, .load-view .load-error, .preloader{display:block; width:35px; height:35px; animation:preloader-spin 1s steps(12, end) infinite; -webkit-animation:preloader-spin 1s steps(12, end) infinite; background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D'0%200%20120%20120'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20xmlns%3Axlink%3D'http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink'%3E%3Cdefs%3E%3Cline%20id%3D'l'%20x1%3D'60'%20x2%3D'60'%20y1%3D'7'%20y2%3D'27'%20stroke%3D'%23fff'%20stroke-width%3D'11'%20stroke-linecap%3D'round'%2F%3E%3C%2Fdefs%3E%3Cg%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(30%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(60%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(90%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(120%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(150%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.37'%20transform%3D'rotate(180%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.46'%20transform%3D'rotate(210%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.56'%20transform%3D'rotate(240%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.66'%20transform%3D'rotate(270%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.75'%20transform%3D'rotate(300%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.85'%20transform%3D'rotate(330%2060%2C60)'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");}
+.load-view .load-animate-gray, .preloader-gray{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D'0%200%20120%20120'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20xmlns%3Axlink%3D'http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink'%3E%3Cdefs%3E%3Cline%20id%3D'l'%20x1%3D'60'%20x2%3D'60'%20y1%3D'7'%20y2%3D'27'%20stroke%3D'%236c6c6c'%20stroke-width%3D'11'%20stroke-linecap%3D'round'%2F%3E%3C%2Fdefs%3E%3Cg%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(30%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(60%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(90%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(120%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(150%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.37'%20transform%3D'rotate(180%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.46'%20transform%3D'rotate(210%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.56'%20transform%3D'rotate(240%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.66'%20transform%3D'rotate(270%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.75'%20transform%3D'rotate(300%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.85'%20transform%3D'rotate(330%2060%2C60)'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");}
+@-webkit-keyframes preloader-spin{100%{-webkit-transform:rotate(360deg);}}
+@keyframes preloader-spin{100%{transform:rotate(360deg);}}
+/* 提示框.成功,错误图标 */
+.load-view .load-success{animation:none; -webkit-animation:none; background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAYAAACohjseAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAwpJREFUeNrsW4tt4zAMVYUOkA3O2cCZoO4GyQbOBLkN4kzQ6wTuBr4NnEzg26DeINnAFQs58BmWRP1M53AECBito+iV0iP5pD51XccCWyI8E/4yeNbZWXgr/DJ4DmZPgQACkIPwrXz2MQD4W/h7ELAA0MMz4XUXz2r5Hc5zdP1gGhnYFNB0LoBFR2eF7Xxt9iDsrUp4ymjtj/Addn9y5KDAhM0CwDE5hwbBzmiAufBa+Iotx1ZyTrkvQBigZMu10gSSG5YlJTjIhWvI1dLX8mdTIDPbPAiUfCVky0rDjNXE+1dVGlGxKCWh3IRvNCwJbP6pYNcNZokWxGz5y5ACWg27FqZatKdgKmtlFG6mClPzu42M5mQE34hZ8YQAZyrm31Qkk3W0ViPLrxIxVjZVi9bEADNk92L1x+o/mBCDK5HRswkCYLrvwQPhvrvJvYcpGTOLcQ9DktkuOC30tefRctxtDzAJIDP4pIV3ZDRs5/iNi1uGnSot/HQcP+NS/aIwUNA+EO8dPVq1F064PDHEkmF6Pl30oVTrCMBB5PaI92rfLUQB0NQtBG22OUH0YqWFRQCMmRYm7TnAXmoHdG4ihNhpYVKycDGVRKCTOkJ2C2hzBZgbZP1r5G4hOkDM2cU1creAnmgdASD4drCcE8T7eYwm+pkFPnAc6ZqQzH/MmRbGrA1p4uLwwdyCZU9zpoWRXaCSUemMpmrkdahe+dSLUsmLcfax5nL52C7T/vAjhH56jASu7ZcoU2j+GJCl5+R8uwUTB9yFX5dlOpTMXxEVSpRuQbc8hxFsZQPqYilzOz/MI4I737ddwCqiEb5C5kh473MOjTV0JVEhAR7nUsinSqzYIm4S+ewxNV0jKSKDrOa8ZqKaRBPolDYZRS4muMbmhNeVGSnl/8nKimty2449ju1UZSM35JL9A4Db63K4SXT6WDjIvUkdx95Vg4qjWtCevMllaay+sLLhmY0O9wmtvy6CKi1tdNFWDnwiBHdCquJ/yYb/L8Q+8pXmf/5SeiiAY7DAuov4t4IvAQYAA4bzUVscyQ4AAAAASUVORK5CYII=");}
+.load-view .load-error{animation:none; -webkit-animation:none; background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAYAAACohjseAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAoVJREFUeNrsm4ttwjAQQE3UARghbBAmaLoB2QAmYIUwAeoEZoOwQcIEdAMyAhu4tupUaZSP73wGO/SkkyICjp/PPt9dzEIIwYgllppKfW9dj0kltZZ6aV2TyYIIUIHspW70tY0owLPUTxJYBWihqdRSuJNSPwPdR+wPE8dgfaDJowBz8TzJof2FrEG1tgqpCXuufEnNTNdnZNio8oRXD+CY7sPVwDsbA26lllKXzB9Z6j5tbQFVA5z5K3wKcmwNpnqUQpAPHSQYWzDRDiUUGXR+Qxb0xaFAvevaxIJ5gHDNrMunLNi44JBlra3Za8EjsDEVFK/UQGld6c+wQtHecSjYToFhUzESInFEGMZH2iuAbaV9sSg0eI4n4kBOBMf0s6DB+R/AGDHiJsEuJ4BrVGAM0KzBvaMFv5N6Grl/0t9xIfv2GrxhR8jCkhzwe8wMuzVTNEbmZgUwN+NIOIyT+TXCm2na0SMbHezuANO179okoN4g+5hiXbqwsAaznNqgvkUEVTBXKdVkKmRShVgIusIopUekgAOVLB5pSTI4akAKSFI4F4A2kORwrgC9EheAWGczFdZ5AWjrSckhI4/gnEBGQ+W2J+6BlJCVAqw9g6OErBXg5YFwHLiF2EJeZp8uzT7hjVrlOvD8toxQIBEPxk+c2yWL2RadXqZs+BKFX4wVi44lYwuPR9VeOXYIYfYvX9SNQ8BwhzZc3+uzRmb9ArQJke4Bwd2HQsZoZDSygACz7tQ0yQcrhy9GqLOOCpvwnjyHnMw2TM+qpeznqMbSozWXmSTrpiWLqru/eOAtjSoRkJpMrRt+5j550H0wzy7+D8QGfqR59ofSqQC7sMrrevG3gm8BBgB5I8qiQfiHegAAAABJRU5ErkJggg==");}
+.nav{width:100%; height:auto;}
+.nav > span{display:block; position:fixed; top:0; left:0; z-index:777; width:100%; height:auto; background:rgba(255,255,255,0.98); box-shadow:0 0 10px rgba(0,0,0,0.4);}
+.nav span > div{width:100%; height:100%; position:relative; text-align:left; cursor:pointer;}
+.nav span > div div{position:absolute; top:50%; left:50%; width:160px; height:48px; line-height:48px; margin-left:-80px; margin-top:-24px; font-size:36px; color:#f5f5f5; text-align:center; font-weight:500;}
+.nav span ul{position:absolute; top:0; left:0; z-index:1; width:100%; height:auto; overflow:hidden; padding:10px 0;}
+.nav span ul li{float:left; height:auto; position:relative;}
+.nav span ul li a, .nav ul li a:hover{padding:0 10px; font-size:12px; display:block; line-height:25px; height:25px; text-decoration:none; transition:color 300ms ease-out; -webkit-transition:color 300ms ease-out;}
+.nav span ul li a:hover{color:#ffc740;}
+#menustate{display:none;}
+.nav .menu-label{float:left; display:none; position:relative; width:48px; height:48px; cursor:pointer; -webkit-transition:opacity 0.2s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99); transition:opacity 0.2s cubic-bezier(0.645, 0.045, 0.355, 1), transform 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99); -webkit-tap-highlight-color:transparent;}
+.nav .menu-label:hover, .nav .menu-label:focus, .nav .menu-label:active{opacity:0.65;}
+#menustate:checked ~ .nav .menu-label{-webkit-transform:rotate(90deg); transform:rotate(90deg);}
+.nav .menuico{position:absolute; z-index:3; top:0; left:0; width:48px; height:48px; -webkit-transition:opacity 0.2s cubic-bezier(0.645, 0.045, 0.355, 1); transition:opacity 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);}
+.nav .menuico-top{z-index:4; -webkit-transform:rotate(0); transform:rotate(0); -webkit-transition:-webkit-transform 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99); transition:transform 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99);}
+.nav .menuico-bottom{-webkit-transform:rotate(0); transform:rotate(0); -webkit-transition:-webkit-transform 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99); transition:transform 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99);}
+#menustate:checked ~ .nav .menuico-top{-webkit-transform:rotate(45deg); transform:rotate(45deg); -webkit-transition:-webkit-transform 0.25s 0.2s cubic-bezier(0.4, 0.01, 0.165, 0.99); transition:transform 0.25s 0.2s cubic-bezier(0.4, 0.01, 0.165, 0.99);}
+#menustate:checked ~ .nav .menuico-bottom{-webkit-transform:rotate(-45deg); transform:rotate(-45deg); -webkit-transition:-webkit-transform 0.25s 0.2s cubic-bezier(0.4, 0.01, 0.165, 0.99); transition:transform 0.25s 0.2s cubic-bezier(0.4, 0.01, 0.165, 0.99);}
+.nav .menuico span{display:block; width:17px; height:1px; background:#333; position:absolute; left:16px; z-index:1; -webkit-transition:-webkit-transform 0.2s; transition:transform 0.2s;}
+.nav .menuico .top{top:23px; -webkit-transform:translateY(-3px); transform:translateY(-3px); -webkit-transition:-webkit-transform 0.2s 0.2s; transition:transform 0.2s 0.2s;}
+.nav .menuico .bottom{bottom:23px; -webkit-transform:translateY(3px); transform:translateY(3px);}
+#menustate:checked ~ .nav .menuico .top{-webkit-transform:translateY(0); transform:translateY(0); -webkit-transition-delay:0s; transition-delay:0s;}
+#menustate:checked ~ .nav .menuico .bottom{-webkit-transform:translateY(0); transform:translateY(0); -webkit-transition:-webkit-transform 0.2s; transition:transform 0.2s;}
+@media only screen and (max-width:600px) {
+body{font-size:12px;}
+h2, h3{font-size:14px; margin:10px 0;}
+#main{width:94%; height:auto; overflow:hidden;}
+.input input, .input textarea{width:65%;}
+input[type="submit"], input[type="reset"], .bbtn, input.ybtn{width:auto;}
+.nav, .nav span > div{height:48px;}
+.nav span > div{position:relative;}
+.nav .menu-label{display:block;}
+.nav span > div div{position:static; float:left; width:auto; margin:0; font-size:14px; color:#39C; text-align:left; font-weight:normal;}
+.nav span ul{display:none; padding:0; margin-top:48px; height:0; overflow:auto; background:#fff; -webkit-overflow-scrolling:touch; transition:height 300ms ease-out; -webkit-transition:height 300ms ease-out;}
+.nav span ul.this{display:block;}
+.nav span ul li{width:100%; position:relative;}
+.nav span > div:after, .nav span ul li:after{content:""; display:block; position:absolute; left:0; bottom:0; overflow:hidden; background:#eaeaea; width:100%; height:1px; -webkit-transform:scaleY(0.5); transform:scaleY(0.5); -webkit-transform-origin:bottom; transform-origin:bottom;}
+.nav span ul li a, .nav ul li a:hover{height:35px; line-height:35px;}
+.slidearea{width:100%; margin:0;}
+.slide{width:100%;}
+.slidecontroller{width:100%;}
+.pCon{width:100%;}
+.dragshow{width:100%;}
+.inertiaarea{width:100%;}
+.baidumap{width:100%;}
+}
+</style>
+</head>
+
+<body>
+<input type="checkbox" id="menustate" />
+<div class="nav">
+	<span>
+		<div>
+			<label class="menu-label">
+				<span class="menuico menuico-top">
+					<span class="top"></span>
+				</span>
+				<span class="menuico menuico-bottom">
+					<span class="bottom"></span>
+				</span>
+			</label>
+			<div>快速导航</div>
+		</div>
+		<ul>
+			<li><a href="javascript:void(0)" anchor="tagarea">验证标签</a></li>
+			<li><a href="javascript:void(0)" anchor="uploadarea">上传控件</a></li>
+			<li><a href="javascript:void(0)" anchor="diyarea">自定义验证标识前缀</a></li>
+			<li><a href="javascript:void(0)" anchor="functionarea">回调函数, 使用函数类型</a></li>
+			<li><a href="javascript:void(0)" anchor="objarea">回调函数, 使用对象字面量类型</a></li>
+			<li><a href="javascript:void(0)" anchor="extendarea">扩展验证标签</a></li>
+			<li><a href="javascript:void(0)" anchor="autosavearea">自动保存表单</a></li>
+			<li><a href="javascript:void(0)" anchor="directarea">控件直接验证</a></li>
+			<li><a href="javascript:void(0)" anchor="noformarea">非表单验证</a></li>
+			<li><a href="javascript:void(0)" anchor="colorarea">颜色选择器</a></li>
+			<li><a href="javascript:void(0)" anchor="datearea">日期选择器</a></li>
+			<li><a href="javascript:void(0)" anchor="getfieldsarea">获取所有控件值</a></li>
+			<li><a href="javascript:void(0)" anchor="html5area">HTML5 拖拽上传</a></li>
+			<li><a href="javascript:void(0)" anchor="overlayarea">遮罩层与展示层</a></li>
+			<li><a href="javascript:void(0)" anchor="photoBrowserarea">图片相册</a></li>
+			<li><a href="javascript:void(0)" anchor="alertuiarea">提示窗</a></li>
+			<li><a href="javascript:void(0)" anchor="touchmovearea">分页滚动</a></li>
+			<li><a href="javascript:void(0)" anchor="pullrefresharea">下拉刷新</a></li>
+			<li><a href="javascript:void(0)" anchor="dragshowarea">拖动显示</a></li>
+			<li><a href="javascript:void(0)" anchor="inertiaarea">惯性拖拽</a></li>
+			<li><a href="javascript:void(0)" anchor="inertiabaidumap">百度地图</a></li>
+			<li><a href="javascript:void(0)" anchor="inertiaamap">高德地图</a></li>
+			<div class="clear"></div>
+		</ul>
+	</span>
+</div>
+<script>
+function resize(){
+	let window = $.window();
+	if(window.width<=600){
+		$('.nav span ul').data('height', window.height-$('.nav span > div').height());
+		$('.nav, .nav span > div').removeAttr('style');
+	}else{
+		$('.nav, .nav span > div').height($('.nav ul').removeAttr('style').outerHeight(false));
+	}
+}
+$(window).resize(resize);
+$(function(){
+	resize();
+	if($.window().width<=600){
+		$('.nav span > div').on('click', function(){
+			let ul = $('.nav span ul');
+			if(!ul.hasClass('this')){
+				ul.addClass('this').height(ul.data('height'));
+				$('html').css('overflow', 'hidden');
+				$('#menustate').prop('checked', true);
+			}else{
+				ul.removeAttr('style');
+				setTimeout(function(){ul.removeClass('this')}, 300);
+				$('html').css('overflow', '');
+				$('#menustate').prop('checked', false);
+			}
+		});
+	}
+	$('h2:first').on('click', function(){
+		$.overload('请稍候');
+		setTimeout(function(){
+			$.overload('正在进入中哦<br />请再继续稍候', null);
+			setTimeout(function(){
+				$.overloadSuccess('完成了');
+				setTimeout(function(){
+					$.overload('继续读取');
+					setTimeout(function(){
+						$.overloadError('现在错误了');
+					}, 3000);
+				}, 2000);
+			}, 3000);
+		}, 3000);
+	});
+	$('h2:eq(1)').on('click', function(){
+		$.modalView('账号密码', [
+			{
+				title: '账号',
+				name: 'username'
+			},
+			{
+				title: '密码',
+				name: 'password',
+				btn: '立即登录'
+			}
+		], function(data){
+			console.log(data);
+		});
+	});
+	$('a[anchor]').on('click', function(){
+		$.scrollto('#'+$(this).attr('anchor'));
+		if($(this).parents('.nav').length){
+			$('#menustate').removeProp('checked');
+			$('.nav span > div').trigger('click');
+		}
+	});
+	$('.fixed').fixed({
+		dir: 'top', //保持方向
+		stay: function(){return $('#main').offset().top}, //保持所在位置
+		fixed: null, //固定飘浮后执行
+		normal: null, //取消固定飘浮后执行
+		scroll: null //滚动时执行
+	});
+});
+</script>
+
+<div id="main">
+	<a id="headertop"></a>
+	<h2>验证插件使用说明</h2>
+
+	<div class="content">
+		1、页面中引入jquery.js库(版本1.4.4~3.4.1)与coo.js<br />
+		<br />2、加入JS脚本：$(function(){$(form表单).coo()});<br />
+		<br />3、验证标签对象使用类名class属性，验证标签以"-"符号分隔，第一位标识使用coo。例如：class="coo-need-email"：必填字段，且只能输入邮箱，class="coo-date-need"：输入框自动加载日期控件，且必须日期格式，且为必填字段，也可写成class="myClass coo-need-email"或class="myClass coo-date-need"，即可使用多个类名，其实need标签已可忽略，因为email、date这些验证标签已包含不能为空的要求，验证顺序按验证标签顺序执行，还有一种是扩展需验证的expr，可不需使用coo前缀标识类名的格式，更多验证标签与详细教程请参考下面的说明<br />
+		<br />4、自定义验证规则，使用reg自定义属性，例如：class="coo-reg" reg="^\d{4}$"，验证不通过时提示：“格式错误”<br />
+		<br />5、使用css自定义属性，自定义被验证对象的验证不通过样式，验证不通过时被验证对象将添加该样式，通过时自动去除<br />
+		<br />6、验证提示的位置，使用pos自定义属性，值有self、top、bottom、left、right、end、parent、(num num)、absleft、absright、expr，end：在被验证对象的父元素的内部最后，parent：被验证对象的父元素后面，num：数字(漂浮，可负数，分别对应以被验证对象左上角为0开始的left、top)，[absleft|absright]：漂浮在被验证对象的左/右侧，expr：css选择器(当不是之前所有的值时即当作css选择器执行，获取被验证对象之后的expr对象，然后提示将显示在该对象的前面)，不设置该自定义属性或为空或right即默认在被验证对象的后面(被验证对象为checkbox或radio时为end)<br />
+		<br />7、自定义提示，把需要提示的信息，使用tip自定义属性即显示提示tip的信息(只支持文本框、文本区域)，使用success自定义属性即在验证通过时显示出来，使用error自定义属性即在验证不通过时提示error的信息。例如：class="coo-need" error="干嘛不输入呢？"，验证不通过时将会提示："干嘛不输入呢？"，而不是默认的"此项必填"，每种自定义信息都可以设定各自的css与area，例如error-class、error-area，使用error-area自定义属性时pos将会无效，error-area的值为存放验证失败提示的容器的expr，class="coo-need-num" 可使用自定义属性 need-error="必填" num-error="必须数字" 设定各个验证标签的提示信息(增加对应的前缀)(包括可设定各自的error-class、error-area，例如num-error-class)，若不存在指定的自定义属性即默认使用没有前缀的error<br />
+		<br />8、修改提示样式，在样式表中给label.error定义样式即可，或使用error-class自定义属性指定一个class样式名称(tip、success与error一样规则)
+	</div>
+
+
+	<a id="tagarea"></a>
+	<form action="#" class="checkform" method="post" onSubmit="return doSubmit()" target="_blank">
+	<div class="input">
+	<h2>验证标签</h2>
+	<h3>need：不能为空 <span class="note">(自定义属性fn:验证通过后执行)</span></h3>
+	<div class="content">举例：&lt;input type="text" id="need" fn="function(o){$('#shower').html($(o).val())}" class="coo-need" pos="0 0" /&gt; &lt;span id="shower"&gt;&lt;/span&gt;
+		<br />实例：<input type="text" id="need" class="coo-need" fn="function(o){$('#shower').html($(o).val())}" pos="0 0" /> <span id="shower"></span>
+	</div>
+
+	<h3>username：用户名</h3>
+	<div class="content">举例：&lt;input type="text" name="username" id="username" errorarea="#errorarea" class="coo-username" /&gt;
+		<br />实例：<input type="text" name="username" id="username" error-area="#errorarea" class="coo-username" /> <span id="errorarea">请输入用户名</span>
+	</div>
+
+	<h3>usernamecn：用户名 <span class="note">(验证值可包含中文)</span></h3>
+	<div class="content">举例：&lt;input type="text" name="usernamecn" id="usernamecn" class="coo-usernamecn" /&gt;
+		<br />实例：<input type="text" name="usernamecn" id="usernamecn" class="coo-usernamecn" />
+	</div>
+
+	<h3>password：密码</h3>
+	<div class="content">举例：&lt;input type="text" name="password" class="coo-password" /&gt;
+		<br />实例：<input type="text" name="password" class="coo-password" />
+	</div>
+
+	<h3>num | number：数字 <span class="note">(验证值可负数) (必须整数)</span></h3>
+	<div class="content">举例：&lt;input type="text" name="num" need-error="必填" num-error="必须数字哦" success="格式正确" class="coo-need-num" /&gt;
+		<br />实例：<input type="text" name="num" need-error="必填" num-error="必须数字哦" success="格式正确" pos="absright" class="coo-need-num" />
+	</div>
+
+	<h3>float<span class="note">n</span>：浮点数字 <span class="note">(验证值可负数) (n:不存在即默认最多两位小数, 否则最多n位小数)</span></h3>
+	<div class="content">举例：&lt;input type="text" name="float" class="coo-float" /&gt;&lt;input type="text" name="float4" class="coo-float4" /&gt;
+		<br />实例：<input type="text" name="float" class="coo-float" />
+		<br />　　　<input type="text" name="float4" class="coo-float4" />
+	</div>
+
+	<h3>char：字母</h3>
+	<div class="content">举例：&lt;input type="text" name="char" tip="请在这里输入英文字母" success="格式正确" class="coo-char" /&gt;
+		<br />实例：<input type="text" name="char" tip="请在这里输入英文字母" success="格式正确" class="coo-char" />
+	</div>
+
+	<h3>en | english：字母、数字和下划线</h3>
+	<div class="content">举例：&lt;input type="text" name="en" class="char coo-en t-c coo" /&gt;
+		<br />实例：<input type="text" name="en" class="char coo-en t-c coo" />
+	</div>
+
+	<h3>cn | chinese：中文 <span class="note">(验证值不包括中文符号)</span></h3>
+	<div class="content">举例：&lt;input type="text" name="cn" class="coo-cn" /&gt;
+		<br />实例：<input type="text" name="cn" class="coo-cn" />
+	</div>
+
+	<h3>double：中文、全角字符 <span class="note">(验证值包括中文符号)</span></h3>
+	<div class="content">举例：&lt;input type="text" name="double" class="coo-double" /&gt;
+		<br />实例：<input type="text" name="double" class="coo-double" />
+	</div>
+
+	<h3>money：金额 <span class="note">(验证值只能正数, 且最多只能两位小数)</span></h3>
+	<div class="content">举例：&lt;input type="text" name="money" class="coo-money" /&gt;
+		<br />实例：<input type="text" name="money" class="coo-money" />
+	</div>
+
+	<h3>idcard：身份证号 <span class="note">(兼容15位与18位与最后为X) (idcardstrict：严格验证)</span></h3>
+	<div class="content">举例：&lt;input type="text" name="idcard" class="coo-idcard" /&gt;
+		<br />实例：<input type="text" name="idcard" class="coo-idcard" />
+	</div>
+
+	<h3>zip：邮编</h3>
+	<div class="content">举例：&lt;input type="text" name="zip" class="coo-zip" /&gt;
+		<br />实例：<input type="text" name="zip" class="coo-zip" />
+	</div>
+
+	<h3>tel：固话号码</h3>
+	<div class="content">举例：&lt;input type="text" name="tel" class="coo-tel" /&gt;
+		<br />实例：<input type="text" name="tel" class="coo-tel" />
+	</div>
+
+	<h3>telac：固话号码 <span class="note">(验证值必须包括区号)</span></h3>
+	<div class="content">举例：&lt;input type="text" name="telac" class="coo-telac" /&gt;
+		<br />实例：<input type="text" name="telac" class="coo-telac" />
+	</div>
+
+	<h3>mobile：手机号码</h3>
+	<div class="content">举例：&lt;input type="text" name="mobile" class="coo-mobile" /&gt;
+		<br />实例：<input type="text" name="mobile" class="coo-mobile" />
+	</div>
+
+	<h3>phone：联系电话 <span class="note">(验证值包括手机与固话)</span></h3>
+	<div class="content">举例：&lt;input type="text" name="phone" class="coo-phone" /&gt;
+		<br />实例：<input type="text" name="phone" class="coo-phone" />
+	</div>
+
+	<h3>phoneac：联系电话 <span class="note">(验证值包括手机与固话) (固话必须包括区号)</span></h3>
+	<div class="content">举例：&lt;input type="text" name="phoneac" class="coo-phoneac" /&gt;
+		<br />实例：<input type="text" name="phoneac" class="coo-phoneac" />
+	</div>
+
+	<h3>email：邮件地址</h3>
+	<div class="content">举例：&lt;input type="text" name="email" class="coo-email" /&gt;
+		<br />实例：<input type="text" name="email" class="coo-email" />
+	</div>
+
+	<h3>url：网址 <span class="note">(验证值可不包含前缀, 或者http、https、ftp)</span></h3>
+	<div class="content">举例：&lt;input type="text" name="url" class="coo-url" /&gt;
+		<br />实例：<input type="text" name="url" class="coo-url" />
+	</div>
+
+	<h3>qq：QQ</h3>
+	<div class="content">举例：&lt;input type="text" name="qq" class="coo-qq" /&gt;
+		<br />实例：<input type="text" name="qq" class="coo-qq" />
+	</div>
+
+	<h3>ip：IP地址</h3>
+	<div class="content">举例：&lt;input type="text" name="ip" class="coo-ip" /&gt;
+		<br />实例：<input type="text" name="ip" class="coo-ip" />
+	</div>
+
+	<h3>reg：自定义验证规则</h3>
+	<div class="content">举例：&lt;input type="text" name="reg" class="coo-reg" reg="^\d{4}$" css="reg" /&gt;
+		<br />实例：<input type="text" name="reg" class="coo-reg" reg="^\d{4}$" css="reg" />
+	</div>
+
+	<h3>color：颜色控件 <span class="note">(可设置options自定义属性)</span></h3>
+	<div class="content">举例：&lt;input type="text" name="color" class="coo-color" options="{size:15,type:'small'}" /&gt; <a href="javascript:void(0)" anchor="colorarea">详细参数</a>
+		<br />实例：<input type="text" name="color" class="coo-color" options="{size:15,type:'small'}" />
+	</div>
+
+	<h3>! 验证标签：验证对象可以不填, 否则必须符合验证规则</h3>
+	<div class="content">举例：&lt;input type="text" name="tag" class="coo-!num" /&gt;
+		<br />实例：<input type="text" name="tag" class="coo-!num" />
+	</div>
+
+	<h3>下面的id指目标对象的id或name</h3>
+	<h3>= expr：是否与目标对象的值相等</h3>
+	<div class="content">举例：&lt;input name="test1" class="coo-need" /&gt;&lt;input type="text" name="test1i" class="coo-=#test1" /&gt;
+		<br />效果：<input type="text" name="test1" class="coo-need" />&nbsp;
+		<br />实例：<input type="text" name="test1i" class="coo-=#test1" />
+	</div>
+
+	<h3>% expr：两个对象至少一个不为空</h3>
+	<div class="content">举例：&lt;input type="text" name="test2" /&gt;&lt;input type="text" name="test2i" class="coo-%#test2" /&gt;
+		<br />效果：<input type="text" name="test2" />&nbsp;
+		<br />实例：<input type="text" name="test2i" class="coo-%#test2" />
+	</div>
+
+	<h3>^ expr：两个保持为空, 否则如果其中一个不为空, 即另一个也不能为空</h3>
+	<div class="content">举例：&lt;input type="text" name="test3" /&gt;&lt;input type="text" name="test3i" class="coo-^#test3" /&gt;
+		<br />效果：<input type="text" name="test3" />&nbsp;
+		<br />实例：<input type="text" name="test3i" class="coo-^#test3" />
+	</div>
+
+	<h3>&gt; expr：输入的数字要比目标对象的大或相等, 支持日期标识, 自定义属性#=str：提示信息中对比的控件的代表名称</h3>
+	<div class="content">举例：&lt;input type="text" name="test4" class="coo-num" /&gt;&lt;input type="text" name="test4i" #="效果" class="coo-&gt;#test4" /&gt;
+		<br />效果：<input type="text" name="test4" class="coo-num" />&nbsp;
+		<br />实例：<input type="text" name="test4i" #="效果" class="coo->#test4" />
+	</div>
+
+	<h3>&lt; expr：输入的数字要比目标对象的小或相等, 支持日期标识, 自定义属性#=str：提示信息中对比的控件的代表名称</h3>
+	<div class="content">举例：&lt;input type="text" name="test5" class="coo-num" /&gt;&lt;input type="text" name="test5i" #="效果" class="coo-&lt;#test5" /&gt;
+		<br />效果：<input type="text" name="test5" class="coo-num" />&nbsp;
+		<br />实例：<input type="text" name="test5i" #="效果" class="coo-<#test5" />
+	</div>
+
+	<h3>@ expr：选择日期后立即跳到expr <span class="note">(日期标识才有效)</span></h3>
+	<div class="content">举例：&lt;input type="text" name="test6" class="coo-date-@#test6i" /&gt;&lt;input type="text" name="test6i" class="coo-date-&gt#test6" /&gt;
+		<br />效果：<input type="text" name="test6" class="coo-date-@#test6i" />&nbsp;
+		<br />实例：<input type="text" name="test6i" class="coo-date->#test6" />
+	</div>
+
+	<h3>以下直接使用数字来验证</h3>
+	<h3>= number：输入数字必须等于number <span class="note">(支持负数与小数)</span></h3>
+	<div class="content">举例：&lt;input type="text" name="d" class="coo-=-200.3" /&gt;
+		<br />实例：<input type="text" name="d" class="coo-=-200.3" />
+	</div>
+
+	<h3>% number：输入数字必须为number的整倍数</h3>
+	<div class="content">举例：&lt;input type="text" name="y" class="coo-%3" /&gt;
+		<br />实例：<input type="text" name="y" class="coo-%3" />
+	</div>
+
+	<h3>&gt; number：输入数字必须大于(或等于)number</h3>
+	<div class="content">举例：&lt;input type="text" name="b" class="coo-&gt;=200" /&gt;
+		<br />实例：<input type="text" name="b" class="coo->=200" />
+	</div>
+
+	<h3>&lt; number：输入数字必须小于number</h3>
+	<div class="content">举例：&lt;input type="text" name="s" class="coo-&lt;200" /&gt;
+		<br />实例：<input type="text" name="s" class="coo-<200" />
+	</div>
+
+	<h3>l number：输入长度必须等于number</h3>
+	<div class="content">举例：&lt;input type="text" name="l" class="coo-l7" /&gt;
+		<br />实例：<input type="text" name="l" class="coo-l7" />
+	</div>
+
+	<h3>m number：输入长度必须少于或等于number</h3>
+	<div class="content">举例：&lt;input type="text" name="m" class="coo-m8" /&gt;
+		<br />实例：<input type="text" name="m" class="coo-m8" />
+	</div>
+
+	<h3>n number：输入长度必须多于或等于number</h3>
+	<div class="content">举例：&lt;input type="text" name="n" class="coo-n6" /&gt;
+		<br />实例：<input type="text" name="n" class="coo-n6" />
+	</div>
+
+	<h3>e types：允许选择的文件类型 <span class="note">(多个文件类型用"|"隔开后缀名) (支持正则) (一般file控件用)</span></h3>
+	<div class="content">举例：&lt;input type="file" name="e" class="coo-ejpg|txt|gif" /&gt;
+		<br />实例：<input type="file" name="e" class="coo-ejpg|txt|gif" />
+	</div>
+
+	<a id="uploadarea"></a>
+	<h2>上传控件</h2>
+	<h3>使用自定义属性达到美化、AJAX上传</h3>
+	<div class="content">
+	<pre>
+	function ajaxUploadFn(){
+		return {
+			success: function(data, status){
+				if(typeof(data.error)!='undefined'){
+					if(data.error!=''){
+						alert(data.message);
+					}else{
+						alert(data.url);
+					}
+				}
+			},
+			error: function(data, status, e){
+				alert('Upload error\n'+e);
+			},
+			complete: function(data, status){
+				alert('Upload complete');
+			}
+		}
+	}</pre>
+		<style>
+		.upload1, .upload2, .upload3{width:70px; height:19px; background:url(http://static.cechoice.com/images/ajup.gif);}
+		</style>
+		举例：&lt;input type="file" name="u" class="uploadbtn coo-!ejpg" src="upload.gif" hoversrc="upload.gif" clicksrc="upload.gif" w="70" h="19" url="upload.php" loading="loading.gif" data="{filename:'files',addtime:'2012-11-17'}" callback="ajaxUploadFn" /&gt;<br />
+		或者：&lt;input type="file" name="u" class="uploadbtn coo-!ejpg" src=".upload1" hoversrc=".upload2" clicksrc=".upload3" /&gt;<br />
+		实例：<input type="file" name="u" class="uploadbtn coo-!ejpg" src="http://miaomiaostudy.b0.upaiyun.com/mmx/2015/03/10/20150310211130901.gif" url="upload.php" loading="http://miaomiaostudy.b0.upaiyun.com/mmx/2015/03/10/20150310211156398.gif" data="{filename:'files',addtime:'2012-11-17'}" callback="ajaxUploadFn" /><br />
+		<br />直接调用：
+		<pre>
+	AJAX上传：
+	$(expr).ajaxupload({
+		url: '/upload', //上传提交的目标网址
+		name: 'filename', //非file控件上传时指定的提交控件名称
+		loading: '', //上传中在右边显示的图片路径
+		innerFile: $.browser.mobile, //直接在内部生成input:file,为兼容某些浏览器不支持模拟点击
+		fileType: ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'], //允许上传文件类型,后缀名,数组或字符串(逗号隔开)
+		dataType: 'json', //请求类型
+		data: null, //上传时一同提交的数据
+		rightnow: false, //不需要经过change之类的操作,立刻上传(控件已选择了文件)
+		target: '', //表单提交目标
+		multiple: false, //多文件选择(只支持HTML5浏览器)
+		beforeSelect: null, //选择前执行, 非file控件有效, 若返回false即终止选择
+		before: null, //上传前执行, 若返回false即终止上传, 接受一个参数:选择的文件数量
+		cancel: null, //终止上传后执行
+		uploading: null, //正在上传时执行
+		callback: null, //上传操作完毕后返回的回调函数(函数(即success函数)|对象字面量)
+		error: null, //上传操作失败后执行(即error函数,比callback.error优先)
+		complete: null, //上传操作完毕后执行(即complete函数,比callback.complete优先)
+		replace: null, //替换上传操作, 例如使用又拍云替换ajaxupload的默认上传, 接受一个参数:file控件
+		debug: false //保留iframe,form
+	});</pre>
+		<br />不使用file控件：<a href="javascript:void(0)" id="uplink">点击上传</a>、<input type="button" id="upbtn" value="点击上传" class="ybtn">
+	</div>
+	<script>
+	$('#uplink, #upbtn').ajaxupload({
+		url: 'upload.php',
+		name: 'filename',
+		callback: {
+			success: function(data, status){
+				if(typeof(data.error)!='undefined'){
+					if(data.error=='1'){
+						alert(data.message);
+					}else{
+						alert(data.url[0]);
+					}
+				}
+			},
+			error: function(data, status, e){
+				alert('Upload error\n'+e);
+			}
+			/*
+			,complete: function(data, status){
+				alert('Upload complete');
+			}
+			*/
+		}
+	});
+	function ajaxUploadFn(){
+		return {
+			success: function(data, status){
+				if(typeof(data.error)!='undefined'){
+					if(data.error!=''){
+						alert(data.message);
+					}else{
+						alert(data.url);
+					}
+				}
+			},
+			error: function(data, status, e){
+				alert('Upload error\n'+e);
+			}
+		}
+	}
+	</script>
+
+	<h2>日期控件</h2>
+	<h3>date：绑定日期控件 <span class="note">(可设置options自定义属性) (注：为能通过验证, 返回格式统一yyyy-m-d(视just参数而定), format参数将会无效)</span></h3>
+	<div class="content">举例：&lt;input type="text" name="dt" class="coo-date" options="{minDate:'-7d',maxDate:'+5d',format:'yy年mm月dd日'}" /&gt; <a href="javascript:void(0)" anchor="datearea">详细参数</a>
+		<br />实例：<input type="text" name="dt" class="coo-date" options="{minDate:'-7d',maxDate:'+5d',format:'yy年mm月dd日'}" />
+	</div>
+
+	<h3>文本区域</h3>
+	<div class="content">举例：&lt;textarea name="t" class="coo-need"&gt;&lt;/textarea&gt;
+		<br />实例：<textarea name="t" class="coo-need" style="height:70px;vertical-align:top;"></textarea>
+	</div>
+	</div>
+
+	<h3>多选框：need标签判断最少要选择一项 <span class="note">(只要其中一个有need标签, 即整个多选组有效)</span></h3>
+	<div class="content">举例：&lt;input type="checkbox" name="c" class="coo-need-v2" /&gt;若2与checkbox的值相等则自动选中
+		<div>实例：
+			<input type="checkbox" name="c" id="c1" value="1" /><label for="c1">1</label>
+			<input type="checkbox" name="c" id="c2" class="coo-need-v0" value="2" /><label for="c2">2</label>
+			<input type="checkbox" name="c" id="c3" class="coo-need-v2" value="3" /><label for="c3">3</label>
+			<input type="checkbox" name="c" id="c4" class="coo" value="4" checked="checked" /><label for="c4">4</label>
+		</div>
+		<style>
+		/* 单选框 */
+		.radio{display:inline-block; zoom:1; *display:inline; vertical-align:middle; margin-right:3px; width:16px; height:16px; overflow:hidden; cursor:pointer;}
+		.radio *, .radio *:before, .radio *:after{box-sizing:content-box;}
+		.radio > *{display:block; width:16px; height:16px; overflow:hidden; text-align:center; box-sizing:border-box; border-radius:100%; background:#fff; border:1px solid #a5a5a5; -webkit-transition:all 200ms ease-out; transition:all 200ms ease-out; -webkit-backface-visibility:hidden; backface-visibility:hidden; -webkit-transform-style:preserve-3d; transform-style:preserve-3d;}
+		.radio > *:after{content:""; display:block; margin:0 auto; width:100%; height:100%; overflow:hidden; border-radius:100%; background:#fff; box-shadow:0 1px 1px rgba(0,0,0,0); -webkit-transition:all 200ms ease-out; transition:all 200ms ease-out; -webkit-backface-visibility:hidden; backface-visibility:hidden; -webkit-transform-style:preserve-3d; transform-style:preserve-3d;}
+		.radio > *:hover{border-color:#3493f9;}
+		.radio > input{display:none;}
+		.radio input:checked + *{background:#419bf9; border-color:#3493f9;}
+		.radio input:checked + *:after{-webkit-transform:scale(0.4); transform:scale(0.4); box-shadow:0 2px 1px rgba(0,0,0,0.5);}
+		.radio input:disabled + *, .radio input:disabled + *:hover{border-color:#ccc; background:#f6f6f6; cursor:not-allowed;}
+		.radio input:checked:disabled + *:after{background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.8);}
+		.radio input:disabled + *:after{background:#f6f6f6;}
+		
+		/* 多选框 */
+		.checkbox{display:inline-block; zoom:1; *display:inline; vertical-align:middle; margin-right:3px; text-align:center; width:16px; height:16px; overflow:hidden;}
+		.checkbox *, .checkbox *:before, .checkbox *:after{box-sizing:content-box;}
+		.checkbox > *{display:block; position:relative; width:16px; height:16px; overflow:hidden; box-sizing:border-box; cursor:pointer; border-radius:3px; background:#fff; border:1px solid #a5a5a5; -webkit-transition:all 200ms ease-out; transition:all 200ms ease-out; -webkit-backface-visibility:hidden; backface-visibility:hidden; -webkit-transform-style:preserve-3d; transform-style:preserve-3d;}
+		.checkbox > *:before{content:""; display:block; margin:0 auto; width:14px; height:14px; overflow:hidden; border:none; background:none; -webkit-transform:scale(0); transform:scale(0); -webkit-transition:all 200ms ease-out; transition:all 200ms ease-out; -webkit-backface-visibility:hidden; backface-visibility:hidden; -webkit-transform-style:preserve-3d; transform-style:preserve-3d;}
+		.checkbox > *:after{content:""; display:block; position:absolute; width:9px; height:5px; background-color:transparent; top:2px; left:1px; border:3px solid #3493f9; border-top:none; border-right:none; -webkit-transform:rotate(-45deg) scale(0); transform:rotate(-45deg) scale(0); box-shadow:0 1px 3px rgba(0,0,0,0); -webkit-transition:all 200ms ease-out; transition:all 200ms ease-out; -webkit-backface-visibility:hidden; backface-visibility:hidden; -webkit-transform-style:preserve-3d; transform-style:preserve-3d;}
+		.checkbox > *:hover{border-color:#3493f9;}
+		.checkbox > input{display:none;}
+		.checkbox input:checked + *{background:#419bf9; border-color:#3493f9;}
+		.checkbox input:checked + *:before{-webkit-transform:scale(1); transform:scale(1);}
+		.checkbox input:checked + *:after{-webkit-transform:rotate(-45deg) scale(0.7); transform:rotate(-45deg) scale(0.7); box-shadow:0 1px 1px rgba(0,0,0,0.3); border-color:#fff;}
+		.checkbox input:disabled + *, .checkbox input:disabled + *:hover{border-color:#ccc; background:#f6f6f6; cursor:not-allowed;}
+		.checkbox input:disabled + *:after{border-color:#bbb; box-shadow:0 1px 0 #fff;}
+		
+		/* 多选框 APP */
+		.checkbox-app{display:inline-block; vertical-align:middle;}
+		.checkbox-app > input{display:none;}
+		.checkbox-app *, .checkbox-app *:before, .checkbox-app *:after{box-sizing:border-box;}
+		.checkbox-app > *{display:block; position:relative; z-index:0; margin:0; padding:0; appearance:none; -webkit-appearance:none; -moz-appearance:none; border:none; cursor:pointer; -webkit-transition-duration:0.3s; transition-duration:0.3s; -webkit-backface-visibility:hidden; backface-visibility:hidden; -webkit-transform-style:preserve-3d; transform-style:preserve-3d;}
+		.checkbox-app > *:before{content:""; display:block; position:absolute; z-index:1; left:1px; top:1px; width:calc(100% - 2px); height:calc(100% - 2px); -webkit-transform:scale(1); transform:scale(1); -webkit-transition-duration:0.3s; transition-duration:0.3s; -webkit-backface-visibility:hidden; backface-visibility:hidden; -webkit-transform-style:preserve-3d; transform-style:preserve-3d;}
+		.checkbox-app > *:after{content:""; display:block; position:absolute; z-index:2; top:1px; left:1px; height:calc(100% - 2px); border-radius:100%; box-shadow:0 2px 5px rgba(0,0,0,0.4); -webkit-transform:translate3d(0,0,0); transform:translate3d(0,0,0); -webkit-transition-duration:0.3s; transition-duration:0.3s; -webkit-backface-visibility:hidden; backface-visibility:hidden; -webkit-transform-style:preserve-3d; transform-style:preserve-3d;}
+		.checkbox-app input:checked + *:before{-webkit-transform:scale(0); transform:scale(0);}
+		.checkbox-app input:disabled + *{cursor:not-allowed;}
+		.checkbox-app input:disabled + *:after{box-shadow:0 2px 5px rgba(0,0,0,0.15);}
+		.checkbox-app > *{width:40px; height:24px; border-radius:24px; background:#e5e5e5;}
+		.checkbox-app > *:before{border-radius:22px; background:#fff;}
+		.checkbox-app > *:after{width:22px; background:#fff;}
+		.checkbox-app input:checked + *{background:#419bf9;}
+		.checkbox-app input:checked + *:after{-webkit-transform:translate3d(16px,0,0); transform:translate3d(16px,0,0);}/*.checkbox-app>*(width-height)*/
+		.checkbox-app input:disabled + *{background:#f1f1f1;}
+		</style>
+		<br />checkbox：&lt;label class="checkbox">&lt;input type="checkbox" /&gt;&lt;span>&lt;/span>&lt;/label>
+		<div>实例：
+			<label class="checkbox"><input type="checkbox" name="fc" value="1" checked /><span></span></label>
+			<label class="checkbox"><input type="checkbox" name="fc" value="2" onClick="alert(this.value)" /><span></span></label>
+			<label class="checkbox"><input type="checkbox" name="fc" value="3" disabled /><span></span></label>
+			<label class="checkbox"><input type="checkbox" name="fc" value="4" checked disabled /><span></span></label>
+		</div>
+		<br />APP：&lt;label class="checkbox-app">&lt;input type="checkbox" /&gt;&lt;span>&lt;/span>&lt;/label>
+		<div>实例：
+			<label class="checkbox-app"><input type="checkbox" name="app" value="1" checked /><span></span></label>
+			<label class="checkbox-app"><input type="checkbox" name="app" value="2" /><span></span></label>
+			<label class="checkbox-app"><input type="checkbox" name="app" value="3" disabled /><span></span></label>
+			<label class="checkbox-app"><input type="checkbox" name="app" value="4" checked disabled /><span></span></label>
+		</div>
+	</div>
+
+	<h3>单选框：</h3>
+	<div class="content">举例：&lt;input type="radio" name="r" class="coo-need-v2" /&gt;若2与radio的值相等则自动选中
+		<div>实例：
+			<input type="radio" name="r" id="r1" value="1" /><label for="r1">1</label>
+			<input type="radio" name="r" id="r2" value="2" /><label for="r2">2</label>
+			<input type="radio" name="r" id="r3" class="coo-need" value="3" /><label for="r3">3</label>
+		</div>
+		<br />radio：&lt;label class="radio">&lt;input type="radio" />&lt;span>&lt;/span>&lt;/label>
+		<div>实例：
+			<label class="radio"><input type="radio" name="appr" value="1" id="radio1" /><span></span></label>
+			<label class="radio"><input type="radio" name="appr" value="2" id="radio2" /><span></span></label>
+			<label class="radio"><input type="radio" name="appr" value="3" id="radio3" checked disabled /><span></span></label>
+		</div>
+	</div>
+
+	<h3>最[少|多]选择n项 <span class="note">(一般用在checkbox、select[multiple])</span></h3>
+	<div class="content">
+		[[need|min]|max]标识后面的数字为最[少|多]选择的项数, 或使用need标识加[[need|min]|max]自定义属性, 如class="coo-need" need="3"
+		<br />举例：&lt;input type="checkbox" name="cm" class="coo-need2" /&gt; 最少选择2项
+		<br />　　　&lt;input type="checkbox" name="cm" class="coo-need" need="2" /&gt; 最少选择2项
+		<br />　　　&lt;input type="checkbox" name="cm" class="coo-min2" /&gt; 最少选择2项
+		<br />　　　&lt;input type="checkbox" name="cm" class="coo-need" min="2" /&gt; 最少选择2项
+		<br />　　　&lt;input type="checkbox" name="cm" class="coo-max3" /&gt; 最多选择3项
+		<br />　　　&lt;input type="checkbox" name="cm" class="coo-need" max="3" /&gt; 最多选择3项
+		<div>实例：
+			<input type="checkbox" name="cm" id="cm1" value="cm1" /><label for="cm1">cm1</label>
+			<input type="checkbox" name="cm" id="cm2" value="cm2" class="coo-min2-max3" /><label for="cm2">cm2</label>
+			<input type="checkbox" name="cm" id="cm3" value="cm3" /><label for="cm3">cm3</label>
+			<input type="checkbox" name="cm" id="cm4" value="cm4" /><label for="cm4">cm4</label>
+		</div>
+		<div>列表：
+			<select name="sx" class="coo-need2" multiple="multiple" style="vertical-align:top;width:150px;height:90px;">
+			<option value="multiple1">multiple列表1</option>
+			<option value="multiple2">multiple列表2</option>
+			<option value="multiple3">multiple列表3</option>
+			<option value="multiple4">multiple列表4</option>
+			</select>
+		</div>
+		<div>最少与最多同时：
+			<input type="checkbox" name="cma" id="cma1" value="cma1" /><label for="cma1">cma1</label>
+			<input type="checkbox" name="cma" id="cma2" value="cma2" class="coo-need" max="3" /><label for="cma2">cma2</label>
+			<input type="checkbox" name="cma" id="cma3" value="cma3" class="coo-need" min="2" /><label for="cma3">cma3</label>
+			<input type="checkbox" name="cma" id="cma4" value="cma4" /><label for="cma4">cma4</label>
+		</div>
+	</div>
+
+	<div class="content">
+		<input type="button" value=" 外部提交 " style="float:right;" class="ybtn" onClick="$('.checkform').submit()" />
+		<input type="submit" value=" 提交 " />
+		<input type="reset" value=" 重置 " />
+		<input type="button" class="bbtn" value=" 增加 " onClick="addField()" />
+		<input type="checkbox" id="k" class="coo-need" error="必须同意！" errorcss="agree" /><label for="k">同意</label>
+	</div>
+	</form>
+	<script>
+	$('.checkform').coo();
+	function doSubmit(){
+		alert('我是原生的onSubmit操作');
+		return false;
+	}
+	function addField(){
+		$('.checkform').append('<div class="content"><input type="checkbox" name="q" value="1" />1 <input type="checkbox" name="q" class="coo-need" value="2" />2</div>');
+	}
+	</script>
+	<br />
+
+
+	<a id="diyarea"></a>
+	<form action="#" id="prefix" method="post" target="_blank">
+	<h2>自定义验证标识前缀</h2>
+	<div class="content"><pre>
+	$(expr).coo({
+		prefix: 'myPrefix',
+		callback: function(){alert('测试通过');return false}
+	});</pre>
+	举例：&lt;input type="text" name="need" class="myPrefix-need" /&gt;
+	<div class="input">填写：<input type="text" name="need" class="myPrefix-need" /></div>
+	<div class="input">数字：<input type="text" name="num" class="myPrefix-num" /></div>
+	</div>
+	<div class="content"><input type="submit" value=" 提交 " /></div>
+	</form>
+	<script>
+	$('#prefix').coo({
+		prefix: 'myPrefix',
+		callback: function(){alert('测试通过');return false}
+	});
+	</script>
+	<br />
+
+
+	<a id="functionarea"></a>
+	<form action="#" id="from" method="post" onSubmit="doSubmit()" target="_blank">
+	<h2>参数使用函数类型</h2>
+	<div class="content"><pre>
+	$(expr).coo(function(form){
+		alert('回调函数');
+		return false;
+	});</pre>
+	<div class="input">填写：<input type="text" name="callback" class="coo-need" /></div>
+	</div>
+	<div class="content"><input type="submit" value="回调函数测试" /></div>
+	</form>
+	<script>
+	$('#from').submit(function(){
+		alert('我是jquery的submit操作');
+	}).coo(function(form){
+		alert('回调函数');
+		return false;
+	});
+	</script>
+	<br />
+
+
+	<a id="objarea"></a>
+	<form action="#" id="data" method="post" target="_blank">
+	<h2>完整参数与默认值</h2>
+	<div class="content"><pre>
+	let options = {
+		prefix: 'coo', //自定义验证标签前缀
+		debug: false, //调试模式(不提交表单)
+		lay: false, //提交后表单添加遮罩
+		delay: 0, //延迟提交
+		disBtn: true, //提交后禁用提交按钮
+		dialog: false, //所有提示信息使用overloadError
+		noLabel: false, //不显示label提示信息
+		css: null, //验证不通过添加的提示样式名称
+		pos: null, //所有提示信息默认位置
+		addElements: [], //扩展需验证的元件(使用非coo前缀类名, 数组长度与addRegs对应)
+		addRegs: [], //扩展需验证的元件对应的验证正则(数组长度与addElements对应)
+		autosave: { //自动保存表单控件的数据, 默认null
+			clear: false, //提交后立即清空
+			expires: 0, //自动保存过期时间, 单位天
+			interval: 0, //保存间隔, 单位秒
+			exceptEl: [], //指定不保存的控件, expr|element|jquery
+			aloneEl: [] //单独一个Cookie保存的控件与对应的Cookie名, 值：[['expr1','cookie1'], ['expr2','cookie2']], 一般长内容控件用
+		},
+		ajaxSubmit: function(data){
+			alert('使用AJAX提交表单后执行(设置后表单转为AJAX提交)');
+		},
+		meBefore: {
+			el: 'expr', //如果指定控件存在字面量格式字符串的自定义属性meBefore, 即字面量可省略el
+			fn: function(){
+				alert('指定某控件改变值前执行, this代表该控件');
+			}
+		},
+		meAfter: {
+			el: 'expr', //如果指定控件存在字面量格式字符串的自定义属性meAfter, 即字面量可省略el
+			tips: '二步验证错误了, 如果fn不返回boolean, 即tips可省略',
+			fn: function(error){
+				alert('指定某控件改变值且验证后执行, this代表该控件');
+			}
+		},
+		argBefore: function(){ //可独自使用函数格式字符串的自定义属性argBefore
+			alert('控件改变值前执行, this代表当前验证的控件');
+		},
+		argAfter: function(error){ //可独自使用函数格式字符串的自定义属性argAfter
+			alert('控件改变值且验证后执行, this代表当前验证的控件'');
+		},
+		reset: function(form){
+			//alert('重置后执行');
+		},
+		before: function(form){
+			alert('提交且验证前执行');
+			//return false; //可以不返回Boolean类型, 若返回false即终止提交
+		},
+		after: function(form, error){
+			alert('提交且验证后执行');
+			//回调没有意义, 由callback执行
+		},
+		callback: function(form){
+			alert('所有验证通过后执行的回调函数');
+			return false; //返回false即终止提交
+		}
+	}
+	$(expr).coo(options);</pre>
+	<div class="input">填写：<input type="text" name="data" class="coo-need" /></div>
+	</div>
+	<div class="content"><input type="submit" value="回调函数测试" /></div>
+	</form>
+	<script>
+	let obj = {
+		lay: true,
+		delay: 1000,
+		ajaxSubmit: function(data){
+			//alert(data);
+		},
+		before: function(form){
+			//alert('提交且验证前执行');
+		},
+		after: function(form){
+			//alert('提交且验证后执行');
+		},
+		callback: function(form){
+			//alert('callback回调函数');
+			//return false;
+		}
+	};
+	$('#data').coo(obj);
+	</script>
+	<br />
+
+
+	<a id="extendarea"></a>
+	<form action="#" id="data2" method="post" target="_blank">
+	<h2>扩展需验证的expr, 可不需使用coo前缀标识类名的格式 <span class="note">(coo前缀类名验证仍然有效)</span></h2>
+	<div class="content"><pre>
+	$(expr).coo({
+		addElements: ['.required', '[diy="img"]'], //扩展需验证的元件(使用非coo前缀类名, 数组长度与addRegs对应)
+		addRegs: ['.+', '\.(jpg|jpeg|png|gif|bmp)$'] //扩展需验证的元件对应的验证正则(数组长度与addElements对应)
+	});</pre>
+	<div class="input">正常：<input type="text" name="data2coo" class="coo-need" /></div>
+	<div class="input">填写：<input type="text" name="data2text" class="required" /></div>
+	<div>选择：
+	<input type="checkbox" name="data2checkbox" value="checkbox1" />checkbox1
+	<input type="checkbox" name="data2checkbox" value="checkbox2" class="required" />checkbox2
+	<input type="checkbox" name="data2checkbox" value="checkbox3" />checkbox3
+	</div>
+	<div>下拉：<select name="data2select" class="required"><option>--</option><option value="option">option</option></select></div>
+	<div>文件：<input type="file" diy="img" name="data2file" error="必须选择图片文件" /></div>
+	</div>
+	<div class="content"><input type="submit" value="测试扩展类名" /></div>
+	</form>
+	<script>
+	$('#data2').coo({
+		addElements: ['.required', '[diy="img"]'],
+		addRegs: ['.+', '\.(jpg|jpeg|png|gif|bmp)$']
+	});
+	</script>
+	<br />
+
+
+	<a id="autosavearea"></a>
+	<form id="autosave" action="#" method="post" target="_blank">
+	<h2>自动保存表单控件的数据</h2>
+	<h3>只要与原来的数据不同即自动保存到Cookie <span class="note">(密码、文件选择、按钮不保存)</span></h3>
+	<div class="content"><pre>
+	$(expr).autosave({
+		clear: false, //提交后立即清空
+		expires: 1, //自动保存过期时间, 单位天
+		interval: 60, //保存间隔, 单位秒
+		exceptEl: [], //指定不保存的控件, expr|element|jquery
+		aloneEl: [] //单独一个Cookie保存的控件与对应的Cookie名, 值：[['expr1','cookie1'], ['expr2','cookie2']], 一般长内容控件用
+	});</pre>
+	<input type="hidden" name="hidden" id="hidden" value="隐藏域" />
+	<div class="input">文本：<input type="text" name="text" /></div>
+	<div class="input">不保存：<input type="text" name="nosave" /></div>
+	<div>多选：<input type="checkbox" name="checkbox" value="1" />1　<input type="checkbox" name="checkbox" value="2" />2</div>
+	<div>单选：<input type="radio" name="radio" value="A" />A　<input type="radio" name="radio" value="B" />B</div>
+	<div>下拉：<select name="select"><option value="s1">s1</option><option value="s2">s2</option></select></div>
+	<div class="input">文本域：<textarea style="vertical-align:text-top;height:40px;"></textarea></div>
+	<div class="input">长内容：<textarea style="vertical-align:text-top;height:70px;"></textarea></div>
+	</div>
+	<div class="content">
+		<input type="submit" value=" 提交 " />
+		<input type="reset" value=" 重置 " />
+	</div>
+	</form>
+	<script>
+	$('#autosave').coo({
+		/*
+		autosave: {
+			clear: false, //提交后立即清空
+			expires: 1, //自动保存过期时间, 单位天
+			interval: 60, //保存间隔, 单位秒
+			exceptEl: ['[name="nosave"]'], //指定不保存的控件, expr|element|jquery
+			aloneEl: [['textarea:eq(1)', 'textarea2']] //单独一个Cookie保存的控件与对应的Cookie名, 值：[['expr1','cookie1'], ['expr2','cookie2']], 一般长内容控件用
+		}
+		*/
+	});
+	</script>
+	<br />
+
+
+	<a id="directarea"></a>
+	<form action="#" id="infrom" method="post" onSubmit="return incheck()" target="_blank">
+	<h2>控件直接验证, 不经过表单</h2>
+	<h3>$(expr).coo(tag), tag不填即默认为need</h3>
+	<div class="content"><pre>
+	function incheck(){
+		if(!$('#inneed').coo()){
+			alert($('#inneed').data('coo.error'));
+			return false;
+		}
+		if(!$('#infloat').coo('!float')){
+			alert('该项目可不填, 但必须为数字(可带小数)');
+			return false;
+		}
+		if(!$('#innum').coo('num')){
+			alert($('#innum').attr('error'));
+			return false;
+		}
+	}</pre>
+	<div class="input">必填：<input type="text" name="inneed" id="inneed" /></div>
+	<div class="input">!小数：<input type="text" name="infloat" id="infloat" /></div>
+	<div class="input">数字：<input type="text" name="innum" id="innum" error="自定义提示：请输入数字" /></div>
+	</div>
+	<div class="content"><input type="submit" value=" 验证且提交 " /></div>
+	</form>
+	<script>
+	function incheck(){
+		if(!$('#inneed').coo()){
+			alert($('#inneed').data('coo.error'));
+			return false;
+		}
+		if(!$('#infloat').coo('!float')){
+			alert('该项目可不填, 但必须为数字(可带小数)');
+			return false;
+		}
+		if(!$('#innum').coo('num')){
+			alert($('#innum').attr('error'));
+			return false;
+		}
+	}
+	</script>
+	<br />
+
+
+	<a id="noformarea"></a>
+	<h2>非表单验证, 必须使用回调函数或者对象字面量才有效, 否则会被认为控件直接验证</h2>
+	<h3>验证指定元素内的表单控件, 回调函数是为了验证通过后执行例如AJAX的操作, 对象字面量设定相关参数</h3>
+	<div class="content"><pre>
+	$(function(){
+		$(expr).on('click', function(){
+			$(expr2).coo(function(form){
+				alert('执行回调函数');
+			});
+		});
+	});</pre>
+	<div id="div" class="input">填写：<input type="text" name="cb" class="coo-need" /></div>
+	</div>
+	<div class="content"><input id="divbtn" type="button" class="bbtn" value="回调函数测试" /> (这里没有使用form)</div>
+	<script>
+	$('#divbtn').on('click', function(){
+		$('#div').coo(function(form){
+			alert('执行回调函数');
+		});
+	});
+	</script>
+	<br />
+
+
+	<a id="colorarea"></a>
+	<h2>直接调用颜色控件</h2>
+	<h3>参数默认值</h3>
+	<div class="content"><pre>
+	$(expr).colorpicker({
+		size: 15, //色块大小, 单位像素
+		type: '', //small:36色, big:228色, panel:调色板, 默认:small
+		target: '', //选择颜色后填写颜色的目标元素(不指定即为当前点击对象,null为不填写)
+		always: false, //平板模式,直接显示在调用者的html内,一般与target参数同时使用
+		readonly: true, //可否填写
+		transparent: false, //是否显示透明色
+		position: true, //使用postion还是offset获取xy
+		sep: 4, //y相隔, 负数在上面显示
+		over: null, //鼠标移到颜色上执行(接受两个参数:颜色代码,目标对象[jQuery对象])
+		out: null, //鼠标移出颜色后执行(一个参数:目标对象[jQuery对象])
+		callback: null, //选择后执行(接受两个参数:颜色代码,目标对象[jQuery对象])
+	});</pre>
+	举例：&lt;input type="text" id="col" /&gt;<br />
+	<pre id="colorfn">
+	$('#cols, .colr').colorpicker({target:'#cols',callback:function(c){$('#cols, .colr').css('background', c)}});
+	$('#colb').colorpicker({
+		type: 'big',
+		transparent: true,
+		over: function(color, target){target.css('background-color', color)},
+		out: function(target){target.css('background-color', '')},
+		callback: function(color, target){target.css('background-color', color)}
+	});
+	$('#colp').colorpicker({
+		type: 'panel',
+		callback: function(color, target){target.css('background-color', color)}
+	});
+	$('#colf').colorpicker({
+		type: 'panel',
+		target: '#coli',
+		always: true,
+		callback: function(color, target){$('.colrf').css('background-color', color)}
+	});</pre>
+	<div class="input">少颜色：<input type="text" id="cols" /> <span class="colr"></span></div>
+	<div class="input">多颜色：<input type="text" id="colb" /></div>
+	<div class="input">调色板：<input type="text" id="colp" /></div>
+	<div class="input">平面：<input type="text" id="coli" /> <span class="colrf"></span><div id="colf" style="margin-top:15px;"></div></div>
+	</div>
+	<script>eval($('#colorfn').html())</script>
+	<br />
+
+
+	<a id="datearea"></a>
+	<h2>直接调用日期控件</h2>
+	<h3>参数默认值</h3>
+	<div class="content"><pre>
+	$(expr).datepicker({
+		parent: 'body', //生成的选择器html代码插入到指定容器里的最后,平板模式无效
+		target: '', //选择日期后填写日期的目标元素(不指定即为当前点击对象)
+		cls: 'datepicker', //使用指定class
+		just: '', //只显示选择年份或月份(参数只支持两种:year、month)
+		next: '', //选择日期后直接跳到下个日期控件,格式为expr
+		always: false, //平板模式,直接显示在调用者的html内,一般与target参数同时使用
+		fullscreen: false, //全屏展示
+		hiddenNavBar: false, //隐藏导航栏
+		breakClick: false, //不执行插件默认的点击选择日期操作
+		readonly: true, //可否填写
+		range: false, //范围选择
+		multiple: false, //日期多选,设置后next无效
+		showCal: true, //false即直接显示时分秒,showTime自动变为true
+		showTime: false, //显示时分秒,返回的日期格式(format)需自己设定
+		showHour: true, //显示时,需设置showTime
+		showMinute: true, //显示分,需设置showTime,showHour
+		changeYear: true, //可否更改年份
+		changeMonth: true, //可否更改月份
+		touchMove: true, //拖曳切换年月
+		enText: false, //将所有文字改为英文
+		yearText: '年', //一般以英文显示才需修改
+		monthText: '月', //同上
+		weekText: [], //同上,以星期天起始,留空即使用默认
+		minYear: 1949, //最小年份(数值型)(字符型:this为今年|[+-]数字(以今天作为界限))
+		maxYear: new Date().getFullYear()+15, //最大年份(数值型)(字符型:this为今年|[+-]数字(以今天作为界限))
+		disMonths: '', //禁用月份(逗号隔开)
+		disDays: '', //禁用每月的某些日(逗号隔开)
+		disWeeks: '', //禁用每月的某些星期(逗号隔开)(格式:0,1,2,3,4,5,6,星期日为0)
+		disDates: '', //禁用某些日(逗号隔开)(today:使用今天作为日期)(格式:年-月-日)
+		minDate: '', //只能选择该日以后的日期(格式:年-月-日)(today:使用今天作为日期)([+-]数字[y|m|d](以今天作为界限))
+		maxDate: '', //只能选择该日以前的日期(格式:年-月-日)(today:使用今天作为日期)([+-]数字[y|m|d](以今天作为界限))
+		format: 'yyyy-m-d', //以逗号分隔的日期数组内每个日期的格式,range需设置为:(#yyyy-m-d)~(#yyyy-m-d),会自动正则替换(#yyyy-m-d)
+		mark: {}, //设定日子说明,{'0-8-18':'生日','2017-8-31':''} //年为0即每年,如果为空字符,则只增加标识
+		date: null, //每个日期生成后执行
+		prevMonth: null, //外部切换到上个月的控件
+		nextMonth: null, //外部切换到下个月的控件
+		prevMonthCallback: null, //点击上个月箭头后执行
+		nextMonthCallback: null, //点击下个月箭头后执行
+		change: null, //改变年月后执行
+		complete: null //生成日期控件后执行
+		自定义函数名: function(dates){...} //可多个自定义函数(只要是函数都会执行),dates参数为[多个日期元素的数组|range两个日期元素的数组]
+	});</pre>
+	举例：&lt;input type="text" id="dts" /&gt;<br />
+	&lt;input type="text" id="dtm" @='#dtl' /&gt;&lt;input type="button" id="dtmb" class="ybtn" value="选择" target="#dtm" /&gt;<br />
+	&lt;input type="text" id="dtl" /&gt;<br />
+	&lt;input type="text" id="dthns" value="2013-05-30 13:46:19" /&gt;<br />
+	&lt;input type="text" id="dtyear" value="" /&gt;<br />
+	&lt;input type="text" id="dtmonth" value="" func="function(date, _this){alert(date)}" /&gt;<br />
+	<pre id="datefn">
+	$('#dts').datepicker({cls:'jq-datepicker', next:'#dtm', readonly:false, minDate:'-7d', maxDate:'+4d'});
+	$('#dtmb').datepicker({cls:'jq-datepicker', myfn:function(dates){alert($.debug(dates))}});
+	$('#dthns').datepicker({cls:'datepicker2', enText:true, showTime:true, format:'yyyy-mm-dd hh:nn:ss'});
+	$('#dtyear').datepicker({just:'year', format:'yyyy年度'});
+	$('#dtmonth').datepicker({just:'month', format:'yyyy年m月'});
+	$('#dttime').datepicker({showCal:false, showTime:true, format:'hh:nn'});
+	$('#dtfull').datepicker({cls:'fulldatepicker', fullscreen:true, showTime:true, format:'yyyy-mm-dd hh:nn'});
+	$('#dtmultiple').datepicker({multiple:true, format:'yyyy年mm月dd日'});
+	$('#dtrange').datepicker({range:true, format:'从(#yyyy-m-d)到(#yyyy-m-d)'});
+	$('.dtstart').datepicker({always:true, target:'#dtstart', next:'.dtend', mark:{'0-8-18':'生日','2020-03-16':'开发','2017-8-31':'今天'}});</pre>
+	<div class="input">开始日期：<input type="text" id="dts" /></div>
+	<div class="input">过渡日期：<input type="text" id="dtm" @='#dtl' /> <input type="button" id="dtmb" class="ybtn" value=" 选择 " target="#dtm" /></div>
+	<div class="input">结束日期：<input type="text" id="dtl" /></div>
+	<div class="input">显示时分秒：<input type="text" id="dthns" value="2020-03-18 23:01:19" /></div>
+	<div class="input">只选择年份：<input type="text" id="dtyear" value="" /></div>
+	<div class="input">只选择月份：<input type="text" id="dtmonth" value="" fn="function(dates){alert($.debug(dates))}" /></div>
+	<div class="input">只选择时分：<input type="text" id="dttime" value="" /></div>
+	<div class="input">全屏显示：<input type="text" id="dtfull" value="" /></div>
+	<div class="input">日期多选：<input type="text" id="dtmultiple" value="" /></div>
+	<div class="input">范围选择：<input type="text" id="dtrange" value="" /></div>
+	<style>#dtstart, #dtend{width:125px;}.dtstart, .dtend{float:left; margin-top:15px; margin-right:28px;}</style>
+	<div class="input">
+		开始：<input type="text" id="dtstart" value="" />　　结束：<input type="text" id="dtend" value="" />
+		<div>
+			<div class="dtstart"></div>
+			<div class="dtend" target="#dtend"></div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	</div>
+	<script>eval($('#datefn').html())</script>
+	<br />
+
+
+	<a id="getfieldsarea"></a>
+	<form id="param" action="#" method="post" onSubmit="return param(this)" target="_blank">
+	<h2>获取所有控件值</h2>
+	<h3>返回组成的查询字符串, 如key1=value1&amp;key2=value2, 一般用在AJAX<br />
+	若控件存在number自定义属性即值转为数值型<br />
+	可用带有自定义属性[object|array]=key值的标签包裹特定的控件,达到形成内嵌式的复杂型json数据,不支持options.type=string</h3>
+	<div class="content"><pre>
+	$(expr).param({
+		type: 'object', //返回类型，object(json)|string
+		attr: '', //没有name属性时使用自定义属性代替
+		range: '', //只获取指定范围内的控件的值,其他控件不获取
+		ignore: '', //忽略的控件，expr|element|jquery
+		filter: true, //过滤空值控件
+		each: null //每个控件取值时执行,返回值将作为控件的值,this:控件
+	});</pre>
+	<input type="hidden" name="hidden" value="隐藏域" />
+	<div class="input">文本：<input type="text" name="text" /></div>
+	<div class="input">密码：<input type="password" id="password" /></div>
+	<div class="input" array="array">数值：<input type="text" id="number" number="number" /></div>
+	<div>多选：<input type="checkbox" name="checkbox[]" value="1" />1　<input type="checkbox" name="checkbox[]" value="2" />2</div>
+	<div>单选：<input type="radio" name="radio" value="A" />A　<input type="radio" name="radio" value="B" />B</div>
+	<div>下拉：<select name="select"><option value="s1">s1</option><option value="s2">s2</option></select></div>
+	<div class="input" object="object">文本域：<textarea name="textarea" style="vertical-align:text-top;height:40px;"></textarea></div>
+	<div>文件选择：<input type="file" name="file" /></div>
+	</div>
+	<div class="content"><input type="submit" name="submit" value=" SUBMIT按钮 " />&nbsp; <input type="button" class="ybtn" value=" 指定范围的值 " /></div>
+	</form>
+	<script>
+	function param(form){
+		let data = $(form).param({
+			//type: 'string',
+			attr: 'id',
+			ignore: ':submit, [name="select"]'
+		});
+		alertUI({
+			title: '获取所有控件值',
+			html: '<pre>'+$.debug(data)+'</pre>',
+			btns: [{
+				text: ' 确定 ',
+				click: function(win){alertUI(win)}
+			}]
+		});
+		$.log(data);
+		return false;
+	}
+	$('#param :button').on('click', function(){
+		let data = $('#param').param({attr:'id', range:'[array]'});
+		alertUI({
+			title: '获取指定范围的控件值',
+			html: '<pre>'+$.debug(data)+'</pre>',
+			btns: [{
+				text: ' 确定 ',
+				click: function(win){alertUI(win)}
+			}]
+		});
+	});
+	</script>
+	<br />
+
+
+	<style>
+	.dropbox{width:230px; height:auto; overflow:hidden; border:5px dashed #ccc; color:#999; margin-top:10px; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px;}
+	.dropbox .drop{height:50px; line-height:50px; overflow:hidden; text-align:center; border-bottom:1px solid #ddd; cursor:default;}
+	.dropbox .files{position:relative; height:50px; line-height:50px; overflow:hidden; text-align:center; border-top:1px solid #eee; background:-webkit-linear-gradient(top, #f5f5f5 0%, #fff 100%); background:linear-gradient(top, #f5f5f5 0%, #fff 100%);}
+	.dropbox .files:before{display:block; content:"OR CLICK HERE"; width:100%; height:100%; text-align:center; font-size:12px; color:#999; font-style:italic;}
+	.dropbox .files input{position:absolute; z-index:1; left:0; top:0; opacity:0; width:100%; height:100%;}
+	.tips{position:absolute; z-index:9999; top:-9999px; left:-9999px; border:#767676 1px solid; color:#555; padding:0 5px; text-align:center; font-size:12px; overflow:hidden; width:auto; line-height:20px; border-radius:3px; background:-webkit-linear-gradient(top, #fff 0%, #e5e5e5 100%); background:linear-gradient(top, #fff 0%, #e5e5e5 100%);}
+	</style>
+	<a id="html5area"></a>
+	<h2>HTML5 拖拽上传 <span class="note">(可多选)</span></h2>
+	<h3>支持HTML5的浏览器才有效, 否则file类型上传控件将自动使用 ajaxupload 脚本, 其他拖拽类型即无效</h3>
+	<div class="content"><pre>
+	$(expr).html5upload({
+		url: '/upload', //文件数据处理URL
+		name: 'filename', //上传字段名,如果字符串末尾加上叹号,即强制使用该字符串
+		change: true, //选择文件后立即上传(不支持非file控件)
+		rightnow: false, //不需要经过change之类的操作,立刻上传(控件已选择了文件)(不支持非file控件)
+		data: null, //附加参数
+		splitSize: 0, //把文件切片上传,例如切为5M:5*1024*1000,0为不切片(后端需自行处理切片组合,自动增加附加参数split_name:options.name+'_'+index,split_total:总数)
+		fileType: ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'], //允许上传文件类型,后缀名,数组或字符串(逗号隔开)
+		dataType: 'json', //请求类型
+		dragover: null, //拖动到对象上时执行
+		dragleave: null, //拖动到对象外面时执行
+		select: null, //选择文件后执行
+		before: null, //上传之前执行,返回false即取消上传
+		progress: null, //数据正在被post的过程中周期性执行,接受三个参数 e, e.loaded, e.total
+		success: null, //post操作成功时执行
+		error: null //失败时执行,例如选择了不允许的文件类型
+	});</pre>
+	<div class="dropbox" title="jQuery HTML5 Uploader" tips-follow="right">
+		<div class="drop">drag and drop file(s) to here</div>
+		<div class="files"><input type="file" id="multiple" multiple /></div>
+	</div>
+	HTML5图片压缩：<input type="file" id="compress" />
+	<div class="compressDiv"></div>
+	</div>
+	<script>
+	$('.dropbox, #multiple').html5upload({
+		name: 'filename',
+		url: 'test.php'
+	});
+	$('.dropbox').tips({
+		css: {background:'#333'},
+		fixx: 5
+	});
+	$('#compress').on('change', function(e){
+		$.imageCompress(this, 300, function(data){
+			$('.compressDiv').html('<img src="'+data+'" />');
+		});
+	});
+	</script>
+	<br />
+
+
+	<style>
+	.overlay, .overlay-target, .overlay-target2{display:inline-block; width:270px; height:129px; background:#fff url(http://www.baidu.com/img/bd_logo1.png) no-repeat center center; background-size:100% 100%;}
+	.overlay-target, .overlay-target2{display:none; width:540px; height:258px; border-radius:10px; box-shadow:0 0 20px rgba(0,0,0,0.3);}
+	.overlay-target a{margin:10px 0 0 10px; font-size:14px;}
+	.overlay-target2{width:100%; background-size:auto 100%; border-radius:0; box-shadow:none;}
+	</style>
+	<a id="overlayarea"></a>
+	<h2>遮罩层与展示层</h2>
+	<div class="content"><pre>
+	$.overlay(target, type);
+	target: false(关闭), expr|对象|html代码(内容)
+	type: 浮动控件位置类型(0:居中|1:底部|2:全屏居中(不随滚动)|3:居中(不自动opacity)|funciton:自定义)</pre>
+	<div class="overlay" id="overlay"></div>
+	<div class="overlay" id="overlay2"></div>
+	<div class="overlay-target"><a href="javascript:void(0)">关闭</a></div>
+	<div class="overlay-target2"></div>
+	</div>
+	<script>
+	$('#overlay').on('click', function(){ $.overlay('.overlay-target') });
+	$('#overlay2').on('click', function(){ $.overlay('.overlay-target2', 1) });
+	$('.overlay-target a').on('click', function(){ $.overlay(false) });
+	</script>
+	<br />
+
+
+	<style>
+	.photoBrowser{height:auto; overflow:hidden;}
+	.photoBrowser a{display:block; float:left; margin-right:10px; margin-bottom:10px; width:100px; height:100px; overflow:hidden; cursor:pointer;}
+	.photoBrowser img{width:100%; height:100%; object-fit:cover;}
+	</style>
+	<a id="photoBrowserarea"></a>
+	<h2>相册(仿APP,支持移动端)</h2>
+	<link type="text/css" href="photoswipe/photoswipe.css" rel="stylesheet" />
+	<link type="text/css" href="photoswipe/default-skin/default-skin.css" rel="stylesheet" />
+	<script type="text/javascript" src="photoswipe/photoswipe.min.js"></script>
+	<script type="text/javascript" src="photoswipe/photoswipe-ui-default.min.js"></script>
+	<div class="content"><pre>
+	$(expr).photoBrowser({
+		minimal: true, //精简版相册
+		spacing: 0, //图片之间的距离(百分比,0~1)
+		loop: false //循环拖曳滚动
+	});</pre>
+	<div class="photoBrowser">
+		<a url="http://image.laokema.com/pacific_rim01.jpg" title="环太平洋01"><img src="http://image.laokema.com/pacific_rim01.jpg" /></a>
+		<a url="http://image.laokema.com/pacific_rim02.jpg"><img src="http://image.laokema.com/pacific_rim02.jpg" /></a>
+		<a url="http://image.laokema.com/pacific_rim03.jpg"><img src="http://image.laokema.com/pacific_rim03.jpg" /></a>
+		<a url="http://image.laokema.com/pacific_rim04.jpg" title="环太平洋04"><img src="http://image.laokema.com/pacific_rim04.jpg" /></a>
+		<a url="http://image.laokema.com/pacific_rim05.jpg" title="环太平洋05"><img src="http://image.laokema.com/pacific_rim05.jpg" /></a>
+		<a url="http://image.laokema.com/pacific_rim06.jpg" title="环太平洋06"><img src="http://image.laokema.com/pacific_rim06.jpg" /></a>
+		<div class="clear"></div>
+	</div>
+	</div>
+	<script>
+	$('.photoBrowser a').photoBrowser();
+	</script>
+	<br />
+
+
+	<a id="alertuiarea"></a>
+	<h2>提示窗</h2>
+	<div class="content"><pre>
+	alertUI({
+		win: 'self', //显示窗口['self'|'parent'|'top']
+		cls: '', //自定义窗口样式
+		title: '', //标题
+		width: 0, //总宽度
+		height: 'auto', //总高度
+		drag: false, //允许拖动, 需引入jdrag插件
+		fixd: false, //随页面滚动(设置后不可拖动)
+		auto: 0, //自动关闭, 单位毫秒
+		nox: false, //不显示右上角的关闭按钮
+		nobg: false, //不显示遮罩层
+		html: '要执行该操作请先&lt;a href="/login/">登录&lt;/a>', //显示内容, string|url|对象, 默认为空
+		btns: [{ //按钮组, 不设置即不显示按钮
+			text: ' 确定 ',
+			click: function(){alert('按了确定');alertUI()}
+		},{
+			text: ' 取消 ',
+			click: function(){alertUI()}
+		}],
+		clickbg: null, //点击背景执行
+		before: null, //显示提示窗前执行
+		after: null, //显示提示窗后执行
+		close: null //关闭提示窗后执行
+	});
+	直接调用alertUI()关闭提示窗 ([undefined|'self'|'parent'|'top'])</pre>
+	<input type="button" value=" Default " onclick="alerts(0)" class="bbtn" />
+	<input type="button" value=" Maxthon " onclick="alerts(1)" class="bbtn" />
+	<input type="button" value=" Maxthon4 " onclick="alerts(2)" class="bbtn" />
+	<input type="button" value=" iOS7-Alert " onclick="alerts(3)" class="bbtn" /><br /><br />
+	$(expr).alertURL(options); //可使用 alertUI 的 options 参数<br />
+	<a class="alertURL" href="http://localhost/?width=500&height=300" target="_blank">提示窗链接</a> (使用提示窗显示AJAX获取到的html)
+	</div>
+	<script>
+	function alerts(f){
+		let cls = '', clickbg = null;
+		if(f===1){
+			cls = 'maxthon';
+			clickbg = function(){
+				let maxthon = $('.maxthon').css('border-color','#bababa');
+				setTimeout(function(){
+					maxthon.css('border-color','');
+					setTimeout(function(){
+						maxthon.css('border-color','#bababa');
+						setTimeout(function(){
+							maxthon.css('border-color','');
+						}, 150);
+					}, 150);
+				}, 150);
+			};
+		}else if(f===2){
+			cls = 'maxthon4';
+		}else if(f===3){
+			cls = 'ios7-alert';
+		}
+		alertUI({
+			title: '登录',
+			cls: cls,
+			clickbg: clickbg,
+			drag: true,
+			html: '<p>要执行该操作请先<a href="/login">登录</a></p>',
+			btns: [{
+				text: ' 确定 ',
+				click: function(){alertUI();alerts(f)}
+			},{
+				text: ' 取消 ',
+				click: function(){alertUI()}
+			}]
+		});
+	}
+	$('.alertURL').alertURL();
+	</script>
+	<br />
+
+
+	<style>
+	.slide{margin-top:10px; border:1px solid #ccc; height:100px; overflow:hidden; -moz-border-radius:4px; -webkit-border-radius:4px; border-radius:4px;}
+	.slide li{line-height:20px; padding:10px; background-color:#eee;}
+	.slide li.even{background-color:#ddd;}
+	.slide li i{font-family:"Century Gothic"; font-size:28px; font-weight:bold; margin-right:10px;}
+	.slide .title{height:30px; line-height:30px; color:#fff; padding:0 10px; font-size:12px; background:#000; -moz-border-radius-bottomleft:4px; -moz-border-radius-bottomright:4px; -webkit-border-bottom-left-radius:4px; -webkit-border-bottom-right-radius:4px; border-bottom-left-radius:4px; border-bottom-right-radius:4px;}
+	.slide .progress{height:3px; background:#e60000; bottom:0; filter:alpha(opacity=50); opacity:0.5;}
+	.slidecontroller{clear:both; margin-top:10px; height:13px;}
+	.slidecontroller .pager{float:left; display:inline; height:8px;}
+	.slidecontroller .prev, .slidecontroller .next, .slidecontroller .pager a, .slidecontroller .pager a:hover{text-align:center; font-size:0; display:inline; margin:0 2px; float:left; width:28px; height:6px; overflow:hidden; text-decoration:none; border:1px solid rgba(254,188,30,0.3); -webkit-transition:all 0.2s linear; transition:all 0.2s linear;}
+	.slidecontroller .pager a:hover, .slidecontroller .pager a.cur{border:1px solid #FEBC1E;}
+	.slidecontroller .pager a.this{background:#FEBC1E;}
+	.slidecontroller .pager a span{position:absolute; z-index:1; display:block; top:0; left:0; width:0; height:6px; overflow:hidden; background:#FCCE62;}
+	.slidecontroller .prev, .slidecontroller .next{background-color:#4BA0F3; border:1px solid #4BA0F3;}
+	.slidecontroller .prev{-moz-border-radius-topleft:4px; -moz-border-radius-bottomleft:4px; -webkit-border-top-left-radius:4px; -webkit-border-bottom-left-radius:4px; border-top-left-radius:4px; border-bottom-left-radius:4px;}
+	.slidecontroller .next{-moz-border-radius-topright:4px; -moz-border-radius-bottomright:4px; -webkit-border-top-right-radius:4px; -webkit-border-bottom-right-radius:4px; border-top-right-radius:4px; border-bottom-right-radius:4px;}
+	.slidecontroller .prev:hover, .slidecontroller .next:hover{background-color:#36F; border:1px solid #36F;}
+	.moveimg{opacity:0; -webkit-transform:translateX(100px); transform:translateX(100px);}
+	.moveimg2{opacity:1; -webkit-transform:translateX(0); -webkit-transition:all 1s ease; transform:translateX(0); transition:all 1s ease;}
+@media only screen and (min-width:601px) {
+	.slidearea{width:800px; margin:0;}
+	.slide{width:800px;}
+	.slidecontroller{width:800px;}
+}
+	</style>
+	<a id="touchmovearea"></a>
+	<h2>分页滚动 <span class="note">(支持触屏移动设备)</span></h2>
+	<div class="content"><pre>
+	$(expr).touchmove({
+		list: null, //滚动列表, 为null时自动获取li标签
+		type: 0, //切换效果, 0:滚动切换, 1:渐显切换
+		index: 0, //默认显示
+		dir: 0, //拖拽(滚动)方向, 水平[0|x|left], 垂直[1|y|top]
+		visible: 1, //显示个数, [visible&lt;scroll ? scroll : visible]
+		scroll: 1, //滚动个数
+		mouseWheel: false, //使用鼠标滚轮
+		autoWH: true, //自动设置宽高, 为了一页只显示一个列表元素
+		autoW: true, //自动设置宽, autoWH为true时无效
+		autoH: true, //自动设置高, autoWH为true时无效
+		title: '', //显示list的title为标题的标题类名, 留空即不显示
+		opacity: 0.7, //标题容器透明度
+		titleAnimate: 'move', //标题容器显示动画, [move|opacity]
+		hide: true, //标题是否隐藏(产生动画显示,否则一直显示)
+		keydown: false, //箭头键控制滚动分页列表, [上:第一页|下:最后一页|左:上一页|右:下一页]
+		prev: '', //滚动到上一个分页列表的expr按钮
+		next: '', //滚动到下一个分页列表的expr按钮
+		disprev: '', //已经没有上一分页即增加这个样式, unlimit:false 时有效
+		disnext: '', //已经没有下一分页即增加这个样式, unlimit:false 时有效
+		pager: '', //存放分页按钮的容器的expr, 留空即不显示
+		curpager: 'this', //当前分页按钮类名
+		pagerText: [], //按钮文字,为空即使用数字,若使用,元素数量必须与list数量相同
+		autoPagerWH: true, //按钮容器自动宽高
+		autoPager: true, //只有一个列表时自动隐藏按钮容器
+		offset: '', //按钮容器位置, [left|center|right]
+		offsetW: 10, //按钮容器距离左右边
+		offsetH: 10, //按钮容器距离上下边
+		section: true, //分页滚动
+		act: 'click', //分页按钮的操作方式
+		easing: 'easeout', //切换效果, 可使用 $.easing 扩展
+		speed: 500, //切换速度
+		auto: 0, //自动切换速度(0:不自动切换), auto==speed无限滚动
+		autoWait: 0, //自动滚动前停留
+		progress: '', //自动切换时在容器下面显示时间动画的样式, 为空即不显示
+		progressPager: false, //自动切换时分页按钮显示时间动画
+		unlimit: false, //无限滚动
+		hoverStop: true, //自动切换时鼠标移到停止滚动
+		drag: false, //可否拖拽
+		bounces: true, //回弹效果
+		stopBounces: false, //终止屏幕拖动, 使用后页面不能上下拖动
+		pagerAction: null, //分页按钮操作时执行
+		beforeForLast: null, //滚动前执行, this:前一次的li对象
+		before: null, //滚动前执行
+		move: null, //滚动时执行
+		afterLeft: null, //向左滚动后执行
+		afterRight: null, //向右滚动后执行
+		after: null, //滚动停止后执行
+		complete: null //脚本执行完成后执行
+	});</pre>
+	<div class="slidearea">
+		<div class="slide">
+			<ul>
+				<li title="标题1">
+					<p>　　<i>1</i>利比亚首都的黎波里的多处目标21日晚遭到西方国家战机的空中打击。这是自19日西方国家对利比亚发动军事打击以来，战机连续第三次空袭的黎波里目标。</p>
+					<p>　　目击者告诉新华社记者，的黎波里市东部靠近海边的一处海军基地首先遭到袭击，此处军营位于广播电视大楼附近。随后，离海军军营大约两公里处的沙阿卜港附近的一条输油管道在空袭中发生爆炸，目击者看到爆炸后引起的大火。</p>
+				</li>
+				<li title="标题2" class="even">
+					<p>　　<i>2</i>利比亚首都的黎波里的多处目标21日晚遭到西方国家战机的空中打击。这是自19日西方国家对利比亚发动军事打击以来，战机连续第三次空袭的黎波里目标。<a href="http://www.baidu.com" target="_blank">百度</a></p>
+					<p>　　目击者告诉新华社记者，的黎波里市东部靠近海边的一处海军基地首先遭到袭击，此处军营位于广播电视大楼附近。随后，离海军军营大约两公里处的沙阿卜港附近的一条输油管道在空袭中发生爆炸，目击者看到爆炸后引起的大火。</p>
+				</li>
+				<li title="标题3">
+					<p>　　<img src="https://image.laokema.com/Play-Boy.jpg" width="25" height="25" align="absmiddle" class="moveimg" /> 利比亚首都的黎波里的多处目标21日晚遭到西方国家战机的空中打击。这是自19日西方国家对利比亚发动军事打击以来，战机连续第三次空袭的黎波里目标。</p>
+					<p>　　目击者告诉新华社记者，的黎波里市东部靠近海边的一处海军基地首先遭到袭击，此处军营位于广播电视大楼附近。随后，离海军军营大约两公里处的沙阿卜港附近的一条输油管道在空袭中发生爆炸，目击者看到爆炸后引起的大火。</p>
+				</li>
+				<li title="标题4" class="even">
+					<p>　　<i>4</i>利比亚首都的黎波里的多处目标21日晚遭到西方国家战机的空中打击。这是自19日西方国家对利比亚发动军事打击以来，战机连续第三次空袭的黎波里目标。</p>
+					<p>　　目击者告诉新华社记者，的黎波里市东部靠近海边的一处海军基地首先遭到袭击，此处军营位于广播电视大楼附近。随后，离海军军营大约两公里处的沙阿卜港附近的一条输油管道在空袭中发生爆炸，目击者看到爆炸后引起的大火。</p>
+				</li>
+				<li title="标题5">
+					<p>　　<i>5</i>利比亚首都的黎波里的多处目标21日晚遭到西方国家战机的空中打击。这是自19日西方国家对利比亚发动军事打击以来，战机连续第三次空袭的黎波里目标。</p>
+					<p>　　目击者告诉新华社记者，的黎波里市东部靠近海边的一处海军基地首先遭到袭击，此处军营位于广播电视大楼附近。随后，离海军军营大约两公里处的沙阿卜港附近的一条输油管道在空袭中发生爆炸，目击者看到爆炸后引起的大火。</p>
+				</li>
+			</ul>
+		</div>
+		<div class="slidecontroller"><a href="javascript:void(0)" class="prev">&lt;</a><div class="pager"></div><a href="javascript:void(0)" class="next">&gt;</a></div>
+	</div>
+	</div>
+	<script>
+	$('.slide').touchmove({
+		drag: true,
+		keydown: true,
+		prev: '.slidecontroller .prev',
+		next: '.slidecontroller .next',
+		pager: '.slidecontroller .pager',
+		beforeForLast: function(index){
+			switch(index){
+				case 2:
+					this.find('img').removeClass('moveimg2');
+					break;
+			}
+		},
+		afterLeft: function(index){
+			switch(index){
+				case 2:
+					this.find('img').addClass('moveimg2');
+					break;
+			}
+		},
+		afterRight: function(index){
+			switch(index){
+				case 2:
+					this.find('img').addClass('moveimg2');
+					break;
+			}
+		}
+	});
+	</script>
+	<br />
+
+
+	<style>
+	.pCon{height:568px; overflow:hidden; border:1px solid #e5e5e5; border-radius:5px; box-sizing:border-box;}
+@media only screen and (min-width:601px) {
+	.pCon{width:320px;}
+}
+	.pHeader, .pFooter{height:44px; line-height:44px; text-align:center; font-size:16px; color:#fff; text-shadow:0 -1px 0 #333;}
+	.pHeader{background:-moz-linear-gradient(top, #e9539d 0%, #7c0a2f 100%);
+	background:-webkit-linear-gradient(top, #e9539d 0%, #7c0a2f 100%);
+	background:-o-linear-gradient(top, #e9539d 0%, #7c0a2f 100%);
+	background:-ms-linear-gradient(top, #e9539d 0%, #7c0a2f 100%);}
+	.pFooter{background:-moz-linear-gradient(top, #aaa 0%, #444 100%);
+	background:-webkit-linear-gradient(top, #aaa 0%, #444 100%);
+	background:-o-linear-gradient(top, #aaa 0%, #444 100%);
+	background:-ms-linear-gradient(top, #aaa 0%, #444 100%);}
+	.pArea{height:calc(100% - 44px*2); height:-webkit-calc(100% - 44px*2); overflow:hidden;}
+	.pArea li{position:relative; height:44px; line-height:44px; padding:0 10px;}
+	.pArea li:after{content:""; display:block; position:absolute; left:0; bottom:0; width:100%; height:1px; background:#e5e5e5; transform-origin:50% 100%; -webkit-transform-origin:50% 100%; transform:scaleY(0.5); -webkit-transform:scaleY(0.5);}
+	.pArea li a{display:block; height:100%; line-height:44px; text-decoration:none; color:#333; text-align:left;}
+	.pArea li a span{float:right; font-size:12px; color:#999;}
+	
+	.pullRefresh{position:relative; z-index:2; width:100%; height:100%; overflow:auto; -webkit-overflow-scrolling:touch;}
+	.pullRefresh .pullWrap{position:relative; box-sizing:border-box; transform:translateY(0); -webkit-transform:translateY(0); transition:transform 300ms ease-out,padding 300ms ease-out; -webkit-transition:-webkit-transform 300ms ease-out,padding 300ms ease-out;}
+	.pullRefresh .pullHeader, .pullRefresh .pullFooter{position:relative; z-index:1; left:0; width:100%; height:64px; overflow:hidden;}
+	.pullRefresh .pullHeader{margin-top:-64px;}
+	.pullRefresh .pullFooter{position:fixed; transform:translateY(0); -webkit-transform:translateY(0); transition:transform 200ms ease-out; -webkit-transition:-webkit-transform 200ms ease-out;}
+	.pullRefresh .pullScrollFooter{position:relative;}
+	.pullRefresh .pullHeader div, .pullRefresh .pullFooter div{position:absolute; left:50%; top:14px; margin-left:-101px; width:202px; height:36px;}
+	.pullRefresh .pullHeader div i, .pullRefresh .pullFooter div i{display:block; float:left; margin-top:7px; width:22px; height:22px; transform:rotate(0deg); -webkit-transform:rotate(0deg); transition:transform 200ms ease-out; -webkit-transition:-webkit-transform 200ms ease-out; background:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAYAAAAehFoBAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODU3QTAxNUE2RDRFMTFFMzk5RkE4NDNFMUIxNzE3MDAiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6ODU3QTAxNUI2RDRFMTFFMzk5RkE4NDNFMUIxNzE3MDAiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4NTdBMDE1ODZENEUxMUUzOTlGQTg0M0UxQjE3MTcwMCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4NTdBMDE1OTZENEUxMUUzOTlGQTg0M0UxQjE3MTcwMCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pokd7WMAAAESSURBVHja7NnRDYIwEAZgatyARcAV1BV0GJ990o10Bx1EZqhtvEsIIeF6/AWb3J9ceOSDlN41OO99VVJcsWB3+W+ov/6um6qw5AJ7qmLAxb1hAxvYwAY2sIENbGADG5iyC/UMVa/oqsnQSsC3UPtQj5XQNd07Gu4S8DnUm55uaTRjWzKcJOBPqMMK6CE2GjrpR9ctjBZhp3aJpdBirGRby41Owkr34VzoZGxK40CjVdjUTjdEa5uLGqtpzX10o0D3O1gyVjtLaNGMbbTYOcNPKhqCnTutSdEwLGK8nEJDsah5eAzNgWKRAzyjXwTkQLHoE0cEHQnNgWJjtuBBhtG8LKDYHGBGt3YIpTj7E5o5XwEGAIX+d0d81LfiAAAAAElFTkSuQmCC") no-repeat center center; background-size:100% 100%;}
+	.pullRefresh .pullHeader div i.h, .pullRefresh .pullFooter div i.h{transform:rotate(180deg); -webkit-transform:rotate(180deg);}
+	.pullRefresh .pullFooter div i{transform:rotate(180deg); -webkit-transform:rotate(180deg);}
+	.pullRefresh .pullFooter div i.h{transform:rotate(360deg); -webkit-transform:rotate(360deg);}
+	.pullRefresh .pullHeader div i.x, .pullRefresh .pullFooter div i.x{display:none; transform:rotate(0deg); -webkit-transform:rotate(0deg); animation:pullrefresh-spin 1s steps(12, end) infinite; -webkit-animation:pullrefresh-spin 1s steps(12, end) infinite; background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D'0%200%20120%20120'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20xmlns%3Axlink%3D'http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink'%3E%3Cdefs%3E%3Cline%20id%3D'l'%20x1%3D'60'%20x2%3D'60'%20y1%3D'7'%20y2%3D'27'%20stroke%3D'%236c6c6c'%20stroke-width%3D'11'%20stroke-linecap%3D'round'%2F%3E%3C%2Fdefs%3E%3Cg%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(30%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(60%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(90%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(120%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.27'%20transform%3D'rotate(150%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.37'%20transform%3D'rotate(180%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.46'%20transform%3D'rotate(210%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.56'%20transform%3D'rotate(240%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.66'%20transform%3D'rotate(270%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.75'%20transform%3D'rotate(300%2060%2C60)'%2F%3E%3Cuse%20xlink%3Ahref%3D'%23l'%20opacity%3D'.85'%20transform%3D'rotate(330%2060%2C60)'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");}
+	@-webkit-keyframes pullrefresh-spin{100%{-webkit-transform:rotate(360deg);}}
+	@keyframes pullrefresh-spin{100%{transform:rotate(360deg);}}
+	.pullRefresh .pullHeader div span, .pullRefresh .pullFooter div span{display:block; float:left; width:180px; height:36px; overflow:hidden; text-align:center;}
+	.pullRefresh .pullHeader div span font, .pullRefresh .pullFooter div span font{display:block; width:auto; height:22px; line-height:22px; overflow:hidden; font-size:14px; color:#777;}
+	.pullRefresh .pullHeader div span strong, .pullRefresh .pullFooter div span strong{display:block; width:auto; height:14px; line-height:14px; overflow:hidden; font-size:12px; font-weight:normal; color:#ccc; transform:scale(0.84); -webkit-transform:scale(0.84);}
+	.pullRefresh .pullFooter > span{display:none; width:100%; height:64px; line-height:64px; text-align:center; font-size:12px; color:#ddd;}
+	</style>
+	<a id="pullrefresharea"></a>
+	<h2>下拉刷新 <span class="note">(支持触屏移动设备,仅支持CSS3)</span></h2>
+	<div class="content"><pre>
+	$(expr).pullRefresh({
+		header: false, //使用顶部, 如果使用html,即自定义
+		footer: false, //使用底部
+		dragFooter: false, //使用拖曳底部, 如果使用html,即自定义
+		headerText: '下拉可以刷新', //顶部默认文字
+		footerText: '上拉加载更多', //底部默认文字
+		headerTipText: '松开立即刷新', //顶部下拉时的提示文字
+		footerTipText: '松开加载更多', //底部上拉时的提示文字
+		headerUpdatingText: '正在刷新中...', //顶部加载中的文字
+		footerUpdatingText: '正在加载中...', //底部加载中的文字
+		headerUpdateTime: '最后更新 %t', //顶部更新时间, %t将替换为当前时间
+		footerUpdateTime: '最后加载 %t', //底部更新时间, %t将替换为当前时间
+		headerView: '', //头部控件, html代码
+		footerNoMoreText: '', //底部加载后滚动条高度没有变化时显示, 为空即不显示
+		useTransform: !$.browser.android, //使用transform移动
+		scroll: null, //滚动时执行, 接受两个参数:headerView, headerViewHolder
+		start: null, //准备拖动时执行
+		move: null, //拖动时执行, 接受一个参数:当前拖曳距离
+		release: null, //松开时执行
+		complete: null, //脚本执行完成后执行
+		restore: null, //恢复正常状态时执行
+		refresh: null, //下拉执行, 附带一个参数(该参数是一个函数,且执行完后需执行这个函数来关闭显示区域)
+		load: null //上拉执行, 附带一个参数(同上)
+	});</pre>
+	<div class="pCon">
+		<div class="pHeader">Pull Refresh <span></span></div>
+		<div class="pArea"><div class="pullRefresh"><ul></ul></div></div>
+		<div class="pFooter">Footer Tabber</div>
+	</div>
+	</div>
+	<script>
+	let k = 0, kTime = null;
+	function refresh(){
+		let i, pullRefresh = $('.pullRefresh'), html = '',
+		now = new Date(), nowText = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate()+' '+now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+		for(i=1; i<=80; i++){
+			html += '<li><a href="http://www.baidu.com" target="_blank"><span>'+nowText+'</span>Items '+i+'</a></li>';
+			k = i;
+		}
+		pullRefresh.find('ul').html(html);
+		pullRefresh.find('ul li:eq(2) a').on('click', function(){
+			$('.pullRefresh').pullRefresh('headerBegin');
+			return false;
+		});
+		pullRefresh.find('ul li:eq(3) a').on('click', function(){
+			$('.pullRefresh').pullRefresh('headerEnd');
+			clearTimeout(kTime); kTime = null;
+			return false;
+		});
+		pullRefresh.find('ul li:eq('+(pullRefresh.find('ul li').length-3)+') a').on('click', function(){
+			$('.pullRefresh').pullRefresh('footerBegin');
+			return false;
+		});
+		pullRefresh.find('ul li:eq('+(pullRefresh.find('ul li').length-4)+') a').on('click', function(){
+			$('.pullRefresh').pullRefresh('footerEnd');
+			clearTimeout(kTime); kTime = null;
+			return false;
+		});
+	}
+	function load(){
+		let i, j, pullRefresh = $('.pullRefresh'), html = '',
+		now = new Date(), nowText = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate()+' '+now.getHours()+':'+now.getMinutes()+':'+now.getSeconds();
+		for(i=k+1; i<=k+20; i++){
+			html += '<li><a href="http://www.baidu.com" target="_blank"><span>'+nowText+'</span>Items '+i+'</a></li>';
+			j = i;
+		}
+		pullRefresh.find('ul').append(html);
+		pullRefresh.find('ul li:eq('+(pullRefresh.find('ul li').length-3)+') a').on('click', function(){
+			$('.pullRefresh').pullRefresh('footerBegin');
+			return false;
+		});
+		pullRefresh.find('ul li:eq('+(pullRefresh.find('ul li').length-4)+') a').on('click', function(){
+			$('.pullRefresh').pullRefresh('footerEnd');
+			clearTimeout(kTime); kTime = null;
+			return false;
+		});
+		k = j;
+	}
+	$(function(){
+		refresh();
+		$('.pullRefresh').pullRefresh({
+			header: true,
+			footer: true,
+			refresh: function(fn){
+				kTime = setTimeout(function(){
+					clearTimeout(kTime); kTime = null;
+					refresh();
+					fn();
+				}, 3000);
+			},
+			load: function(fn){
+				kTime = setTimeout(function(){
+					clearTimeout(kTime); kTime = null;
+					load();
+					fn();
+				}, 3000);
+			}
+		});
+	});
+	</script>
+	<br />
+	
+	
+	<style>
+	.selectscroll{width:320px; background:rgba(207,213,218,0.97); margin-top:10px;}
+	
+	.selectpicker{position:relative; width:100%; height:200px; overflow:hidden; padding:0 6px; box-sizing:border-box;}
+	.selectpicker div{width:100%; height:100%; overflow:hidden;}
+	.selectpicker > div > div{width:auto; float:left;}
+	.selectpicker ul{position:relative; z-index:1; float:left; width:auto; height:100%; overflow:auto; overflow-x:hidden; box-sizing:content-box; padding-right:6px; -webkit-overflow-scrolling:touch;}
+	.selectpicker ul div{position:relative; width:100%; height:auto; overflow:hidden;}
+	.selectpicker ul div.text{height:100%; font-size:16px; color:#000; display:-webkit-flex; display:flex; -webkit-justify-content:center; justify-content:center; -webkit-align-items:center; align-items:center;}
+	.selectpicker ul li{position:relative; color:#000; width:100%; height:36px; line-height:36px; overflow:hidden; text-align:center; white-space:nowrap; text-overflow:ellipsis; font-size:16px; padding:0 6px; box-sizing:border-box; cursor:pointer;}
+	.selectpicker ul li.selected{color:#000;}
+	.selectpicker ul:first-child li{text-align:left;}
+	.selectpicker ul:last-child li{text-align:right;}
+	.selectpicker ul:first-child:last-child li{text-align:center;}
+	.selectpicker ul:first-child:nth-last-child(2) li, .selectpicker ul:first-child:nth-last-child(2) ~ ul li{text-align:center;}
+	.selectpicker .highlight{position:absolute; z-index:2; left:0; right:0; top:50%; display:block; height:36px; pointer-events:none; -webkit-transform:translateY(-50%); transform:translateY(-50%);}
+	.selectpicker .highlight:before, .selectpicker .highlight:after{content:""; position:absolute; left:0; right:0; display:block; height:82px;}
+	.selectpicker .highlight:before{top:0; transform:translateY(-100%); background:-webkit-linear-gradient(top, rgb(207,213,218) 0%, rgba(207,213,218,0.85) 45%, rgba(207,213,218,0.6) 75%, rgba(207,213,218,0.4) 100%); background:linear-gradient(top, rgb(207,213,218) 0%, rgba(207,213,218,0.85) 45%, rgba(207,213,218,0.6) 75%, rgba(207,213,218,0.4) 100%);}
+	.selectpicker .highlight:after{bottom:0; transform:translateY(100%); background:-webkit-linear-gradient(top, rgba(207,213,218,0.4) 0%, rgba(207,213,218,0.6) 45%, rgba(207,213,218,0.85) 75%, rgb(207,213,218) 100%); background:linear-gradient(top, rgba(207,213,218,0.4) 0%, rgba(207,213,218,0.6) 45%, rgba(207,213,218,0.85) 75%, rgb(207,213,218) 100%);}
+	.selectpicker .highlight span{display:block; position:relative; height:100%;}
+	.selectpicker .highlight span:before, .selectpicker .highlight span:after{content:""; position:absolute; left:0; right:0; display:block; height:1px; background:#a8abb0;}
+	.wapWeb .selectpicker .highlight span:before, .wapWeb .selectpicker .highlight span:after{-webkit-transform:scaleY(0.5); transform:scaleY(0.5);}
+	.selectpicker .highlight span:before{top:0;}
+	.selectpicker .highlight span:after{bottom:0;}
+	.selectpicker ul{background-color:rgba(0,0,0,0); -webkit-background-clip:text; -webkit-transition:background-color 200ms ease-out; transition:background-color 200ms ease-out;}
+	.selectpicker ul:hover{background-color:rgba(0,0,0,0.5);}
+	.selectpicker ul::-webkit-scrollbar{width:4px; height:4px;}
+	.selectpicker ul::-webkit-scrollbar-track{display:none;}
+	.selectpicker ul::-webkit-scrollbar-thumb{background-color:inherit; border-radius:2px;}
+	</style>
+	<a id="scrollstartarea"></a>
+	<h2>滚动开始、滚动结束</h2>
+	<div class="content">
+	<select id="selectscroll1"></select>
+	<select id="selectscroll2"></select>
+	<div class="selectscroll"></div>
+	</div>
+	<script>
+	function randCode(){
+		let str = '', s = 'ABCDEabcde123FGHIJKfghijk456LMNOPQRSmnopqrs7890TUVWXYZltuvwxyz', o = s.split(''), n = Math.ceil(Math.random()*6)+1;
+		for(let i=0; i<n; i++){
+			let id = Math.ceil(Math.random()*(o.length-1));
+			str += o[id];
+		}
+		return str;
+	}
+	$('#selectscroll1, #selectscroll2').html(function(){
+		let html = '', random = $.random(1, 10);
+		for(let i=1; i<=10; i++){
+			let code = randCode();
+			html += '<option value="'+code+'" '+(i===random?'selected':'')+'>'+code+'</option>';
+		}
+		return html;
+	}).on('change', function(){
+		$('.selectscroll').selectpicker();
+	});
+	$('.selectscroll').selectpicker({
+		objs: [$('#selectscroll1'), $('#selectscroll2')],
+		isPicker: true
+	});
+	</script>
+	<br />
+
+
+	<style>
+	.dragshow{height:auto; overflow:hidden; position:relative; border:1px solid #ccc; -webkit-border-radius:4px; border-radius:4px;}
+	.dragshow li{position:relative; z-index:666; width:100%; height:auto; overflow:hidden; box-sizing:border-box; border-bottom:1px solid #ccc; padding:0 10px; background:#fff; -webkit-transform:translate3d(0,0,0); transform:translate3d(0,0,0); -webkit-transition:-webkit-transform 200ms ease-out; transition:transform 200ms ease-out;}
+	.dragshow li:nth-last-child(2){border:none;}
+	.dragshow li a{width:auto; height:auto; overflow:hidden; display:block; text-decoration:none;}
+	.dragshow li a:hover{text-decoration:none;}
+	.dragshow li strong{display:block; width:auto; height:25px; line-height:25px; overflow:hidden; font-size:14px; color:#333; white-space:nowrap; text-overflow:ellipsis;}
+	.dragshow li span{display:block; width:auto; height:25px; line-height:25px; overflow:hidden; font-size:12px; color:#999;}
+	.dragshow .title{position:absolute; z-index:1; top:0; right:0; width:60px; height:50px; overflow:hidden; color:#fff; text-align:center; font-size:12px; background:#f00; cursor:pointer;}
+	.dragshow .title i{display:block; float:left; min-width:60px; background:#f00; font-style:normal; color:#fff;}
+	.dragshow .title i:nth-child(1){background:#00f;}
+	.dragshow .title i:nth-child(2){background:#0f0;}
+	.dragshow .title div{width:120px; background:#f0f; color:#fff;}
+@media only screen and (min-width:601px) {
+	.dragshow{width:400px;}
+}
+	</style>
+	<a id="dragshowarea"></a>
+	<h2>拖动显示</h2>
+	<div class="content"><pre>
+	$(expr).dragshow({
+		list: 'li', //拖动列表
+		title: '删除', //显示区域内的内容(支持html代码)(支持函数,接受一个参数:当前行)
+		cls: 'title', //显示区域的类名称
+		useTransform: true, //使用CSS3特性来移动, list的css样式需要增加transform:translateX(0);transition-duration:200ms;
+		click: null, //点击显示区域时执行, this:显示区域, 接受两个参数:当前行,显示区域点击的位置(为区别显示区域内有多个html标签)
+		before: null //拖动前执行
+	});</pre>
+	<ul class="dragshow">
+		<li mid="1"><a href="http://www.baidu.com" target="_blank"><strong>1.目击者告诉新华社记者，的黎波里市东部靠近海边的一处海军基地首</strong><span>添加时间：2014-03-23</span></a></li>
+		<li mid="2"><a href="http://www.baidu.com" target="_blank"><strong>2.目击者告诉新华社记者，的黎波里市东部靠近海边的一处海军基地首</strong><span>添加时间：2014-03-23</span></a></li>
+		<li mid="3"><a href="http://www.baidu.com" target="_blank"><strong>3.目击者告诉新华社记者，的黎波里市东部靠近海边的一处海军基地首</strong><span>添加时间：2014-03-23</span></a></li>
+		<li mid="4"><a href="http://www.baidu.com" target="_blank"><strong>4.目击者告诉新华社记者，的黎波里市东部靠近海边的一处海军基地首</strong><span>添加时间：2014-03-23</span></a></li>
+		<li mid="5"><a href="http://www.baidu.com" target="_blank"><strong>5.目击者告诉新华社记者，的黎波里市东部靠近海边的一处海军基地首</strong><span>添加时间：2014-03-23</span></a></li>
+	</ul>
+	</div>
+	<script>
+	$('.dragshow').dragshow({
+		list: 'li',
+		title: function(li){
+			let row = li.index();
+			if(row===0)return '<i>确定</i><i>修改</i>';
+			else if(row===1)return '<i>确定</i><i>修改</i><i>删除</i>';
+			else if(row===2)return '<div>变更</div>';
+			return '删除';
+		},
+		cls: 'title',
+		click: function(row, el){
+			let btn = this;
+			if(el.is('.title')){
+				delRow();
+			}else if(el.is('i')){
+				let i = el.index();
+				switch(i){
+					case 0:$.overloadSuccess('点击了确定');break;
+					case 1:$.overloadSuccess('点击了修改');break;
+					case 2:delRow();break;
+				}
+				$('.dragshow').data('reset')();
+			}else if(el.is('div')){
+				$.overloadSuccess('点击了变更');
+				$('.dragshow').data('reset')();
+			}
+			function delRow(){
+				//$.get('delete.php', {id:row.attr('mid')}, function(){
+					btn.slideUp(200);
+					row.css('min-height', 'inherit').slideUp(200, function(){
+						let parent = row.parent(), tagName = row[0].tagName;
+						row.remove();
+						if(!parent.find(tagName).length)btn.remove();
+					});
+				//});
+			}
+		}
+	});
+	</script>
+	<br />
+
+
+	<style>
+	.inertiaarea{height:500px; overflow:hidden; border:1px solid #ddd; background:#f5f5f5; border-radius:4px;}
+	.inertiaarea ul{width:auto; /*width:1200px;*/ height:auto; overflow:hidden;}
+	.inertiaarea ul li{float:left; width:100px; height:100px; line-height:100px; overflow:hidden; background:#fff; text-align:center;}
+@media only screen and (min-width:601px) {
+	.inertiaarea{width:500px;}
+}
+	</style>
+	<a id="inertiaarea"></a>
+	<h2>惯性拖拽</h2>
+	<div class="content"><pre>
+	$(expr).inertia({
+		lockX: false, //锁定水平位置
+		lockY: false, //锁定垂直位置
+		fixed: null, //摩擦与缓动的前后固定的位置(例如selectpicker),如果设置必须返回{start:数值, end:数值}
+		start: null, //滚动前执行
+		move: null, //滚动时执行
+		end: null, //滚动停止后执行
+		complete: null //脚本执行完成后执行
+	});</pre>
+	<div class="inertiaarea">
+		<ul></ul>
+	</div>
+	</div>
+	<script>
+	let html = '';
+	for(let i=0; i<240; i++)html += '<li><a href="http://www.baidu.com" target="_blank">百度</a></li>';
+	$('.inertiaarea ul').html(html+'<div class="clear"></div>').inertia({
+		lockX: true,
+		end: function(x, y){
+			if(x>0)x = 0;
+			if(x<this.parent().width()-this.width())x = this.parent().width()-this.width();
+			if(y>0)y = 0;
+			if(y<this.parent().height()-this.height())y = this.parent().height()-this.height();
+			this.css({
+				transform:'translate3d('+x+'px,'+y+'px,0)',
+				'-webkit-transform':'translate3d('+x+'px,'+y+'px,0)',
+				'transition-duration':'300ms', '-webkit-transition-duration':'300ms'
+			});
+		}
+	});
+	</script>
+	<br />
+
+
+	<style>
+	.baidumap{height:500px; border:1px solid #ccc; background:#f5f5f5;}
+	#baidu-panel{width:100%; height:auto; max-height:300px; overflow:auto; overflow-x:hidden;}
+@media only screen and (min-width:601px) {
+	.baidumap{width:600px;}
+}
+	</style>
+	<a id="inertiabaidumap"></a>
+	<h2>百度地图</h2>
+	<div class="content"><pre>
+	$(expr).baiduMapApi({
+		longitude: '', //经度, 113.440685
+		latitude: '', //纬度, 23.136588
+		zoom: 16, //默认地图级别
+		lngObj: '', //存放经度数值的控件expr, 一般为输出用
+		latObj: '', //存放纬度数值的控件expr
+		minZoom: 1, //地图允许的最小级别
+		maxZoom: 19, //地图允许的最大级别
+		centerCity: '广州', //默认显示城市, options.longitude,options.latitude两个值为空才有效
+		getCoordinate: null, //点击地图获取坐标且返回经度与纬度, function
+		isNav: false, //使用导航功能
+		autoNav: true, //自动使用地点导航, 以当前位置导航到 (options.longitude, options.latitude)
+		navType: -1, //非自动导航时的驾车策略, 0:最少时间, 1:最短距离, 2:避开高速
+		navDrag: false, //自定义途经点(拖曳线路)
+		navPoints: [], //自定义途经点(使用文字设定)
+		panel: '', //显示路线详情面板,面板id
+		complete: null //地图加载完成
+	});</pre>
+	<div class="baidumap"></div>
+	经度：<input type="text" id="longitude" />　纬度：<input type="text" id="latitude" />
+	<div id="baidu-panel"></div>
+	</div>
+	<script>
+	$('.baidumap').baiduMapApi({
+		//ak: '自定义ak',
+		//callback: function(){$.overloadSuccess('百度地图开始加载')},
+		longitude: '113.440685',
+		latitude: '23.136588',
+		isNav: true,
+		autoNav: false,
+		panel: 'baidu-panel',
+		getCoordinate: function(x, y){
+			$('#longitude').val(x);
+			$('#latitude').val(y);
+			//$.overloadSuccess('经度：'+x+'<br />纬度：'+y);
+		}
+	});
+	</script>
+
+
+	<style>
+	.amap{height:500px; border:1px solid #ccc; background:#f5f5f5;}
+	#amap-panel{width:100%; height:auto; max-height:300px; overflow:auto; overflow-x:hidden;}
+	@media only screen and (min-width:601px) {
+		.amap{width:600px;}
+	}
+	</style>
+	<a id="inertiaamap"></a>
+	<h2>高德地图</h2>
+	<div class="content"><pre>
+	$(expr).amap({
+		key: '2333d8c7fcb90e0c6d600d9d40b759dc', //地图应用key
+		longitude: '', //经度, 113.434065
+		latitude: '', //纬度, 23.130378
+		zoom: 16, //默认地图级别
+		lngObj: '', //存放经度数值的控件expr, 一般为输出用
+		latObj: '', //存放纬度数值的控件expr
+		minZoom: 1, //地图允许的最小级别
+		maxZoom: 19, //地图允许的最大级别
+		centerCity: '广州', //默认显示城市, options.longitude,options.latitude两个值为空才有效
+		getCoordinate: null, //点击地图获取坐标且返回经度与纬度, function
+		isNav: false, //使用导航功能
+		autoNav: true, //自动使用地点导航, 以当前位置导航到 (options.longitude, options.latitude)
+		navType: -1, //非自动导航时的驾车策略, 0:最少时间, 1:最短距离, 2:避开高速
+		navDrag: false, //自定义途经点(拖曳线路)
+		navPoints: [], //自定义途经点(使用文字设定)
+		panel: '', //显示路线详情面板,面板id
+		complete: null //地图加载完成
+	});</pre>
+	<div class="amap"></div>
+	经度：<input type="text" id="amap-longitude" />　纬度：<input type="text" id="amap-latitude" />
+	<div id="amap-panel"></div>
+	</div>
+	<script>
+	$('.amap').amap({
+		longitude: '113.434065',
+		latitude: '23.130378',
+		isNav: true,
+		autoNav: false,
+		panel: 'amap-panel',
+		getCoordinate: function(x, y){
+			$('#amap-longitude').val(x);
+			$('#amap-latitude').val(y);
+			//$.overloadSuccess('经度：'+x+'<br />纬度：'+y);
+		}
+	});
+	</script>
+
+</div>
+
+<a class="fixed" href="javascript:void(0)" onclick="return $.scrollto()">返回顶部</a>
+</body>
+</html>

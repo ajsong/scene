@@ -1,0 +1,146 @@
+{include file="header.html"}
+<body class="grl">
+<script type="text/javascript" src="/js/clipboard.js"></script>
+<script type="text/javascript" src="/js/jquery.qrcode.js"></script>
+<script type="text/javascript" src="/js/parasiticList.js"></script>
+<div class="home-index">
+	<div class="topView">
+		<div class="title">
+			<div class="member">
+				<div class="avatar" style="background-image:url({$member->avatar});"></div>
+				<ul>
+					<li>{$member->name}</li>
+					<li><a href="/index/home/password" class="iframe-layer">修改密码</a></li>
+					<li><a href="javascript:void(0)" class="changeAvatar">更改头像</a></li>
+					<li><a href="/index/home/logout">退出</a></li>
+				</ul>
+			</div>
+			{$WEB_NAME}
+		</div>
+		<ul>
+			<li>
+				<span class="eqf-phone"></span>
+				<div>{$data.count}</div>
+				<font>场景总计</font>
+			</li>
+			<li>
+				<span class="eqf-eye"></span>
+				<div>{$data.click}</div>
+				<font>场景展示</font>
+			</li>
+			<li>
+			</li>
+			<li>
+				<a href="/index/scene/add"><span class="eqf-plus2"></span><i>点击开始创建</i></a>
+			</li>
+		</ul>
+	</div>
+	
+	<div class="section">
+		{if $data.count==0}
+		<h2>暂无场景<a href="/index/scene/add">创建场景</a></h2>
+		<div class="notfound"></div>
+		{else}
+		<ul>
+			{foreach from=$data.scene item=g}
+			<li scene="{$g->id}">
+				{if $g->is_publish==0}<div class="nameplate"><span>未发布</span></div>{/if}
+				<div class="pic" style="background-image:url({$g->cover});"></div>
+				<div class="lay">
+					{if $g->is_publish==0}<a href="/index/scene/publish?id={$g->id}"><em class="eqf-scene-send"></em>发布</a>
+					{else}<a href="/v/{$g->code}" target="_blank"><em class="eqf-eye"></em>预览</a>{/if}
+					<a href="/index/scene/{$g->id}"><em class="eqf-xiuziti"></em>编辑</a>
+					<a href="/index/scene/detail?id={$g->id}"><em class="eqf-date"></em>详情</a>
+				</div>
+				<div class="view">
+					<div class="project">
+						<div>{$g->title}</div>
+						<span>编码：{$g->code}<font><em class="eqf-eye"></em>{$g->click}</font></span>
+					</div>
+					<div class="button">
+						<a href="/index/scene/{$g->id}#showSet" class="set"><em class="eqf-scene-settingII"></em><span>设置</span></a>
+						{if $g->is_publish==0}<a href="/index/scene/publish?id={$g->id}" class="publish"><em class="eqf-scene-send"></em><span>发布</span></a>
+						{else}<a href="javascript:void(0)" class="parasitic tips" data-id="{$g->id}" tips-list="getParasiticList" tips-follow="top" tips-fixy="0"><em class="eqf-scene-company"></em><span>寄生</span></a>{/if}
+						<a href="/index/scene/gift?id={$g->id}" class="gift iframe-layer"><em class="eqf-scene-gift"></em><span>转赠</span></a>
+						<a href="/index/scene/copy?id={$g->id}" class="copy iframe-layer"><em class="eqf-scene-copy"></em><span>复制</span></a>
+						<a href="/index/scene/delete?id={$g->id}" class="del iframe-layer"><em class="eqf-scene-delete"></em><span>删除</span></a>
+						<div><em class="eqf-QRcode"></em></div>
+						<span><i url="{$g->url}" logo="{$g->cover}"></i></span>
+					</div>
+				</div>
+			</li>
+			{/foreach}
+		</ul>
+		{/if}
+	</div>
+</div>
+<script>
+$(function(){
+	$(document.body).data('timeout', 50000);
+	$('.section li .view .button i').each(function(){
+		let _this = $(this);
+		if(!!_this.data('qrcode'))return true;
+		_this.data('qrcode', true).qrcode({
+			render: 'background',
+			width: 220,
+			height: 220,
+			logo: _this.attr('logo'),
+			text: _this.attr('url')
+		});
+	});
+	$('.changeAvatar').ajaxupload({
+		url: '/api/home/avatar',
+		callback: function(json){
+			$('.avatar').css('background-image', 'url('+json.data+')');
+		}
+	});
+	$('.tips').tips({
+		type: 'click',
+		show: function(btn){
+			console.log(btn.parents('li').length)
+			btn.parents('li').eq(0).addClass('hover');
+		},
+		hide: function(btn){
+			btn.parents('li').eq(0).removeClass('hover');
+		}
+	});
+	$('body').on('click', 'a.parasitic-list', function(){
+		$('.section li.hover').removeClass('hover');
+		let self = $(this);
+		$.overload();
+		$.getJSON('/api/scene/oss/id/'+self.attr('data-id')+'/type/'+self.attr('data-type'), function(json){
+			let text = json.data;
+			let parasitic = new ClipboardJS(null, {
+				rightnow: true,
+				text: function(){
+					return text;
+				}
+			});
+			parasitic.on('success', function() {
+				setTimeout(function(){
+					$.overloadSuccess('复制成功');
+				}, 400);
+			});
+			parasitic.on('error', function() {
+				setTimeout(function(){
+					$.modalView('浏览器安全机制，请手动复制 (Ctrl+C)', {
+						width: 500,
+						item: {
+							readonly: true,
+							value: text.replace(/&not/g, '&amp;not'),
+							type: 'textarea',
+							height: 100
+						}
+					});
+					setTimeout(function(){
+						$('.modalView textarea').on('focus', function(){
+							$(this).select();
+						}).focus();
+					}, 100);
+				}, 400);
+			});
+		});
+	});
+});
+</script>
+{include file="footer.html"}

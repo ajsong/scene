@@ -1,0 +1,230 @@
+{include file="header.html"}
+<body class="wxtag-body">
+<div class="home-wxtag">
+	<div class="app">
+		<big class="selectpicker"><span></span></big>
+		<a href="javascript:void(0)">手动增加</a>
+		<a class="scan" href="javascript:void(0)">扫码添加</a>
+	</div>
+	<div class="list">
+		<label><input type="text" placeholder="筛选公众号" /></label>
+		<div>
+			{foreach from=$data item=g}
+			<a href="javascript:void(0)" data-app="{$g->appid}"><em class="eqf-wrong2"></em>{$g->name}</a>
+			{/foreach}
+		</div>
+	</div>
+	<div class="tags clear-after">
+		<a class="eqf-plus2" href="javascript:void(0)"></a>
+	</div>
+</div>
+
+{include file="footer.html"}
+<script>
+document.title = '公众号标签管理';
+let tags = [];
+function getTags(){
+	$('.tags .box').remove();
+	$.postApi('/api/home/wxtag?type=tags', { app:$('.list div a.this').attr('data-app') }, function(json){
+		tags = json.data.tags;
+		let html = '';
+		$.each(tags, function(){
+			html += '<div class="box">\
+				<div><span title="修改标签名称">'+this.name+'</span><font>粉丝数: '+this.count+'</font></div>\
+				<footer>\
+					<a href="javascript:void(0)" title="设为关注默认标签" class="eqf-single '+(Number(json.data.default)===Number(this.id)?'this':'')+'"></a>\
+					<a href="javascript:void(0)" title="修改标签名称" class="eqf-scene-edit"></a>\
+					<a href="javascript:void(0)" title="删除标签" class="eqf-scene-delete"></a>\
+				</footer>\
+			</div>';
+		});
+		$('.tags .eqf-plus2').before(html);
+		$('.tags .box div span').tips();
+		$('.tags .box footer a').tips({
+			css: { background:'#444' },
+			follow: 2
+		});
+	});
+}
+function needLogin(){
+	$.overloadWarning('请先登录');
+	setTimeout(function(){
+		location.reload();
+	}, 2000);
+}
+function closeLay(){
+	$.getJSON('/api/home/wxtag', function(json){
+		$.overlay(false);
+		let appid = '';
+		let request = $.request('#');
+		if(request && request['app'])appid = request['app'];
+		let html = '';
+		$.each(json.data, function(){
+			html += '<a href="javascript:void(0)" data-app="'+this.appid+'" '+(appid===this.appid?'class="this"':'')+'><em class="eqf-wrong2"></em>'+this.name+'</a>';
+		});
+		$('.list div').html(html);
+		setListHeight();
+	});
+}
+function setListHeight(){
+	let height = $.window().height;
+	if(400<height)height = 400;
+	let divHeight = 40 + $('.list div a:first').height() * $('.list div a').length + 15;
+	if(divHeight<height)height = divHeight;
+	$('.list div').height(height);
+}
+$(window).resize(function(){
+	if(/height:/.test($('.list div').attr('style'))){
+		setListHeight();
+	}
+});
+$(function(){
+	let request = $.request('#');
+	if(request && request['app']){
+		$('.list div a[data-app="'+request['app']+'"]').addClass('this');
+	}else{
+		$('.list div a:first').addClass('this');
+	}
+	$('.app .selectpicker').on('click', function(){
+		let div = $('.list div');
+		if(/height:/.test(div.attr('style'))){
+			div.css('height', '');
+		}else{
+			setListHeight();
+		}
+	}).find('span').html($('.list div a.this').text());
+	$('.list div').on('click', 'a', function(e){
+		e = e||event;
+		let o = e.target||e.srcElement, div = $('.list div');
+		if($(o).is('em')){
+			if(!confirm('确定删除？'))return false;
+			let item = $(o).parent();
+			$.postApi('/api/home/deleteWechat', { appid:item.attr('data-app') }, function(){
+				item.remove();
+				if(!div.find('a.this').length)$('.list div a:first').addClass('this');
+			});
+			return false;
+		}
+		$(this).addClass('this').siblings().removeClass('this');
+		div.css('height', '');
+		$('.app .selectpicker span').html($('.list div a.this').text());
+		let app = $(this).attr('data-app');
+		let href = location.href.replace(/#app=\w+$/, '');
+		window.history.replaceState(null, '', '');
+		window.history.pushState(null, '', href+'#app='+app);
+		getTags();
+	});
+	$('.list input').on('input', function(){
+		let val = $.trim($(this).val()), div = $('.list div');
+		if(!val.length){
+			div.find('a').show();
+		}else{
+			div.find('a').hide();
+			div.find('a').each(function(){ if($(this).text().indexOf(val)>-1)$(this).show() });
+		}
+	});
+	$('.app a').on('click', function(){
+		if($(this).hasClass('scan')){
+			$.overlay(window.location.protocol+'//'+window.location.host+'/wx_interface?act=component_auth||80%*90%', 0);
+			return true;
+		}
+		let html = '<div class="wxtag-addWechat">\
+			<label><strong>公众号名称</strong><input type="text" class="name" placeholder="请输入公众号名称" /></label>\
+			<label><strong>AppID</strong><input type="text" class="appid" placeholder="请输入AppID" /></label>\
+			<label><strong>AppSecret</strong><input type="text" class="appsecret" placeholder="请输入AppSecret" /></label>\
+			<label><strong>Token</strong><input type="text" class="token" placeholder="请输入Token" /></label>\
+			<a href="javascript:void(0)">确定添加</a>\
+		</div>';
+		$.overlay(html, 0, function(){
+			let _this = this;
+			_this.find('a').on('click', function(){
+				let name = _this.find('.name').val(), appid = _this.find('.appid').val(), appsecret = _this.find('.appsecret').val(), token = _this.find('.token').val();
+				if(!name.length || !appid.length || !appsecret.length || !token.length){
+					$.overloadError('所有项都必须填写');
+					return;
+				}
+				$.postJSON('/api/home/addWechat', { name:name, appid:appid, appsecret:appsecret, token:token }, function(){
+					$.getJSON('/api/home/wxtag', function(json){
+						$.overlay(false);
+						$.overloadSuccess('添加成功');
+						let appid = '';
+						if(request && request['app'])appid = request['app'];
+						let html = '';
+						$.each(json.data, function(){
+							html += '<a href="javascript:void(0)" data-app="'+this.appid+'" '+(appid===this.appid?'class="this"':'')+'><em class="eqf-wrong2"></em>'+this.name+'</a>';
+						});
+						$('.list div').html(html);
+						setListHeight();
+					});
+				});
+			});
+		});
+	});
+	let _tags = $('.tags');
+	getTags();
+	_tags.on('click', '.eqf-scene-delete', function(){
+		if(!confirm('确定删除该标签？'))return;
+		let parent = $(this).parent().parent(), index = parent.index();
+		$.postApi('/api/home/wxtag?type=delete', { app:$('.list div a.this').attr('data-app'), id:tags[index].id }, function(){
+			tags.splice(index, 1);
+			parent.remove();
+		});
+	});
+	_tags.on('click', 'div span, .eqf-scene-edit', function(){
+		let parent = $(this).parent().parent(), index = parent.index(), span = parent.find('div span');
+		let name = prompt('更新的标签名称', span.html());
+		if(!name)return;
+		if(!name.length){
+			alert('请填写要更新的标签名称');
+			return;
+		}
+		if(name.lengths()>30){
+			alert('标签名称不能多于30个字节');
+			return;
+		}
+		let id = tags[index].id;
+		$.postApi('/api/home/wxtag?type=update', { app:$('.list div a.this').attr('data-app'), id:id, name:name }, function(){
+			tags[index].name = name;
+			span.html(name);
+		});
+	});
+	_tags.on('click', '.eqf-single', function(){
+		let parent = $(this).parent().parent(), index = parent.index();
+		$.postApi('/api/home/wxtag?type=default', { app:$('.list div a.this').attr('data-app'), id:tags[index].id }, function(){
+			parent.find('.eqf-single').addClass('this');
+			parent.siblings().find('.eqf-single').removeClass('this');
+		});
+	});
+	$('.eqf-plus2').on('click', function(){
+		let name = prompt('添加的标签名称', '');
+		if(!name)return;
+		if(!name.length){
+			alert('请填写要添加的标签名称');
+			return;
+		}
+		if(name.lengths()>30){
+			alert('标签名称不能多于30个字节');
+			return;
+		}
+		$.postApi('/api/home/wxtag?type=create', { app:$('.list div a.this').attr('data-app'), name:name }, function(json){
+			let res = json.data.tag;
+			res.count = 0;
+			tags.push(res);
+			let html = '<div class="box">\
+				<div><span title="修改标签名称">'+res.name+'</span><font>粉丝数: '+res.count+'</font></div>\
+				<footer>\
+					<a href="javascript:void(0)" title="设为关注默认标签" class="eqf-single"></a>\
+					<a href="javascript:void(0)" title="修改标签名称" class="eqf-scene-edit"></a>\
+					<a href="javascript:void(0)" title="删除标签" class="eqf-scene-delete"></a>\
+				</footer>\
+			</div>';
+			$('.eqf-plus2').before(html);
+			$('.tags .box div span').tips();
+			$('.tags .box footer a').tips({
+				css: { background:'#444' },
+				follow: 2
+			});
+		});
+	});
+});
+</script>

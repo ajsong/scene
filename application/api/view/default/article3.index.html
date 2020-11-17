@@ -1,0 +1,109 @@
+{include file="header.html"}
+<style>
+.url{ display:block; padding:12px 120px 12px 80px; width:960px; height:54px; font-size:14px; line-height:30px; margin:0 0 20px 12px; box-sizing:border-box; border-bottom:1px solid #ddd; }
+.url div{ float:left; margin-left:-80px; width:70px; height:100%; color:#999; text-align:left; }
+.url input{ width:100%; height:100%; border:none; background:#fff; }
+.url a{ display:block; text-decoration:none; float:right; margin-right:-120px; width:100px; height:100%; border-radius:3px; color:#fff; background:#419bf9; }
+
+.article3{ padding:12px; width:960px; margin:0; }
+.thead span, .tbody form > label{ display:block; float:left; padding:12px; height:55px; line-height:30px; box-sizing:border-box; border-bottom:1px solid #ddd; font-size:14px; text-align:left; color:#333; }
+.thead span:nth-child(1), .tbody form > label:nth-child(1){ width:100px; }
+.thead span:nth-child(2), .tbody form > label:nth-child(2){ width:520px; }
+.thead span:nth-child(3), .tbody form > label:nth-child(3){ width:80px; }
+.thead span:nth-child(4), .tbody form > label:nth-child(4){ width:80px; }
+.thead span:nth-child(5), .tbody form > label:nth-child(5){ width:80px; }
+.thead span:nth-child(6), .tbody form > label:nth-child(6){ width:100px; }
+.thead{ position:sticky; z-index:1; top:0; background:#fff; }
+.thead span{ font-weight:700; }
+.thead span em{ display:inline-block; margin-left:5px; width:16px; height:16px; vertical-align:middle; background:url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%201024%201024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M512%201024C228.072727%201024%200%20795.927273%200%20512S228.072727%200%20512%200s512%20228.072727%20512%20512-228.072727%20512-512%20512z%20m0-963.490909c-251.345455%200-451.490909%20204.8-451.490909%20451.490909s204.8%20451.490909%20451.490909%20451.490909c251.345455%200%20451.490909-204.8%20451.490909-451.490909S763.345455%2060.509091%20512%2060.509091z%20m0%20754.036364c-32.581818%200-60.509091-27.927273-60.509091-60.509091V512c0-32.581818%2027.927273-60.509091%2060.509091-60.509091%2032.581818%200%2060.509091%2027.927273%2060.509091%2060.509091v242.036364c0%2032.581818-27.927273%2060.509091-60.509091%2060.509091z%20m0-484.072728c-13.963636%200-32.581818-4.654545-41.890909-18.618182-13.963636-9.309091-18.618182-23.272727-18.618182-41.890909%200-13.963636%204.654545-32.581818%2018.618182-41.890909%209.309091-9.309091%2027.927273-18.618182%2041.890909-18.618182%2013.963636%200%2032.581818%204.654545%2041.890909%2018.618182%209.309091%209.309091%2018.618182%2027.927273%2018.618182%2041.890909%200%2013.963636-4.654545%2032.581818-18.618182%2041.890909-9.309091%2013.963636-27.927273%2018.618182-41.890909%2018.618182z%22%20fill%3D%22%23419bf9%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") no-repeat center center; background-size:cover; }
+.thead span em.add{ cursor:pointer; background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%201024%201024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M512%2020.48C241.664%2020.48%2020.48%20241.664%2020.48%20512s221.184%20491.52%20491.52%20491.52%20491.52-221.184%20491.52-491.52S782.336%2020.48%20512%2020.48z%20m0%20921.6C274.432%20942.08%2081.92%20749.568%2081.92%20512S274.432%2081.92%20512%2081.92s430.08%20192.512%20430.08%20430.08-192.512%20430.08-430.08%20430.08z%22%20fill%3D%22%23419bf9%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M706.56%20481.28h-163.84v-163.84c0-16.384-14.336-30.72-30.72-30.72s-30.72%2014.336-30.72%2030.72v163.84h-163.84c-16.384%200-30.72%2014.336-30.72%2030.72s14.336%2030.72%2030.72%2030.72h163.84v163.84c0%2016.384%2014.336%2030.72%2030.72%2030.72s30.72-14.336%2030.72-30.72v-163.84h163.84c16.384%200%2030.72-14.336%2030.72-30.72s-14.336-30.72-30.72-30.72z%22%20fill%3D%22%23419bf9%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E"); }
+.tbody li:nth-child(odd){ background:#f9f9f9; }
+.tbody form > label > *:not(label){ display:block; width:100%; height:100%; }
+.tbody form > label em{ position:relative; cursor:pointer; background:no-repeat center center; background-size:cover; }
+.tbody form > label em.contain{ background-size:auto 55px; }
+.tbody form > label em input{ position:absolute; top:0; right:0; cursor:pointer; opacity:0; width:100%; height:100%; }
+.tbody form > label input{ border:none; background:none; font-size:14px; }
+.tbody form > label a{ display:block; float:left; text-decoration:none; width:30px; height:100%; border-radius:3px; box-sizing:border-box; border:2px solid #419bf9; background:url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%201024%201024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M690.224762%2045.933714L988.40381%20251.611429v769.560381h-975.238096v-975.238096h677.010286z%20m-30.427429%2097.52381H110.738286v780.190476h780.190476V302.811429l-231.131429-159.353905z%22%20fill%3D%22%23419bf9%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M695.881143%20627.565714v327.92381h-97.52381v-230.448762h-195.047619v257.316571h-97.523809V627.565714z%22%20fill%3D%22%23419bf9%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") no-repeat center center; background-size:16px 16px; }
+.tbody form > label a.del{ margin-left:10px; border-color:#d81e06; background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%201024%201024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M512%20441.69251360348846L254.3219023179334%20183.956407350782a49.71412125496538%2049.71412125496538%200%201%200-70.30748492361464%2070.30748639651151L441.63450503284866%20512l-257.7361077256034%20257.6780976820668a49.71412125496538%2049.71412125496538%200%201%200%2070.30748639651151%2070.30748492361464L512%20582.3654949671514l257.6780976820668%20257.7361077256034a49.71412125496538%2049.71412125496538%200%201%200%2070.30748492361464-70.30748639651151L582.3654949671514%20512l257.7361077256034-257.6780976820668a49.71412125496538%2049.71412125496538%200%201%200-70.30748639651151-70.30748492361464L512%20441.63450503284866z%22%20fill%3D%22%23d81e06%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E"); }
+</style>
+
+<body>
+<label class="url"><a href="javascript:void(0)">保存</a><div>跳转网址</div><input type="text" id="url" value="{$data.url}" /></label>
+
+<div class="article3">
+	<ul class="thead">
+		<li class="clear-after">
+			<span>图片</span>
+			<span>标题</span>
+			<span>阅读量</span>
+			<span>排序<em class="tips" title="数字越小，排在越前" tips-bgcolor="#444" tips-follow="right"></em></span>
+			<span>滚动图</span>
+			<span>操作<em class="add tips" title="添加" tips-bgcolor="#444" tips-follow="right"></em></span>
+		</li>
+	</ul>
+	<ul class="tbody">
+		{foreach from=$data.list item=g}
+		<li>
+			<form class="clear-after" action="?" method="post" enctype="multipart/form-data">
+			<label><em style="background-image:url({$g->pic});"><input type="hidden" name="origin_pic" value="{$g->pic}" /><input type="file" name="pic" /></em></label>
+			<label><input type="text" name="title" class="title" value="{$g->title}" /></label>
+			<label><input type="text" name="clicks" value="{$g->clicks}" /></label>
+			<label><input type="text" name="sort" value="{$g->sort}" /></label>
+			<label><label class="checkbox-app"><input type="checkbox" name="category_id" value="1" {if $g->category_id==1}checked{/if} /><b></b></label></label>
+			<label><a class="save tips" href="javascript:void(0)" title="保存" tips-bgcolor="#444" tips-follow="bottom"></a><a class="del tips" href="javascript:void(0)" title="删除" tips-bgcolor="#444" tips-follow="bottom"></a></label>
+			<input type="hidden" name="id" class="id" value="{$g->id}" />
+			</form>
+		</li>
+		{/foreach}
+	</ul>
+</div>
+
+{include file="footer.html"}
+<script>
+$(function(){
+	$('.thead .add').on('click', function(){
+		let html = $('<li>\
+			<form class="clear-after" action="?" method="post" enctype="multipart/form-data">\
+			<label><em class="contain" style="background-image:url(/images/nopic.png);"><input type="file" name="pic" /></em></label>\
+			<label><input type="text" name="title" class="title" placeholder="请输入标题" /></label>\
+			<label><input type="text" name="clicks" value="0" /></label>\
+			<label><input type="text" name="sort" value="999" /></label>\
+			<label><label class="checkbox-app"><input type="checkbox" name="category_id" value="1" /><b></b></label></label>\
+			<label><a class="save tips" href="javascript:void(0)" title="保存" tips-bgcolor="#444" tips-follow="bottom"></a><a class="del tips" href="javascript:void(0)" title="删除" tips-bgcolor="#444" tips-follow="bottom"></a></label>\
+			<input type="hidden" name="id" class="id" value="0" />\
+			</form>\
+		</li>');
+		$('.tbody').prepend(html);
+		html.find('.tips').tips();
+		window.scrollTo(0, 0);
+	});
+	$('.tbody').on('change', ':file', function(){
+		$(this).parent().css('background-image', 'url('+URL.createObjectURL(this.files[0])+')');
+	}).on('click', '.save', function(){
+		let form = $(this).parent().parent();
+		if(!form.find('.title').val().length){
+			$.overloadError('请输入标题');
+			return false;
+		}
+		form.submit();
+	}).on('click', '.del', function(){
+		let form = $(this).parent().parent();
+		if(Number(form.find('.id').val())===0){
+			form.parent().remove();
+			return false;
+		}
+		if(!confirm('确定要删除吗？'))return false;
+		form.attr('action', '/api/article3/delete').submit();
+	});
+	$('.url a').on('click', function(){
+		let url = $('#url').val();
+		if(!url.length){
+			$.overloadError('请输入跳转网址');
+			return false;
+		}
+		$.postJSON('/api/article3/setUrl', { url:url }, function(){
+			$.overloadSuccess('保存成功');
+		});
+	});
+});
+</script>

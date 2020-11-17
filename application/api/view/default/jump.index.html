@@ -1,0 +1,190 @@
+{include file="header.html"}
+<style>
+.jump-box{ text-align:left; margin:0; font-size:0.14rem; padding:0.2rem; width:7.2rem; box-sizing:border-box; }
+.jump-box .title{ height:0.24rem; line-height:0.24rem; margin-bottom:0.2rem; }
+.jump-box .title:after{ content:""; clear:both; }
+.jump-box .title div{ float:left; margin-right:0.15rem; }
+.jump-box .title select{ min-width:1.4rem; appearance:auto; border-radius:0.03rem; height:0.24rem; }
+.jump-box .title big.selectpicker{ vertical-align:middle; }
+.jump-box .title > div > a{ display:inline-block; vertical-align:middle; width:1rem; height:100%; color:#419bf9; box-sizing:border-box; text-align:center; border-radius:0.04rem; border:0.01rem solid #419bf9; }
+.jump-box .title i{ width:0.2rem; height:0.2rem; display:inline-block; vertical-align:middle; }
+.jump-box ul li{ margin-bottom:0.15rem; padding:0.07rem 0.1rem 0.1rem 0.1rem; border-radius:0.07rem; border:0.01rem solid #eee; background:#f9f9f9; }
+.jump-box ul li label{ display:block; padding:0 0.34rem 0 0.8rem; height:0.3rem; line-height:0.3rem; margin-top:0.05rem; }
+.jump-box ul li label a{ display:block; float:right; margin-right:-0.34rem; margin-top:0.03rem; width:0.24rem; height:100%; background:no-repeat center center; background-size:0.24rem 0.24rem; }
+.jump-box ul li label a.del{ background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%201024%201024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M512%2064.580854c-248.312412%200-449.610044%20200.316282-449.610044%20447.418123s201.297632%20447.419146%20449.610044%20447.419146%20449.610044-200.316282%20449.610044-447.418123S760.313435%2064.580854%20512%2064.580854zM512%20903.595746c-216.272695%200-391.595746-175.323051-391.595746-391.595746s175.323051-391.595746%20391.595746-391.595746%20391.595746%20175.323051%20391.595746%20391.595746S728.272695%20903.595746%20512%20903.595746z%22%20fill%3D%22%23d15b47%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M700.546214%20541.006637%20323.453786%20541.006637c-15.954367%200-29.006637-13.053294-29.006637-29.006637l0%200c0-15.954367%2013.053294-29.006637%2029.006637-29.006637l377.092427%200c15.954367%200%2029.006637%2013.053294%2029.006637%2029.006637l0%200C729.552851%20527.953344%20716.499557%20541.006637%20700.546214%20541.006637z%22%20fill%3D%22%23d15b47%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E"); background-size:0.26rem 0.26rem; }
+.jump-box ul li label a.add{ background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%201024%201024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M512%2020.48C241.664%2020.48%2020.48%20241.664%2020.48%20512s221.184%20491.52%20491.52%20491.52%20491.52-221.184%20491.52-491.52S782.336%2020.48%20512%2020.48z%20m0%20921.6C274.432%20942.08%2081.92%20749.568%2081.92%20512S274.432%2081.92%20512%2081.92s430.08%20192.512%20430.08%20430.08-192.512%20430.08-430.08%20430.08z%22%20fill%3D%22%23419bf9%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M706.56%20481.28h-163.84v-163.84c0-16.384-14.336-30.72-30.72-30.72s-30.72%2014.336-30.72%2030.72v163.84h-163.84c-16.384%200-30.72%2014.336-30.72%2030.72s14.336%2030.72%2030.72%2030.72h163.84v163.84c0%2016.384%2014.336%2030.72%2030.72%2030.72s30.72-14.336%2030.72-30.72v-163.84h163.84c16.384%200%2030.72-14.336%2030.72-30.72s-14.336-30.72-30.72-30.72z%22%20fill%3D%22%23419bf9%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E"); }
+.jump-box ul li label span{ display:block; float:left; margin-left:-0.8rem; width:0.8rem; height:100%; }
+.jump-box ul li label input{ box-sizing:border-box; width:100%; height:100%; background-color:transparent; border:0; border-bottom:0.01rem solid #ddd; font-size:0.14rem; }
+.jump-box ul li label:last-child{ margin-top:0.02rem; }
+.jump-box ul li label:last-child input{ border:0; }
+.jump-box .bottom{ margin-top:0.2rem; height:0.28rem; line-height:0.26rem; overflow:hidden; }
+.jump-box .bottom a{ display:block; float:left; margin-right:0.2rem; width:1rem; height:100%; color:#419bf9; box-sizing:border-box; text-align:center; border-radius:0.04rem; border:0.01rem solid #419bf9; }
+.to-top, .to-top:hover, .to-bottom, .to-bottom:hover{ position:fixed; z-index:10; top:0.5rem; right:0.1rem; text-decoration:none; width:0.3rem; height:0.3rem; overflow:hidden; border-radius:100%; background:#419bf9 url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%201024%201024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M792.855%20465.806c-6.24-6.208-14.369-9.312-22.56-9.312s-16.447%203.169-22.688%209.44l-207.91%20207.74v-565.28c0-17.697-14.336-32-32-32s-32.002%2014.303-32.002%2032v563.712l-206.24-206.164c-6.271-6.209-14.432-9.344-22.624-9.344-8.224%200-16.417%203.135-22.656%209.407-12.511%2012.513-12.48%2032.768%200.032%2045.248L483.536%20770.38c3.265%203.263%207.104%205.6%2011.136%207.135%204%201.793%208.352%202.88%2013.024%202.88%201.12%200%202.08-0.544%203.2-0.64%208.288%200.064%2016.608-3.009%2022.976-9.408l259.11-259.292c12.48-12.511%2012.448-32.8-0.127-45.248zM892.561%20875.531c0%2017.665-14.303%2032.001-31.999%2032.001h-704c-17.665%200-32-14.334-32-31.999s14.335-32%2032-32h704c17.696%200%2032%2014.334%2032%2031.998z%22%20fill%3D%22%23ffffff%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") no-repeat center center; background-size:0.16rem 0.16rem; }
+.to-top, .to-top:hover{ top:0.1rem; -webkit-transform:rotate(180deg); transform:rotate(180deg); }
+@media (max-width: 720px) {
+	.jump-box .title{ height:auto; }
+	.jump-box .title div{ float:none; clear:both; margin-bottom:0.05rem; }
+	.jump-box{ width:100%; font-size:0.12rem; padding:0.1rem; }
+	.jump-box ul li label{ padding-left:0.6rem; }
+	.jump-box ul li label span{ width:0.6rem; margin-left:-0.6rem; }
+	.jump-box ul li label input{ font-size:0.12rem; }
+	.to-top, .to-bottom{ display:none; }
+}
+</style>
+
+<body>
+<form class="jump-box" method="post" action="?">
+	<input type="hidden" id="url" value="{$data.url}" />
+	<div class="title">
+		<div>
+			当前储存桶
+			<select class="list" name="bucket">
+				{foreach from=$data.list item=g}
+				<option value="{$g}">{$g}</option>
+				{/foreach}
+			</select>
+		</div>
+		<div>
+			文件夹
+			<i class="hidden preloader-gray"></i>
+			<select class="dir hidden" search="true" name="dir"></select>
+		</div>
+		<div>
+			<a href="javascript:void(0)">添加文件夹</a>
+		</div>
+	</div>
+	<ul></ul>
+	<div class="bottom">
+		<a href="javascript:void(0)">保存</a>
+	</div>
+</form>
+<a class="to-top" href="javascript:void(0)"></a>
+<a class="to-bottom" href="javascript:void(0)"></a>
+
+{include file="footer.html"}
+<script>
+let thisUrl = '', createUrl = '', oldUrl = '';
+function getBucket(first){
+	$('i').removeClass('hidden');
+	$('ul').html('');
+	let bucket = $('.list').selected().val();
+	$.getJSON('/api/jump/getBucket', { bucket:bucket }, function(json){
+		$('i').addClass('hidden');
+		let html = '', dir = json.data[0];
+		if(first && $.localStorage('getDir'))dir = $.localStorage('getDir');
+		$.each(json.data, function(){
+			html += '<option value="'+this+'" '+(dir===this?'selected':'')+'>'+this+'</option>';
+		});
+		$('.dir').html(html).removeClass('hidden').selectpicker({ only:'web' });
+		thisUrl = 'https://' + $('#url').val() + '/';
+		createUrl = thisUrl + '{$data.path}/' + dir;
+		if(first)oldUrl = createUrl;
+		getFile(bucket, dir);
+	});
+}
+function getFile(bucket, dir){
+	$('ul').html('');
+	$.overload();
+	$.getJSON('/api/jump/getFile', { bucket:bucket, dir:dir }, function(json){
+		let ul = $('ul').html('');
+		if(!$.isArray(json.data)){
+			let html = optionTemplate({
+				file: createUrl + '/g1.html',
+				url: createUrl + '/g2.html'
+			});
+			ul.html(html);
+			return;
+		}
+		let html = '';
+		$.each(json.data, function(){
+			html += optionTemplate({
+				file: thisUrl + this.self,
+				target: this.target,
+				url: this.url,
+				mark: this.mark
+			});
+		});
+		ul.html(html);
+	});
+}
+function changeUrl(){
+	$('.readonly, .url').each(function(){
+		$(this).val($(this).val().replace(oldUrl, createUrl));
+	});
+	oldUrl = createUrl;
+}
+function optionTemplate(item){
+	return '<li>\
+		<label><a href="javascript:void(0)" class="del"></a><span>本页</span><input type="text" name="file[]" class="readonly" value="'+(item.file||'')+'" readonly /></label>\
+		<label><a href="javascript:void(0)" class="add"></a><span>展示页面</span><input type="text" name="target[]" value="'+(item.target||'')+'" /></label>\
+		<label><span>跳转目标</span><input type="text" class="url" name="url[]" value="'+(item.url||'')+'" /></label>\
+		<label><span>备注</span><input type="text" name="mark[]" value="'+(item.mark||'')+'" /></label>\
+	</li>';
+}
+$(function(){
+	$('.list').on('change', function(){
+		let url = $('#url'), bucket = $(this).selected().val();
+		$.localStorage('getBucket', bucket);
+		url.val(url.val().replace(/^.+?-(\d+)\./, bucket+'-$1.'));
+		getBucket();
+	}).selectpicker({ only:'web' });
+	if($.localStorage('getBucket')){
+		$('.list').selected($.localStorage('getBucket'));
+	}else{
+		getBucket(true);
+	}
+	$('.dir').on('change', function(){
+		let dir = $(this).selected().val();
+		$.localStorage('getDir', dir);
+		thisUrl = 'https://' + $('#url').val() + '/';
+		createUrl = thisUrl + '{$data.path}/' + dir;
+		getFile($('.list').selected().val(), dir);
+	});
+	$('.jump-box .title > div > a').on('click', function(){
+		let dir = prompt('文件夹名称只能字母', '');
+		if(!dir || !dir.length)return false;
+		let dirs = [];
+		$('.dir option').each(function(){
+			dirs.push($(this).val());
+		});
+		if($.inArray(dir, dirs) > -1){
+			$.overloadError('该文件夹已存在');
+			return false;
+		}
+		thisUrl = 'https://' + $('#url').val() + '/';
+		createUrl = thisUrl + '{$data.path}/' + dir;
+		console.log(oldUrl)
+		$('.dir').append('<option value="'+dir+'">'+dir+'</option>').selected(dir).selectpicker({ only:'web' });
+	});
+	$('.to-top').on('click', function(){
+		$.scrollto('.jump-box');
+	});
+	$('.to-bottom').on('click', function(){
+		$.scrollto('.bottom');
+	});
+	$('ul').on('click', '.readonly', function(){
+		$(this).focus().select();
+	}).on('click', 'label a', function(){
+		if($(this).is('.del')){
+			if($('ul li').length<=1){
+				$.overloadWarning('至少需要一项');
+				return;
+			}
+			$(this).parents('li').remove();
+		}else{
+			let html = optionTemplate({
+				file: createUrl + '/g.html',
+				url: createUrl + '/g.html'
+			});
+			$(this).parent().parent().after(html);
+		}
+		$('ul li').each(function(i){
+			$(this).find('.readonly').val(createUrl+'/g'+(i+1)+'.html');
+			if($(this).find('.url').val().indexOf(createUrl+'/g')>-1)$(this).find('.url').val(createUrl+'/g'+(i+2)+'.html');
+		});
+	});
+	$('.jump-box .bottom a').on('click', function(){
+		$('.jump-box').submit();
+	});
+});
+</script>

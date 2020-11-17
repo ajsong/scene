@@ -1,0 +1,336 @@
+{include file="header.html"}
+<style>
+.tips-panel .fa-copy{ color:#ffb752; }
+.tips-panel .fa-html5{ color:#87b87f; }
+.tips-panel .fa-external-link-square-alt{ color:#428bca; }
+</style>
+<script type="text/javascript" src="/js/clipboard.js"></script>
+<script type="text/javascript" src="/js/parasiticList.js"></script>
+<div class="page-header">
+	<h6>
+		文章管理
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			文章列表
+		</small>
+		<div>
+			{if core::check_permission('article', 'bucket')}<a href="javascript:void(0)" class="bucket tips" data-type="cos" tips-list="putBucketValidation" tips-callback="putBucketValidationCallback" tips-follow="auto">创建储存桶</a>{/if}
+			{if core::check_permission('article', 'add')}<a href="?app=article&act=add" class="iframe-layer">添加文章</a>{/if}
+		</div>
+	</h6>
+</div>
+
+<form class="form-inline" action="?" method="get">
+<input type="hidden" name="app" id="app" value="{$app}" />
+<input type="hidden" name="act" id="act" value="{$act}" />
+<div style="float:right;line-height:34px;">总点击 <strong style="color:red;">{$clicks}</strong>　昨点击 <strong style="color:blue;">{$yesterday_clicks}</strong>　今点击 <strong style="color:green;">{$today_clicks}</strong></div>
+<input type="text" placeholder="ID" name="id" value="{$id}" />
+<input type="text" class="input-medium" placeholder="关键词" name="keyword" value="{$keyword}" />
+<!--
+<div class="checkbox"><label><input type="checkbox" name="ext_property[]" id="ext_property1" value="1" class="ace" {if is_array($ext_property) && in_array(1,$ext_property)}checked{/if} /><span class="lbl">推荐</span></label></div>
+<div class="checkbox"><label><input type="checkbox" name="ext_property[]" id="ext_property2" value="2" class="ace" {if is_array($ext_property) && in_array(2,$ext_property)}checked{/if} /><span class="lbl">热门</span></label></div>
+-->
+<select name="type">
+	<option value="">类型</option>
+	<option value="0" {if $type=='0'}selected{/if}>图文</option>
+	<option value="1" {if $type=='1'}selected{/if}>视频</option>
+</select>
+<select name="category_id">
+	<option value="">分类</option>
+	{foreach from=$categories item=g}
+	<option value="{$g->id}" {if $g->id==$category_id}selected{/if}>{$g->name}</option>
+	{/foreach}
+</select>
+<button type="submit" class="btn btn-info btn-sm">
+	<i class="ace-icon fa fa-search bigger-110"></i>搜索
+</button>
+</form>
+
+<div class="table-content">
+<table id="simple-table" class="table table-striped table-bordered table-hover" muldelete="/gm/api/article/multiple_delete" permission="article,delete">
+	<thead>
+		<tr>
+			<th width="100">ID</th>
+			<th>标题</th>
+			<th>类型</th>
+			<th>分类</th>
+			<th>发表人</th>
+			<th data-sortby="clicks">点击数</th>
+			<th>更多列表</th>
+			<th>热文</th>
+			<th>精选</th>
+			<th>排序</th>
+			<th>状态</th>
+			<th>详情状态</th>
+			<th>添加时间</th>
+			<th width="100">操作</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		{if is_array($rs) && count($rs)}
+		{foreach from=$rs item=row}
+		<tr>
+			<td>{$row->id}</td>
+			<td><div class="limit"><a href="?app=article&act=edit&id={$row->id}" title="{$row->title}" class="iframe-layer">{$row->title}</a></div></td>
+			<td>{if $row->type==0}{changeColor('#R图文#')}{else}{changeColor('#B视频#')}{/if}</td>
+			<td>{$row->category_name}</td>
+			<td>{if $row->admin_name && $row->admin_id>1}{$row->admin_name}{else}-{/if}</td>
+			<td>{$row->clicks}</td>
+			<td><input type="checkbox" data-type="app" value="{$row->id}" coo-ajax="post" data-url="/gm/api/article/more" data-data="{ id:{$row->id}, more:this.checked }" {if $row->more==1}checked{/if} /></td>
+			<td><input type="checkbox" data-type="app" value="{$row->id}" coo-ajax="post" data-url="/gm/api/article/recommend" data-data="{ id:{$row->id}, recommend:this.checked }" {if $row->recommend==1}checked{/if} /></td>
+			<td><input type="checkbox" data-type="app" value="{$row->id}" coo-ajax="post" data-url="/gm/api/article/featured" data-data="{ id:{$row->id}, featured:this.checked }" {if $row->featured==1}checked{/if} /></td>
+			<td>{$row->sort}</td>
+			<td><input type="checkbox" data-type="app" value="{$row->id}" coo-ajax="post" data-url="/gm/api/article/status" data-data="{ id:{$row->id}, status:this.checked }" {if $row->status==1}checked{/if} /></td>
+			<td><input type="checkbox" data-type="app" value="{$row->id}" coo-ajax="post" data-url="/gm/api/article/detail_status" data-data="{ id:{$row->id}, detail_status:this.checked }" {if $row->detail_status==1}checked{/if} /></td>
+			<td>{date('Y-m-d H:i',$row->add_time)}</td>
+			<td>
+				<a class="copyurl tips" data-id="{$row->id}" data-type="{$row->type}" data-admin="{$row->admin}" href="javascript:void(0)" tips-list="getList" tips-callback="getListCallback" tips-follow="top" tips-fixy="-5">
+					<button type="button" class="btn btn-xs btn-warning">
+					<i class="ace-icon fa fa-copy bigger-120"></i>
+				</button>
+				</a>
+				<a class="copycdn tips" data-id="{$row->id}" data-type="{$row->type}" data-admin="{$row->admin}" href="javascript:void(0)" tips-list="getCdn" tips-follow="top" tips-fixy="-5">
+					<button type="button" class="btn btn-xs btn-primary">
+					<i class="ace-icon fa fa-external-link-square-alt bigger-120"></i>
+				</button>
+				</a>
+				<a class="parasitic tips" data-id="{$row->id}" href="javascript:void(0)" tips-list="getParasiticList" tips-follow="top" tips-fixy="-5">
+					<button type="button" class="btn btn-xs btn-pink">
+					<i class="ace-icon fa fa-home bigger-120"></i>
+				</button>
+				</a>
+				<a href="?app=article&act=edit&id={$row->id}">
+					<button type="button" class="btn btn-xs btn-info">
+					<i class="ace-icon fa fa-pencil bigger-120"></i>
+				</button>
+				</a>
+				{if core::check_permission('article', 'delete')}
+				<a href="?app=article&act=delete&id={$row->id}" class="delete">
+					<button type="button" class="btn btn-xs btn-danger">
+					<i class="ace-icon far fa-trash-alt bigger-120"></i>
+				</button>
+				</a>
+				{/if}
+			</td>
+		</tr>
+		{/foreach}
+		{literal}
+		<tr class="template">
+			<td>{$row->id}</td>
+			<td><div class="limit"><a href="?app=article&act=edit&id={$row->id}" title="{$row->title}" class="iframe-layer">{$row->title}</a></div></td>
+			<td>{if $row->type==0}{changeColor('#R图文#')}{else}{changeColor('#B视频#')}{/if}</td>
+			<td>{$row->category_name}</td>
+			<td>{if $row->admin_id>1 && $row->admin_name && $row->admin_name.length}{$row->admin_name}{else}-{/if}</td>
+			<td>{$row->clicks}</td>
+			<td><input type="checkbox" data-type="app" value="{$row->id}" coo-ajax="post" data-url="/gm/api/article/more" data-template-data-data="setMoreData" data-template-attr="{if $row->more==1}checked{/if}" /></td>
+			<td><input type="checkbox" data-type="app" value="{$row->id}" coo-ajax="post" data-url="/gm/api/article/recommend" data-template-data-data="setRecommendData" data-template-attr="{if $row->recommend==1}checked{/if}" /></td>
+			<td><input type="checkbox" data-type="app" value="{$row->id}" coo-ajax="post" data-url="/gm/api/article/featured" data-template-data-data="setFeaturedData" data-template-attr="{if $row->featured==1}checked{/if}" /></td>
+			<td>{$row->sort}</td>
+			<td><input type="checkbox" data-type="app" value="{$row->id}" coo-ajax="post" data-url="/gm/api/article/status" data-template-data-data="setStatusData" data-template-attr="{if $row->status==1}checked{/if}" /></td>
+			<td><input type="checkbox" data-type="app" value="{$row->id}" coo-ajax="post" data-url="/gm/api/article/detail_status" data-template-data-data="setDetailStatusData" data-template-attr="{if $row->detail_status==1}checked{/if}" /></td>
+			<td>{Number($row->add_time).formatDate('yyyy-mm-dd hh:ii')}</td>
+			<td>
+				<a class="copyurl tips" data-id="{$row->id}" data-type="{$row->type}" data-admin="{$row->admin}" href="javascript:void(0)" tips-list="getList" tips-callback="getListCallback" tips-follow="top" tips-fixy="-5">
+					<button type="button" class="btn btn-xs btn-warning">
+					<i class="ace-icon fa fa-copy bigger-120"></i>
+				</button>
+				</a>
+				<a class="copycdn tips" data-id="{$row->id}" data-type="{$row->type}" data-admin="{$row->admin}" href="javascript:void(0)" tips-list="getCdn" tips-follow="top" tips-fixy="-5">
+					<button type="button" class="btn btn-xs btn-primary">
+					<i class="ace-icon fa fa-external-link-square-alt bigger-120"></i>
+				</button>
+				</a>
+				<a class="parasitic tips" data-id="{$row->id}" href="javascript:void(0)" tips-list="getParasiticList" tips-follow="top" tips-fixy="-5">
+					<button type="button" class="btn btn-xs btn-pink">
+					<i class="ace-icon fa fa-home bigger-120"></i>
+				</button>
+				</a>
+				<a href="?app=article&act=edit&id={$row->id}">
+					<button type="button" class="btn btn-xs btn-info">
+					<i class="ace-icon fa fa-pencil bigger-120"></i>
+				</button>
+				</a>
+				{if core::check_permission('article', 'delete')}
+				<a href="?app=article&act=delete&id={$row->id}" class="delete">
+					<button type="button" class="btn btn-xs btn-danger">
+					<i class="ace-icon far fa-trash-alt bigger-120"></i>
+				</button>
+				</a>
+				{/if}
+			</td>
+		</tr>
+		{/literal}
+		{else}
+		<tr bgcolor="white"><td colspan="15" height="50">暂无记录</td></tr>
+		{/if}
+
+	</tbody>
+</table>
+</div>
+<textarea class="hidden">{foreach from=$buckets item=g},{$g->bucket}{/foreach}</textarea>
+<div class="mypage">
+	共 {$sharepage.num_records} 个记录  {$sharepage.current_page} / {$sharepage.num_pages} 页  {$sharepage.first_page} {$sharepage.prev} {$sharepage.nav} {$sharepage.next} {$sharepage.last_page}
+</div>
+{include file="footer.html"}
+<script>
+/*{literal}*/
+let setAjaxPermission = false, permission = 0;
+function templateBefore(code){
+	return code.replace(/if \(core::check_permission\('(\w+)', '(\w+)'\)\) {([\s\S]+?)}/, function(_$, $1, $2, $3){
+		if(setAjaxPermission)return permission ? $3 : '';
+		setAjaxPermission = true;
+		return "$.ajax({\n\
+	url: '{/literal}{$GM_PATH}{literal}api/core/checkPermission?application="+$1+"&action="+$2+"',\n\
+	type: 'get',\n\
+	dataType: 'json',\n\
+	async: false,\n\
+	success: function(json){\n\
+		if(json.error==0 && json.data==1){\n\
+		permission = json.data;\
+		"+$3+"\
+		}\n\
+	}\n\
+});";
+	});
+}
+/*{/literal}*/
+function setMoreData(){
+	return '{ id:'+this.val()+', more:this.checked }';
+}
+function setRecommendData(){
+	return '{ id:'+this.val()+', recommend:this.checked }';
+}
+function setFeaturedData(){
+	return '{ id:'+this.val()+', featured:this.checked }';
+}
+function setStatusData(){
+	return '{ id:'+this.val()+', status:this.checked }';
+}
+function setDetailStatusData(){
+	return '{ id:'+this.val()+', detail_status:this.checked }';
+}
+function getList(){
+	return [
+		{ icon:'fa fa-copy', cls:'copy', text:'复制小程序链接', attr:'data-clipboard-text=`/pages/index/'+(Number(this.attr('data-type'))===0?'detail':'video')+'?id='+this.attr('data-id')+'`', callback:'this.hide' },
+		{ icon:'fab fa-html5', cls:'copy', text:'复制H5链接', attr:'data-clipboard-text=`{$host}/article/'+this.attr('data-admin')+'/'+this.attr('data-id')+'`', callback:'this.hide' }
+	];
+}
+function getListCallback(){
+	let clipboard = new ClipboardJS('.tips-panel .copy');
+	clipboard.on('success', function(e) {
+		$.overloadSuccess('复制成功');
+	});
+}
+function getCdn(){
+	let _this = this, data = $('textarea.hidden').val().substring(1).split(','), res = [];
+	$.each(data, function(){
+		res.push({ cls:'cdn', text:'储存到'+this+'', attr:'data-id=`'+_this.attr('data-id')+'` data-type=`'+_this.attr('data-type')+'` data-bucket=`'+this+'`', callback:'this.hide' });
+	});
+	return res;
+}
+function putBucketValidation(){
+	let _this = this, data = $('textarea.hidden').val().substring(1).split(','), res = [];
+	$.each(data, function(){
+		res.push({ cls:'valid', text:'上传验证到'+this+'储存桶', attr:'data-type=`'+_this.attr('data-type')+'` data-bucket=`'+this+'`', callback:'this.hide' });
+	});
+	return res;
+}
+function putBucketValidationCallback(){
+	$('a.valid').each(function(){
+		$(this).ajaxupload({
+			url: '{$GM_PATH}api/article/putObject/type/'+$(this).attr('data-type')+'/bucket/'+$(this).attr('data-bucket'),
+			fileType: ['txt'],
+			before: function(){
+				$.overload();
+			},
+			callback: function(){
+				$.overloadSuccess('上传成功');
+			}
+		});
+	});
+}
+$(function(){
+	$(document.body).data('timeout', 50000);
+	$('body').on('click', 'a.cdn', function(){
+		let self = $(this);
+		$.overload();
+		$.getJSON('{$GM_PATH}api/article/oss/id/'+self.attr('data-id')+'/type/'+self.attr('data-type')+'/return_array/1/bucket/'+self.attr('data-bucket'), function(json){
+			let text = json.data[1];
+			let parasitic = new ClipboardJS(null, {
+				rightnow: true,
+				text: function(){
+					return text;
+				}
+			});
+			parasitic.on('success', function() {
+				setTimeout(function(){
+					$.overloadSuccess('复制成功');
+				}, 400);
+			});
+			parasitic.on('error', function() {
+				setTimeout(function(){
+					$.modalView('浏览器安全机制，请手动复制 (Ctrl+C)', {
+						width: 500,
+						item: {
+							readonly: true,
+							value: text.replace(/&not/g, '&amp;not'),
+							type: 'textarea',
+							height: 100
+						}
+					});
+					setTimeout(function(){
+						$('.modalView textarea').on('focus', function(){
+							$(this).select();
+						}).focus();
+					}, 100);
+				}, 400);
+			});
+		});
+	}).on('click', 'a.parasitic-list', function(){
+		let self = $(this);
+		$.overload();
+		$.getJSON('{$GM_PATH}api/article/oss/id/'+self.attr('data-id')+'/type/'+self.attr('data-type'), function(json){
+			let text = json.data;
+			let parasitic = new ClipboardJS(null, {
+				rightnow: true,
+				text: function(){
+					return text;
+				}
+			});
+			parasitic.on('success', function() {
+				setTimeout(function(){
+					$.overloadSuccess('复制成功');
+				}, 400);
+			});
+			parasitic.on('error', function() {
+				setTimeout(function(){
+					$.modalView('浏览器安全机制，请手动复制 (Ctrl+C)', {
+						width: 500,
+						item: {
+							readonly: true,
+							value: text.replace(/&not/g, '&amp;not'),
+							type: 'textarea',
+							height: 100
+						}
+					});
+					setTimeout(function(){
+						$('.modalView textarea').on('focus', function(){
+							$(this).select();
+						}).focus();
+					}, 100);
+				}, 400);
+			});
+		});
+	});
+	$('.bucket').on('click', function(){
+		let bucket = prompt('储存桶名称，只能包含字母、数字', '');
+		if(!bucket || !bucket.length)return false;
+		$.overload();
+		$.postJSON('/gm/api/article/createBucket', { bucket:bucket, type:$(this).attr('data-type') }, function(){
+			$.overloadSuccess('创建成功');
+			window.location.reload();
+		});
+	});
+});
+</script>

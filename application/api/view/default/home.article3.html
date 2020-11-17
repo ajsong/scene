@@ -1,0 +1,80 @@
+{include file="header.html"}
+<script>
+let system = { win:false, mac:false, xll:false, ipad:false }, p = navigator.platform.toLowerCase();
+system.win = p.indexOf('win') > -1;
+system.mac = p.indexOf('mac') > -1;
+system.x11 = (p === 'x11') || (p.indexOf('linux') > -1);
+system.ipad = navigator.userAgent.match(/iPad/i) !== null;
+if (system.win || system.mac || system.x11 || system.ipad) {
+	location.href = 'https://www.baidu.com';
+}
+</script>
+<body>
+<div class="article">
+	<div class="notice">
+		<svg width="100%" height="30" xmlns="http://www.w3.org/2000/svg">
+			<text width="100%" font-family="microsoft yahei" font-size="14" y="20" x="29.5704" style="box-sizing:border-box;color:rgb(255,0,0);">
+			<tspan style="box-sizing:border-box;font-size:0.13rem;" fill="#fff">内容过于敏感！央视已经全面禁播！本平台冒险为您揭秘真相！马上删除！请点击想看的内容识别二维码进群查看！</tspan>
+			<animate attributeName="x" from="260" to="-300" begin="0s" dur="10s" repeatCount="indefinite" style="box-sizing:border-box;"></animate>
+			</text>
+		</svg>
+	</div>
+	<div class="pageView">
+		<div class="slide">
+			<ul>
+				{foreach from=$data.flashes item=g}
+				<li><a href="{$data.url}" style="background-image:url({$g->pic});"><span>{$g->title}</span></a></li>
+				{/foreach}
+			</ul>
+		</div>
+		<div class="pager"></div>
+	</div>
+	<ul class="list">
+		{foreach from=$data.list item=g}
+		<li>
+			<a href="{$data.url}" class="ge-bottom ge-light">
+				<div style="background-image:url({$g->pic});"></div>
+				<span>{$g->title}</span>
+				<font>{$g->title}</font>
+				<label>阅读：{$g->clicks}</label>
+			</a>
+		</li>
+		{/foreach}
+	</ul>
+	<!--<div class="qrcode hidden"><a href="javascript:void(0)"></a><div><img src="{$data.url}" /><span></span></div></div>-->
+</div>
+<div class="article-report">微信官方认证　<a href="/index/home/report">举报</a></div>
+{include file="footer.html"}
+<script>
+function resize(){
+	let pageView = $('.pageView');
+	pageView.autoHeight(320, 153);
+	$('.pageView li').css({ width:pageView.width(), height:pageView.height() });
+	pageView.touchmove({
+		pager: '.pager',
+		offset: 'right',
+		drag: true,
+		auto: 4000,
+		autoWait: 4000,
+		complete: function(){
+			let pager = $('.pager');
+			pager.css('margin-left', -pager.width()/2);
+		}
+	});
+}
+$(window).resize(resize);
+$(function(){
+	resize();
+	$('.slide a, .list a').on('click', function(){
+		let qrcode = $('.qrcode');
+		if(qrcode.hasClass('hidden')){
+			qrcode.removeClass('hidden');
+		}else{
+			qrcode.addClass('hidden');
+		}
+	});
+	/*$('.qrcode a').on('click', function(){
+		$('.qrcode').addClass('hidden');
+	});*/
+});
+</script>

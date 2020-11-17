@@ -1,0 +1,28 @@
+{include file="header.html"}
+<body class="domains-body">
+
+<div class="domains-index">
+	<div><label for="root"><select id="root" class="root">
+		<option value="h5">h5微场景</option>
+		<option value="dingdan">订单系统</option>
+		<option value="scene">阿烽的微场景</option>
+	</select></label></div>
+	<div><span><textarea class="domains" placeholder="请输入域名，一行一个域名"></textarea></span></div>
+	<a href="javascript:void(0)">添加域名</a>
+</div>
+
+{include file="footer.html"}
+<script>
+$(function(){
+	$('.domains-index a').on('click', function(){
+		let domains = $('.domains');
+		if(!domains.val().length){
+			$.overloadError('请输入域名');
+			return false;
+		}
+		$.postJSON('/api/domains/setDomains', { root:$('.root').selected().val(), domains:domains.val() }, function(json){
+			$.overloadSuccess('网址已添加<br />5分钟后尝试打开网址');
+		});
+	});
+});
+</script>

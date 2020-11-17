@@ -1,0 +1,91 @@
+{include file="header.html"}
+
+<div class="page-header">
+	<h6>
+		用户反馈
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			{if $admin->id==1}<a href="/gm?app={$app}&act={$act}&self=1">用户反馈</a>{else}用户反馈{/if}
+		</small>
+	</h6>
+</div>
+
+<form class="form-inline" action="?" method="get">
+<input type="hidden" name="app" id="app" value="{$app}" />
+<input type="hidden" name="act" id="act" value="{$act}" />
+<input type="hidden" name="self" id="self" value="{$self}" />
+<input type="text" class="input-medium" placeholder="关键词" name="keyword" value="{$keyword}" />
+<button type="submit" class="btn btn-info btn-sm">
+	<i class="ace-icon fa fa-search bigger-110"></i>搜索
+</button>
+</form>
+
+<div class="table-content">
+<table id="simple-table" class="table table-striped table-bordered table-hover">
+	<thead>
+		<tr>
+			<th>小程序</th>
+			<th>类型</th>
+			<th>所属</th>
+			<th>内容</th>
+			<th>IP</th>
+			<th>反馈时间</th>
+			{if core::check_permission('feedback', 'delete')}
+			<th>操作</th>
+			{/if}
+		</tr>
+	</thead>
+
+	<tbody>
+		{foreach from=$rs item=row name=row}
+		<tr>
+			<td>
+				{if $row->miniprogram_id>0}
+				<div style="width:130px;"><img src="{$row->pic}" width="30" style="float:left;margin-right:5px;border-radius:2px;" /><a href="?app=wechat&act=miniprogram_config&id={$row->miniprogram_id}" class="iframe-layer">{$row->miniprogram_name}</a></div>
+				{else}
+				-
+				{/if}
+			</td>
+			<td>
+				{if $row->miniprogram_id>0}
+				{if $row->miniprogram_type==0}<font color="red">图文</font>
+				{else if $row->miniprogram_type==1}<font color="blue">视频</font>
+				{else if $row->miniprogram_type==2}<font color="green">祝福</font>
+				{else if $row->miniprogram_type==3}<font color="#9370db">佛学</font>
+				{/if}
+				{else}
+				{$row->mobile}
+				{/if}
+			</td>
+			<td>
+				{if $row->miniprogram_id>0}
+				<a href="?app={$row->parent_type}&act=edit&id={$row->parent_id}" class="iframe-layer">{$row->parent_name}</a>
+				{else}
+				{$row->parent_name}
+				{/if}
+			</td>
+			<td>{$row->content}</td>
+			<td>{$row->ip}</td>
+			<td>{date('Y-m-d H:i',$row->add_time)}</td>
+			{if core::check_permission('feedback', 'delete')}
+			<td>
+				<a href="?app=feedback&act=delete&id={$row->id}" class="delete">
+					<button type="button" class="btn btn-xs btn-danger">
+					<i class="ace-icon far fa-trash-alt bigger-120"></i>
+				</button>
+				</a>
+			</td>
+			{/if}
+		</tr>
+		{foreachelse}
+		<tr bgcolor="white"><td colspan="13" height="50">暂无记录</td></tr>
+		{/foreach}
+
+	</tbody>
+</table>
+</div>
+<div class="mypage">
+	共 {$sharepage.num_records} 个记录  {$sharepage.current_page} / {$sharepage.num_pages} 页  {$sharepage.first_page} {$sharepage.prev} {$sharepage.nav} {$sharepage.next} {$sharepage.last_page}
+</div>
+
+{include file="footer.html"}

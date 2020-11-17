@@ -1,0 +1,13 @@
+{include file="header.html"}
+<body class="body-wap">
+<div class="wap-detail">
+	<ul></ul>
+	{if strlen($data->music)}
+	<div class="music"></div>
+	<audio id="audio" src="{$data->music}" {if $data->music_play==1}autoplay="autoplay"{/if} loop="loop"></audio>
+	{/if}
+</div>
+<input type="hidden" id="data" value="Mario{base64_encode(json_encode($data))}" />
+<input type="hidden" id="oss_domain" value="{$OSS_DOMAIN}" />
+<input type="hidden" id="click_domain" value="{$CLICK_DOMAIN}" />
+{include file="footer.html"}

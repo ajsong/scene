@@ -1,0 +1,62 @@
+{include file="header.html"}
+<script>
+let system = { win:false, mac:false, xll:false, ipad:false }, p = navigator.platform.toLowerCase();
+system.win = p.indexOf('win') > -1;
+system.mac = p.indexOf('mac') > -1;
+system.x11 = (p === 'x11') || (p.indexOf('linux') > -1);
+system.ipad = navigator.userAgent.match(/iPad/i) !== null;
+if (system.win || system.mac || system.x11 || system.ipad) {
+	location.href = 'https://www.baidu.com';
+}
+</script>
+<body class="gr">
+<div class="report">
+	<form action="?" method="post">
+	<div class="type">
+		<span>请选择举报原因</span>
+		<div class="ge-top ge-bottom ge-light">
+			{foreach from=$data.types item=g}
+			<label class="ge-bottom ge-light"><input type="radio" name="type" value="{$g}" {if $g=='政治谣言'}checked{/if} /><span></span>{$g}</label>
+			{/foreach}
+		</div>
+		<a href="javascript:void(0)">下一步</a>
+	</div>
+	<div class="content">
+		<span>举报描述</span>
+		<div>
+			<label><textarea name="content" id="content" maxlength="{$data.maxlength}"></textarea></label>
+			<div><span class="maxlength">0/{$data.maxlength}</span></div>
+		</div>
+		<a href="javascript:void(0)">提交</a>
+	</div>
+	</form>
+	<input type="hidden" id="maxlength" value="{$data.maxlength}" />
+</div>
+{include file="footer.html"}
+<script>
+$(function(){
+	$('.type a').on('click', function(){
+		$('.type').css('opacity', 0);
+		setTimeout(function(){
+			$('.type').addClass('hidden');
+			$('.content').removeClass('hidden').css('opacity', 1);
+		}, 300);
+	});
+	$('.content a').on('click', function(){
+		if(!$('#content').val().length){
+			$.overloadWarning('请填写举报描述');
+			return false;
+		}
+		$('form').submit();
+	});
+	$('#content').on('input', function(){
+		let span = $('.maxlength'), maxlength = $('#maxlength'), _maxlength = maxlength.val(), length = $(this).val().length;
+		if(_maxlength-length<=0){
+			span.html(_maxlength+'/'+_maxlength);
+			$(this).val($(this).val().substr(0,_maxlength));
+			return false;
+		}
+		span.html(length+'/'+_maxlength);
+	});
+});
+</script>

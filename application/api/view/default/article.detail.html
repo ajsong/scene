@@ -1,0 +1,150 @@
+{include file="header.html"}
+<link type="text/css" href="{$data.oss_domain}/css/alertUI.css" rel="stylesheet" />
+<style>
+.tbox .contentbox{ font-size:0.16rem!important; color:#fff; text-shadow:0 0.01rem #666; }
+.ios7-alert .tbox{ background:rgba(153,153,153,0.9); }
+.ios7-alert .tbtn span{ font-size:0.15rem!important; color:#f00; text-shadow:0 0.01rem #666; }
+</style>
+<body>
+<div class="article-detail">
+	<div class="title">{$data.article->title}</div>
+	<div class="prev-view"></div>
+	<div class="con">{$data.article->content}</div>
+	<div class="next-view"></div>
+	<div class="footer">
+		<div class="url_origin"></div><a href="javascript:void(0)" class="report">举报</a><!--　阅读 <span class="clicks">{$data.article->clicks}</span>-->
+	</div>
+	{if strlen($data.article->music)}<div class="audio isPlaying"><audio loop src="{$data.article->music}" id="media" autoplay="" preload></audio></div>{/if}
+</div>
+{include file="footer.html"}
+<script>
+/*{if strlen($data.article->music)}*/
+document.addEventListener('DOMContentLoaded', function(){
+	function audioAutoPlay(){
+		document.addEventListener('WeixinJSBridgeReady', function(){
+			$('#media')[0].play();
+		}, false);
+	}
+	audioAutoPlay();
+});
+/*{/if}*/
+
+/*{if strlen($data.return_url)}*/
+(function(){
+	if(!window.history.pushState || !document.dispatchEvent)return;
+	let flag = true;
+	let voidFn = function(){ };
+	let fn = voidFn;
+	let dispatchFn = function(){
+		let e = document.createEvent('Event');
+		e.initEvent('popstate', true, true);
+		window.dispatchEvent(e);
+	};
+	window.addEventListener('load', function(){
+		window.history.replaceState({ }, '', window.location.href);
+		window.history.pushState({ }, '', window.location.href);
+		window.addEventListener('popstate', function(){
+			dispatchFn = voidFn;
+			if(!flag)location.href = '{$data.return_url}';
+			flag = false;
+		}, false);
+		setTimeout(function(){
+			fn = dispatchFn;
+			fn();
+		}, 20);
+	}, false);
+})();
+/*{/if}*/
+
+$(function(){
+	if($.browser.android){
+		alertUI({
+			cls: 'ios7-alert',
+			html: '避免阅读后找不到文章，建议转发给朋友或朋友圈继续阅读！',
+			height: 250,
+			nox: true,
+			fixd: true,
+			btns: [{
+				text: '我知道了',
+				click: function(){ alertUI() }
+			}]
+		});
+	}
+	$.postJSON('{$data.click_domain}/api/article/click', { id:'{$data.article->id}' }, function(json){
+		$('.clicks').html(json.data);
+	});
+	$.postJSON('{$data.click_domain}/api/article/item', { id:'{$data.article->id}', owner:'{$data.article->owner}' }, function(json){
+		if(json.data.prev && json.data.prev.length){
+			$('.prev-view').html('<div class="prev">'+json.data.prev+'</div>');
+		}
+		if(json.data.next && json.data.next.length){
+			$('.next-view').html('<div class="next">'+json.data.next+'</div>');
+		}
+		if(json.data.url_origin && json.data.url_origin.length){
+			$('.url_origin').html('<a href="'+json.data.url_origin+'">阅读原文</a>　');
+		}
+		if(json.data.return_url && json.data.return_url.length){
+			/*window.history.replaceState({ }, '', window.location.href);
+			window.history.pushState({ }, '', window.location.href);
+			window.onpopstate = function(){
+				location.href = json.data.return_url;
+			};*/
+			/*let href = window.location.href;
+			let flag = true;
+			let voidFn = function(){ };
+			let fn = voidFn;
+			let dispatchFn = function(){
+				let evt = document.createEvent('Event');
+				evt.initEvent('popstate', true, true);
+				window.dispatchEvent(evt);
+			};
+			window.history.replaceState({ }, '', href);
+			window.history.pushState({ }, '', href);
+			window.addEventListener('popstate', function(){
+				dispatchFn = voidFn;
+				if(!flag){
+					location.href = json.data.return_url;
+				}
+				flag = false;
+			}, false);
+			setTimeout(function(){
+				fn = dispatchFn;
+				fn();
+			}, 20);*/
+		}
+		if(json.data.jssdk && json.data.jssdk.length && json.data.share_url && json.data.share_url.length){
+			wxShareInit(json.data.jssdk, function(){
+				location.href = json.data.share_url;
+			});
+		}
+	});
+	$('.content img, .prev img, .next img').on('load', function(){
+		let _this = $(this);
+		if(_this.outerWidth(false)>290)_this.removeAttr('width').removeAttr('height').css({ width:'100%', height:'' });
+		setTimeout(function(){
+			_this.css('opacity', '');
+		}, 0);
+	}).each(function(){
+		let _this = $(this).css('opacity', 0);
+		if(this.complete)_this.trigger('load');
+	});
+	$('.audio').on('click', function(){
+		let _this = $(this);
+		if(_this.hasClass('isPlaying')){
+			_this.removeClass('isPlaying');
+			$('#media')[0].pause();
+		}else{
+			_this.addClass('isPlaying');
+			$('#media')[0].play();
+		}
+	});
+	$('.report').on('click', function(){
+		let iframe = document.createElement('IFRAME');
+		iframe.style.display = 'none';
+		iframe.setAttribute('src', 'data:text/plain,');
+		document.documentElement.appendChild(iframe);
+		window.frames[0].window.alert('举报成功');
+		iframe.parentNode.removeChild(iframe);
+	});
+});
+</script>
