@@ -1,0 +1,138 @@
+{include file="header"}
+<script type="text/javascript" src="/js/clipboard.js"></script>
+<style>
+.col-splitfile-copy, .col-splitfile-copy:hover{ display:block; text-decoration:none; float:right; width:100px; height:34px; line-height:34px; text-align:center; font-size:12px; color:#fff; background:#00a0e9; border-radius:3px; }
+</style>
+<div class="page-header">
+	<h6>
+		视频管理
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			{if $row.id>0}编辑{else}添加{/if}视频
+		</small>
+	</h6>
+</div>
+<div class="row">
+<div class="col-xs-12">
+	<form class="form-horizontal" role="form" method="post" action="/video/edit" enctype="multipart/form-data">
+		<input type="hidden" name="id" id="id" value="{$row.id}" />
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="title">标题</label>
+			<div class="col-sm-10">
+				<input type="text" id="title" name="title" value="{$row.title}" class="col-xs-6" />
+			</div>
+		</div>
+		{if in_array('video',$function)}
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="category_id">分类</label>
+			<div class="col-sm-10">
+				<select name="category_id" id="category_id" class="coo-need">
+					<option value="">选择分类</option>
+					{foreach $categories as $g}
+					<option value="{$g.id}" {if $row.category_id==$g.id}selected{/if}>{$g.name}</option>
+					{/foreach}
+				</select>
+				&nbsp;
+				<a class="copy" data-clipboard-text="/pages/index/index?category_id={$row.category_id}" href="javascript:void(0)">
+					<button type="button" class="btn btn-xs btn-warning">
+					<i class="ace-icon fa fa-copy bigger-120"></i>
+				</button>
+				</a>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="img">主图</label>
+			<div class="col-sm-10">
+				<input type="hidden" name="origin_img" id="origin_img" value="{$row.img}" />
+				<div class="col-file col-xs-3"><input type="file" id="img" name="img" value="" /></div>
+				{if $row.img}<a href="{$row.img}" target="_blank"><img src="{$row.img}" height="34" onerror="this.src='/images/nopic.png'" /></a>{/if}
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="url">视频</label>
+			<div class="col-sm-10">
+				<div style="width:415px;float:left;" class="{if $row.tencentvideo==1}hidden{/if}">
+					<a class="col-splitfile-copy" href="javascript:void(0)" data-clipboard-action="copy" data-clipboard-target="#url">复制视频链接</a>
+					<div class="col-splitfile" data-url="/video/upload_video" data-fileType="mp4"><input type="text" id="url" name="url" value="{$row.url}" /></div>
+					{if $row.url}<div style="clear:both;padding-top:15px;"><video src="{$row.url}" controls style="width:220px;height:220px;"></video></div>{/if}
+				</div>
+				<input type="text" id="vid" name="vid" value="{$row.vid}" class="col-xs-2 {if $row.tencentvideo==0}hidden{/if}" placeholder="腾讯视频vid" />
+				<input type="checkbox" data-type="ace" data-text="腾讯视频" data-style="float:left;margin-left:15px;" name="tencentvideo" id="tencentvideo" value="1" {if $row.tencentvideo==1}checked{/if} />
+				{if $row.vid}<div style="clear:both;padding-top:15px;"><iframe frameborder="0" src="https://v.qq.com/txp/iframe/player.html?vid={$row.vid}" width="400" height="220" allowFullScreen="true"></iframe>{/if}
+			</div>
+		</div>
+		{/if}
+		{if in_array('video',$function)}
+		<div class="form-group video-property {if $row.tencentvideo==1}hidden{/if}">
+			<label class="col-sm-2 control-label no-padding-right" for="time">弹窗时间</label>
+			<div class="col-sm-10">
+				<input type="text" id="time" name="time" value="{$row.time}" class="col-xs-1" />
+				<span class="some-block">秒</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="status">状态</label>
+			<div class="col-sm-10">
+				<div class="radio">
+					<label>
+						<input type="radio" name="status" value="1" class="ace" {if $row.status==1}checked{/if} />
+						<span class="lbl">显示</span></label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type="radio" name="status" value="0" class="ace" {if $row.status==0}checked{/if} />
+						<span class="lbl">隐藏</span></label>
+				</div>
+			</div>
+		</div>
+		{/if}
+		
+		<div class="clearfix form-actions">
+			<div class="col-md-offset-3 col-md-9">
+				<button class="btn btn-info" type="submit">
+					<i class="ace-icon fa fa-check bigger-110"></i>
+					提交
+				</button>
+
+				&nbsp; &nbsp; &nbsp;
+				<button class="btn" type="reset">
+					<i class="ace-icon fa fa-undo bigger-110"></i>
+					重置
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+{include file="footer"}
+<script>
+$(function(){
+	var clipboard = new ClipboardJS('.col-splitfile-copy');
+	clipboard.on('success', function(e) {
+		$.overloadSuccess('复制成功');
+	});
+	clipboard.on('error', function(e) {
+		//alert($.debug(e));
+	});
+	let copy = new ClipboardJS('a.copy');
+	copy.on('success', function(e) {
+		$.overloadSuccess('复制成功');
+	});
+	$('#category_id').on('change', function(){
+		let id = $(this).selected().val();
+		$('a.copy').attr('data-clipboard-text', '/pages/index/index?category_id='+id);
+	});
+	$('#tencentvideo').on('change', function(){
+		let vid = $('#vid');
+		if(this.checked){
+			vid.removeClass('hidden');
+			vid.prev().addClass('hidden');
+			$('.video-property').addClass('hidden');
+		}else{
+			vid.addClass('hidden');
+			vid.prev().removeClass('hidden');
+			$('.video-property').removeClass('hidden');
+		}
+	});
+});
+</script>

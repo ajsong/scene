@@ -1,0 +1,82 @@
+@charset "utf-8";
+/* CSS Document */
+
+.excel table{border-collapse:collapse; border-spacing:0;}
+.excel table th, .excel table td{padding:5px; color:#76838f; border:1px solid #ccc; background:#fff; text-align:left; box-sizing:border-box; cursor:default;}
+.excel table td > div{position:relative; float:left; min-width:80px; min-height:30px; width:100%; height:auto; line-height:30px; white-space:nowrap;}
+.excel table td > div:not(.datepickerView):not(.colorpickerView){display:flex; align-items:center; justify-content:left;}
+.excel table td > div:after{content:""; clear:both;}
+
+.excel table td > div > input, .excel table td > div > textarea{float:left; width:100%; border:none!important; background-color:transparent!important; font-size:inherit!important; line-height:inherit!important; padding:0!important; margin:0!important; box-shadow:none!important; resize:none; outline:none;}
+.excel table td > div > textarea::-webkit-scrollbar{width:0; height:0;}
+
+.excel table td .excel-select{background:url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%201778%201024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M0%200h1776.015857L888.007929%201024z%22%20fill%3D%22%23cccccc%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") no-repeat right center; background-size:8px auto;}
+.excel table td .excel-select-text{display:block; padding-right:12px; white-space:nowrap; border:none!important; background-color:transparent!important; font-size:inherit!important; box-sizing:content-box!important;}
+.excel table td .excel-select-list{position:absolute; z-index:11; display:none; max-height:260px; overflow:auto; box-sizing:border-box; border:2px solid #578bf7; border-top:none; background:#fff; box-shadow:0 2px 2px rgba(0,0,0,0.2); border-radius:0 0 4px 4px;}
+.excel table td .excel-select-list::-webkit-scrollbar{width:5px; height:5px;}
+.excel table td .excel-select-list::-webkit-scrollbar-track{background:rgba(0,0,0,0);}
+.excel table td .excel-select-list::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.1);}
+.excel table td .excel-select-list::-webkit-scrollbar-thumb:active{background:rgba(0,0,0,0.3);}
+.excel table td .excel-select-list.excel-shown{display:block;}
+.excel table td .excel-select-list.excel-select-list-above{border:2px solid #578bf7; border-bottom:none; box-shadow:0 -2px 2px rgba(0,0,0,0.2); border-radius:4px 4px 0 0;}
+.excel table td .excel-select-list li{height:36px; line-height:36px; padding:0 5px; white-space:nowrap; cursor:pointer; -webkit-transition:all 0.3s ease-out; transition:all 0.3s ease-out;}
+.excel table td .excel-select-list li:hover{background:#f9f9f9;}
+.excel table td .excel-select-list li.this{color:#578bf7; background:#f9f9f9;}
+
+.excel table td .excel-checkbox-label{display:inline-block; vertical-align:middle; margin:0 auto; text-align:center; width:16px; height:16px; overflow:hidden;}
+.excel table td .excel-checkbox-label *, .excel table td .excel-checkbox-label *:before, .excel table td .excel-checkbox-label *:after{box-sizing:content-box;}
+.excel table td .excel-checkbox-label > *{display:block; position:relative; width:16px; height:16px; overflow:hidden; box-sizing:border-box; border-radius:3px; background:#fff; border:1px solid #d5d5d5; -webkit-transition:all 200ms ease-out; transition:all 200ms ease-out; -webkit-backface-visibility:hidden; backface-visibility:hidden; -webkit-transform-style:preserve-3d; transform-style:preserve-3d;}
+.excel table td .excel-checkbox-label > *:before{content:""; display:block; margin:0 auto; width:14px; height:14px; overflow:hidden; border:none; background:none; -webkit-transform:scale(0); transform:scale(0); -webkit-transition:all 200ms ease-out; transition:all 200ms ease-out; -webkit-backface-visibility:hidden; backface-visibility:hidden; -webkit-transform-style:preserve-3d; transform-style:preserve-3d;}
+.excel table td .excel-checkbox-label > *:after{content:""; display:block; position:absolute; width:9px; height:5px; background-color:transparent; top:2px; left:1px; border:3px solid #3493f9; border-top:none; border-right:none; -webkit-transform:rotate(-45deg) scale(0); transform:rotate(-45deg) scale(0); box-shadow:0 1px 3px rgba(0,0,0,0); -webkit-transition:all 200ms ease-out; transition:all 200ms ease-out; -webkit-backface-visibility:hidden; backface-visibility:hidden; -webkit-transform-style:preserve-3d; transform-style:preserve-3d;}
+.excel table td .excel-checkbox-label > input{display:none;}
+.excel table td .excel-checkbox-label input:checked + *{background:#419bf9; border-color:#3493f9;}
+.excel table td .excel-checkbox-label input:checked + *:before{-webkit-transform:scale(1); transform:scale(1);}
+.excel table td .excel-checkbox-label input:checked + *:after{-webkit-transform:rotate(-45deg) scale(0.7); transform:rotate(-45deg) scale(0.7); box-shadow:0 1px 1px rgba(0,0,0,0.3); border-color:#fff;}
+.excel table td .excel-checkbox-label input:disabled + *, .excel table td .excel-checkbox-label input:disabled + *:hover{border-color:#d5d5d5; background:#f6f6f6; cursor:not-allowed;}
+.excel table td .excel-checkbox-label input:disabled + *:after{border-color:#bbb; box-shadow:0 1px 0 #fff;}
+
+.excel table td .excel-date{background:url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%201024%201024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M126.6%20962.8c-19.3%200-35-15.7-35-35V190.4c0-19.3%2015.7-35%2035-35h220V96.2c0-19.3%2015.7-35%2035-35s35%2015.7%2035%2035v59.2h188.1V96.2c0-19.3%2015.7-35%2035-35s35%2015.7%2035%2035v59.2h222.6c19.3%200%2035%2015.7%2035%2035v737.4c0%2019.3-15.7%2035-35%2035H126.6z%20m35-70h700.7V421.6H161.6v471.2z%20m0-541.2h700.7V225.4H674.7v30.5c0%2019.3-15.7%2035-35%2035s-35-15.7-35-35v-30.5h-188v30.5c0%2019.3-15.7%2035-35%2035s-35-15.7-35-35v-30.5h-185v126.2z%22%20fill%3D%22%23cccccc%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M255.5%20718.3c-8.3%200-15-6.7-15-15v-64.2c0-8.3%206.7-15%2015-15h63.9c8.3%200%2015%206.7%2015%2015v64.2c0%208.3-6.7%2015-15%2015h-63.9zM479%20718.3c-8.3%200-15-6.7-15-15v-64.2c0-8.3%206.7-15%2015-15h64c8.3%200%2015%206.7%2015%2015v64.2c0%208.3-6.7%2015-15%2015h-64zM702.6%20718.3c-8.3%200-15-6.7-15-15v-64.2c0-8.3%206.7-15%2015-15h63.9c8.3%200%2015%206.7%2015%2015v64.2c0%208.3-6.7%2015-15%2015h-63.9z%22%20fill%3D%22%23cccccc%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") no-repeat right center; background-size:12px auto;}
+.excel table td .excel-date-text{display:block; padding-right:16px; white-space:nowrap; border:none!important; background-color:transparent!important; font-size:inherit!important; box-sizing:content-box!important;}
+.excel table td .datepickerView{z-index:11!important;}
+
+.excel table td .excel-color-text{display:block; width:100%; height:16px; border-radius:2px; background-image:linear-gradient(45deg, #eee 26%, transparent 26%), linear-gradient(-45deg, #eee 26%, transparent 26%), linear-gradient(45deg, transparent 73%, #eee 73%), linear-gradient(-45deg, transparent 73%, #eee 73%); background-size:8px 8px; background-position:0 0, 0 4px, 4px -4px, -4px 0;}
+.excel table td .colorpickerView{z-index:11!important;}
+
+.excel .excel-head, .excel .excel-side{-webkit-user-select:none; user-select:none;}
+.excel .excel-head th, .excel .excel-head td{cursor:s-resize;}
+.excel .excel-side tr th:first-child, .excel .excel-side tr td:first-child{cursor:e-resize;}
+.excel .excel-corner tr th:first-child, .excel .excel-corner tr td:first-child{cursor:default;}
+.excel .excel-head .excel-select-column, .excel .excel-side .excel-select-row > *:first-child{background:#dcdcdc;}
+.excel .excel-head-select-td, .excel .excel-side-select-td{background:#e7effd;}
+.excel .excel-head .excel-head-select-td, .excel .excel-side .excel-side-select-td{background:#aecbff;}
+
+.excel .excel-grid{border:2px solid #578bf7; cursor:pointer;}
+.excel .excel-grid i{display:none; position:absolute; right:-7px; bottom:-7px; width:14px; height:14px; cursor:cell; background:#fff url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%201024%201024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M909.1%20960H114.9L64%20909.1V114.9L114.9%2064h794.3l50.9%2050.9v794.3c-20%2019.8-31.1%2030.9-51%2050.8z%22%20fill%3D%22%23578bf7%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") no-repeat center center; background-size:10px 10px;}
+
+.excel .excel-grid-drag i{display:block;}
+
+.excel .excel-contextmenu{background:#fff; border-radius:3px; box-shadow:0 0 7px rgba(0,0,0,0.3); padding:4px 0; text-align:left; width:180px; height:auto;}
+.excel .excel-contextmenu a{display:block; text-decoration:none!important; color:#333!important; font-size:12px!important; height:28px; line-height:28px; padding:0 15px; -webkit-transition:all 0.3s ease-out; transition:all 0.3s ease-out;}
+.excel .excel-contextmenu a:hover{color:#08a1ef!important; background:#f5f5f5;}
+.excel .excel-contextmenu a[disabled], .excel .excel-contextmenu a[disabled]:hover{color:#999!important; background-color:transparent; cursor:default;}
+.excel .excel-contextmenu > em{display:block; margin:4px 0; border-top:1px solid #e5e5e5;}
+
+.excel .excel-grid-clone svg, .excel .excel-grid-copy svg{width:100%; height:100%;}
+.excel .excel-grid-clone svg rect, .excel .excel-grid-copy svg rect{width:100%; height:100%; stroke:#578bf7; fill:none; stroke-width:4;}
+.excel .excel-grid-clone svg rect, .excel .excel-grid-copy svg rect:last-child{stroke-dasharray:5,5; stroke-dashoffset:3; -webkit-animation:grid-dashmove 0.5s linear infinite; animation:grid-dashmove 0.5s linear infinite;}
+.excel .excel-grid-copy svg rect:first-child{stroke:#fff;}
+.excel .excel-grid-copy svg rect:last-child{stroke:#999;}
+@keyframes grid-dashmove{0%{stroke-dashoffset:0;}100%{stroke-dashoffset:10;}}
+
+.excel-sheets{box-sizing:border-box; padding-bottom:32px;}
+.excel-sheets .excel-tab{height:32px; margin-bottom:-32px; padding:0 0 4px 4px; box-sizing:border-box; background:#f0f0f0; border:1px solid #ccc; border-top:none; -webkit-border-bottom-left-radius:3px; border-bottom-left-radius:3px; -webkit-border-bottom-right-radius:3px; border-bottom-right-radius:3px;}
+.excel-sheets .excel-tab div{float:left; text-align:left; cursor:pointer; font-weight:600; color:#76838f; height:100%; line-height:27px; font-size:12px; border:1px solid transparent; border-top:none; padding-right:15px; box-sizing:border-box; -webkit-border-bottom-left-radius:3px; border-bottom-left-radius:3px; -webkit-border-bottom-right-radius:3px; border-bottom-right-radius:3px;}
+.excel-sheets .excel-tab div font{display:block; height:100%; padding-left:15px;}
+.excel-sheets .excel-tab div em{display:none; float:right; width:12px; height:12px; margin-top:7px; margin-right:-18px; background:url("data:image/svg+xml;charset=utf-8,%3Csvg%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2064%2064%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%3Cg%20class%3D%22transform-group%22%3E%3Cg%20transform%3D%22scale(0.0625%2C%200.0625)%22%3E%3Cpath%20d%3D%22M557.312%20513.248l265.28-263.904c12.544-12.48%2012.608-32.704%200.128-45.248-12.512-12.576-32.704-12.608-45.248-0.128l-265.344%20263.936-263.04-263.84C236.64%20191.584%20216.384%20191.52%20203.84%20204%20191.328%20216.48%20191.296%20236.736%20203.776%20249.28l262.976%20263.776L201.6%20776.8c-12.544%2012.48-12.608%2032.704-0.128%2045.248%206.24%206.272%2014.464%209.44%2022.688%209.44%208.16%200%2016.32-3.104%2022.56-9.312l265.216-263.808%20265.44%20266.24c6.24%206.272%2014.432%209.408%2022.656%209.408%208.192%200%2016.352-3.136%2022.592-9.344%2012.512-12.48%2012.544-32.704%200.064-45.248L557.312%20513.248z%22%20fill%3D%22%23999999%22%3E%3C%2Fpath%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E") no-repeat center center; background-size:12px 12px;}
+.excel-sheets .excel-tab div em:hover{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2064%2064%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%3Cg%20class%3D%22transform-group%22%3E%3Cg%20transform%3D%22scale(0.0625%2C%200.0625)%22%3E%3Cpath%20d%3D%22M557.312%20513.248l265.28-263.904c12.544-12.48%2012.608-32.704%200.128-45.248-12.512-12.576-32.704-12.608-45.248-0.128l-265.344%20263.936-263.04-263.84C236.64%20191.584%20216.384%20191.52%20203.84%20204%20191.328%20216.48%20191.296%20236.736%20203.776%20249.28l262.976%20263.776L201.6%20776.8c-12.544%2012.48-12.608%2032.704-0.128%2045.248%206.24%206.272%2014.464%209.44%2022.688%209.44%208.16%200%2016.32-3.104%2022.56-9.312l265.216-263.808%20265.44%20266.24c6.24%206.272%2014.432%209.408%2022.656%209.408%208.192%200%2016.352-3.136%2022.592-9.344%2012.512-12.48%2012.544-32.704%200.064-45.248L557.312%20513.248z%22%20fill%3D%22%23dc0431%22%3E%3C%2Fpath%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E");}
+.excel-sheets .excel-tab div.excel-selected-tab{border-color:#ccc; color:#08a1ef; background:#fff;}
+.excel-sheets .excel-tab span{display:block; cursor:pointer; float:left!important; width:32px!important; height:100%!important; padding:0!important; margin:0!important; box-sizing:border-box; background:url("data:image/svg+xml;charset=utf-8,%3Csvg%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2064%2064%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%3Cg%20class%3D%22transform-group%22%3E%3Cg%20transform%3D%22scale(0.0625%2C%200.0625)%22%3E%3Cpath%20d%3D%22M863.328%20482.56l-317.344-1.12L545.984%20162.816c0-17.664-14.336-32-32-32s-32%2014.336-32%2032l0%20318.4L159.616%20480.064c-0.032%200-0.064%200-0.096%200-17.632%200-31.936%2014.24-32%2031.904C127.424%20529.632%20141.728%20544%20159.392%20544.064l322.592%201.152%200%20319.168c0%2017.696%2014.336%2032%2032%2032s32-14.304%2032-32l0-318.944%20317.088%201.12c0.064%200%200.096%200%200.128%200%2017.632%200%2031.936-14.24%2032-31.904C895.264%20496.992%20880.96%20482.624%20863.328%20482.56z%22%20fill%3D%22%23333333%22%3E%3C%2Fpath%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E") no-repeat center center; background-size:14px 14px;}
+.excel-sheets .excel-sheet-remove div{padding-right:24px;}
+.excel-sheets .excel-sheet-remove div em{display:block;}
+
+/*.excel .excel-head th div, .excel .excel-head td div, .excel .excel-side th div, .excel .excel-side td div{justify-content:center;}*/

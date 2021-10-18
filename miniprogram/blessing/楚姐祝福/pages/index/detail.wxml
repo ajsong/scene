@@ -1,0 +1,126 @@
+<wxs module="helper" src="../../common/helper.wxs"></wxs>
+<import src="../../common/libs/wxParse/wxParse.wxml" />
+<import src="../../common/template.wxml" />
+<template is="overload" data="{{overload}}" />
+<template is="dialogView" data="{{dialogView}}" />
+
+<view class="detail" style="background-image:url({{data.bg_pic}});margin-bottom:{{paddingBottom}};">
+	<view class="bannerBox {{bannerClass}}" style="{{bannerHidden}}" wx:if="{{banner.enable==1}}">
+	<view wx:if="{{banner.type==1}}" class="banner" data-url="{{banner.url}}" bindtap="handleShowAd" style="background-image:url({{banner.image}});"></view>
+	<ad wx:elif="{{banner.type==2}}" unit-id="{{banner.adunit}}"></ad>
+	<ad wx:elif="{{banner.type==3}}" unit-id="{{banner.adunit}}" ad-type="video" ad-theme="white"></ad>
+	<button wx:elif="{{banner.type==4}}" class="banner" open-type="contact" show-message-card="true" send-message-title="{{banner.message_title}}" send-message-path="{{banner.message_path}}" send-message-img="{{banner.message_image}}" style="background-image:url({{banner.image}});"></button>
+	</view>
+
+	<view class="title" style="color:{{data.text_color}};border-bottom:2rpx solid {{data.border_color}};">{{data.title}}</view>
+
+	<view class="content clear-after" style="color:{{data.text_color}} !important;">
+		<template is="wxParse" data="{{wxParseData:content.nodes}}" />
+	</view>
+
+    <view class="feedbackTips" wx:if="{{feedback}}">
+        若对本文内容有疑议，点击<text bindtap="handleFeedbackShow">投诉举报</text>
+    </view>
+
+	<view wx:if="{{tips.enable}}" class="tips">
+		<text wx:if="{{tips.text.length}}">{{tips.text}}</text>
+		<view class="finger"></view>
+		<button wx:if="{{tips.redirect.length}}" data-url="{{tips.redirect}}" bindtap="handleShowAd"><view></view>分享到群</button>
+		<button wx:else open-type="share"><view></view>分享到群</button>
+	</view>
+
+	<view class="footerBox {{footerClass}}" style="{{footerHidden}}" wx:if="{{footer.enable==1}}">
+	<view wx:if="{{footer.type==1}}" class="footer" data-url="{{footer.url}}" bindtap="handleShowAd" style="background-image:url({{footer.image}});"></view>
+	<ad wx:elif="{{footer.type==2}}" unit-id="{{footer.adunit}}"></ad>
+	<ad wx:elif="{{footer.type==3}}" unit-id="{{footer.adunit}}" ad-type="video" ad-theme="white"></ad>
+	<button wx:elif="{{footer.type==4}}" class="footer" open-type="contact" show-message-card="true" send-message-title="{{footer.message_title}}" send-message-path="{{footer.message_path}}" send-message-img="{{footer.message_image}}" style="background-image:url({{footer.image}});"></button>
+	</view>
+
+	<view class="list" wx:if="{{list.length>0}}">
+		<view class="tips">更多推荐欣赏</view>
+		<view class="li ge-bottom ge-light" wx:for="{{list}}" wx:key="index">
+			<block wx:if="{{item.type==0}}">
+			<view class="type type{{item.type}} ge-top ge-light" data-index="{{index}}" bindtap="handleShowDetail" style="background-image:url({{material.list_bg}});">
+				<view class="pic">
+					<text style="background-image:url({{item.pic}});"></text>
+					<view style="background-image:url({{item.top_avatar_pic}});"></view>
+				</view>
+				<text class="span">{{item.title}}</text>
+			</view>
+			</block>
+			<block wx:elif="{{item.type==1}}">
+			<view class="type type{{item.type}}" data-url="{{item.url}}" bindtap="handleShowAd" style="background-image:url({{item.pic}});"></view>
+			</block>
+			<block wx:elif="{{item.type==3}}">
+			<ad unit-id="{{item.adunit}}"></ad>
+			</block>
+			<block wx:elif="{{item.type==4}}">
+			<ad unit-id="{{item.adunit}}" ad-type="video" ad-theme="white"></ad>
+			</block>
+			<text class="clear"></text>
+		</view>
+		<view class="loadmore {{loadmore}}"></view>
+	</view>
+
+</view>
+
+<!-- <view class="positionBottomSingle" style="padding-bottom:{{paddingBottom}};">
+	<view>
+		<button open-type="share">分享给好友</button>
+	</view>
+	<view>
+		<button open-type="share">分享到群</button>
+	</view>
+</view> -->
+
+<view class="positionBottom ge-top ge-light" style="padding-bottom:{{paddingBottom}};">
+	<view>
+		<text>{{data.clicks}}</text>
+		<view>{{data.likes}}</view>
+		<!-- <view bindtap="handleLike">{{data.likes}}</view> -->
+	</view>
+	<view>
+		<button wx:if="{{tips.redirect.length}}" data-url="{{tips.redirect}}" bindtap="handleShowAd"><view></view>分享</button>
+		<button wx:else open-type="share"><view></view>分享</button>
+	</view>
+	<view>
+		<navigator open-type="reLaunch" url="/pages/index/index">返回</navigator>
+	</view>
+</view>
+
+<navigator class="home index" open-type="reLaunch" url="/pages/index/index">首页</navigator>
+
+<view wx:if="{{addMy}}" class="addMy" bindtap="handleAddMy">添加到我的小程序</view>
+
+<view wx:if="{{bgmusic.length}}" class="music {{isPlaying}}" bindtap="handleMusic"></view>
+
+<view class="shareLayer {{shareLayerShow}}"></view>
+<view class="shareView {{shareViewShow}}">
+	<text bindtap="handleShareView"></text>
+	<view class="pic finger"></view>
+	<button class="text" open-type="share">分享给朋友查看更多精彩内容</button>
+	<button open-type="share"><view></view>分享给朋友</button>
+</view>
+
+<view class="leafs" wx:if="{{leaf==1}}">
+	<view class="leaf" wx:for="{{leafs}}" wx:key="index" style="left:{{item.left}};width:{{item.width}};height:{{item.height}};">
+		<view class="roll" style="width:{{item.wh}};height:{{item.wh}};background-image:url({{item.src}});"></view>
+	</view>
+</view>
+
+<template is="toast" data="{{toast}}" />
+<view class="dialog-bg" wx:if="{{feedbackShown}}"></view>
+<view class="dialog-view wx feedback" wx:if="{{feedbackShown}}">
+<text class="dialog-title">请选择举报原因</text>
+<view class="dialog-content">
+    <view class="{{feedbackContent==item?'this':''}}" wx:for-items="{{feedbackItems}}" wx:key="index" data-value="{{item}}" bindtap="handleFeedbackChange">{{item}}</view>
+</view>
+<view class="dialog-btns">
+    <view class="dialog-btn blue">
+        <button bindtap="handleFeedbackSubmit">提交</button>
+    </view>
+    <view class="dialog-btn cancel">
+        <button bindtap="handleFeedbackShow">取消</button>
+    </view>
+</view>
+</view>

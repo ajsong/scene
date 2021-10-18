@@ -1,0 +1,97 @@
+{include file="header"}
+<style>
+.menus .checkbox{ display:inline-block; float:none !important; }
+.menus .sub{ padding-left:30px; background:url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiA8IS0tIENyZWF0ZWQgd2l0aCBNZXRob2QgRHJhdyAtIGh0dHA6Ly9naXRodWIuY29tL2R1b3BpeGVsL01ldGhvZC1EcmF3LyAtLT4KIDxnPgogIDx0aXRsZT5iYWNrZ3JvdW5kPC90aXRsZT4KICA8cmVjdCBmaWxsPSJub25lIiBpZD0iY2FudmFzX2JhY2tncm91bmQiIGhlaWdodD0iNTIiIHdpZHRoPSI1MiIgeT0iLTEiIHg9Ii0xIi8+CiAgPGcgZGlzcGxheT0ibm9uZSIgb3ZlcmZsb3c9InZpc2libGUiIHk9IjAiIHg9IjAiIGhlaWdodD0iMTAwJSIgd2lkdGg9IjEwMCUiIGlkPSJjYW52YXNHcmlkIj4KICAgPHJlY3QgZmlsbD0idXJsKCNncmlkcGF0dGVybikiIHN0cm9rZS13aWR0aD0iMCIgeT0iMCIgeD0iMCIgaGVpZ2h0PSIxMDAlIiB3aWR0aD0iMTAwJSIvPgogIDwvZz4KIDwvZz4KIDxnPgogIDx0aXRsZT5MYXllciAxPC90aXRsZT4KICA8bGluZSBzdHJva2UtbGluZWNhcD0idW5kZWZpbmVkIiBzdHJva2UtbGluZWpvaW49InVuZGVmaW5lZCIgaWQ9InN2Z18xMyIgeTI9IjM3LjM4MzU5MiIgeDI9IjExLjM1MDY1OSIgeTE9IjMuODQ5NjciIHgxPSIxMS4zNTA2NTkiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2U9IiM5OTk5OTkiIGZpbGw9Im5vbmUiLz4KICA8bGluZSBzdHJva2UtbGluZWNhcD0idW5kZWZpbmVkIiBzdHJva2UtbGluZWpvaW49InVuZGVmaW5lZCIgaWQ9InN2Z18xNSIgeTI9IjM2LjU1ODkwMSIgeDI9IjQzLjU3NDgiIHkxPSIzNi41NTg5MDEiIHgxPSIxMS44NDI1MjciIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2U9IiM5OTk5OTkiIGZpbGw9Im5vbmUiLz4KIDwvZz4KPC9zdmc+") no-repeat 3px 3px; background-size:20px 20px; }
+.operate .view{ float:left; width:20%; }
+</style>
+<div class="page-header">
+	<h6>
+		系统设置
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			编辑管理员权限
+		</small>
+	</h6>
+</div>
+<div class="row">
+<div class="col-xs-12">
+	<form class="form-horizontal" role="form" method="post" action="/setting/power" enctype="multipart/form-data">
+		<input type="hidden" name="id" value="{$row.id}" />
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="name">管理员账号</label>
+			<div class="col-sm-10">
+				<h5>{$row.name}</h5>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="status">状态</label>
+			<div class="col-sm-10">
+				<input type="radio" data-type="ace" data-text="正常" name="status" value="1" {if $row.status==1}checked{/if} />
+				<input type="radio" data-type="ace" data-text="冻结" name="status" value="0" {if $row.status==0}checked{/if} />
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="menu">菜单权限<a href="javascript:void(0)" style="float:none;display:block;">全选</a></label>
+			<div class="col-sm-10 menus">
+				{foreach $pa as $k=>$g}
+				<input type="checkbox" data-type="ace" data-text="{$g.name}" name="menu[]" value="{$g.id}" class="menu" menu="{$k}" {if isset($g.checked)}checked{/if} />
+				<div class="sub">
+					{foreach $g.sub as $s}
+					<input type="checkbox" data-type="ace" data-text="{$s.name}" data-class="m{$k} {if !isset($g.checked)}hidden{/if}" name="menu[]" value="{$s.id}" {if isset($s.checked)}checked{/if} />
+					{/foreach}
+				</div>
+				{/foreach}
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="operate">操作权限<a href="javascript:void(0)" style="float:none;display:block;">全选</a></label>
+			<div class="col-sm-10 operate">
+				{foreach $operate as $g}
+				<div class="view">
+					<input type="checkbox" data-type="ace" data-text="{$g.name}" name="operate[]" value="{$g.app}|{$g.act}" class="ace" {if isset($g.checked)}checked{/if} />
+				</div>
+				{/foreach}
+			</div>
+		</div>
+
+		<div class="clearfix form-actions">
+			<div class="col-md-offset-3 col-md-9">
+				<button class="btn btn-info" type="submit">
+					<i class="ace-icon fa fa-check bigger-110"></i>
+					提交
+				</button>
+
+				&nbsp; &nbsp; &nbsp;
+				<button class="btn" type="reset">
+					<i class="ace-icon fa fa-undo bigger-110"></i>
+					重置
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+
+{include file="footer"}
+<script>
+$(function(){
+	$('.menu').on('click', function(){
+		let menu = $(this).attr('menu');
+		if($(this).is(':checked')){
+			$('.m'+menu).removeClass('hidden');
+		}else{
+			$('.m'+menu).addClass('hidden');
+		}
+	});
+	$('label[for] a').on('click', function(){
+		let _this = $(this);
+		if(!!_this.data('selected')){
+			_this.removeData('selected').html('全选').parent().next().find(':checkbox').prop('checked', false);
+		}else{
+			_this.data('selected', true).html('反选').parent().next().find(':checkbox').prop('checked', true);
+		}
+	});
+});
+</script>

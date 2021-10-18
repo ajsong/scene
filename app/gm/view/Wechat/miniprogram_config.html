@@ -1,0 +1,413 @@
+{include file="header"}
+<div class="page-header">
+	<h6>
+		微信管理
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			小程序设置
+		</small>
+	</h6>
+</div>
+<div class="row">
+<div class="col-xs-12">
+	<form class="form-horizontal" role="form" method="post" action="/wechat/miniprogram_config" enctype="multipart/form-data">
+		<input type="hidden" name="id" id="id" value="{$miniprogram.id}" />
+		<div class="form-group" style="position:sticky;left:0;right:0;top:0;z-index:999;background:#fff;">
+			<label class="col-sm-2 control-label no-padding-right"><strong style="font-size:16px;"><img src="{$miniprogram.pic}" width="30" style="border-radius:3px;margin-right:10px;" />{$miniprogram.name}</strong></label>
+			<div class="col-sm-10">
+				<h5 style="line-height:30px;float:left;">{$miniprogram.appid}</h5>
+				<div class="navbar-form navbar-left form-search">
+					<div class="form-group">
+						<input type="text" class="setKeyword" placeholder="搜索设置" />
+					</div>
+					<button type="button" class="btn btn-mini btn-info2">
+						<i class="ace-icon fa fa-search icon-only bigger-110"></i>
+					</button>
+				</div>
+				<a class="qrcode tips" data-preview-image="/wechat/miniprogram_qrcode?id={$miniprogram.id}" data-title="{$miniprogram.name}体验版" data-logo="{$miniprogram.pic}" href="javascript:void(0)" title="体验二维码" tips-follow="right" tips-fixy="5" tips-bgcolor="#333">
+					<button type="button" class="btn btn-xs btn-info" style="margin-top:10px;">
+					<i class="ace-icon fa fa-qrcode bigger-120"></i>
+				</button>
+				</a>
+			</div>
+		</div>
+		<div class="form-block">
+		<div class="col-ra">
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right">所属管理员</label>
+				<div class="col-sm-10">
+					<select name="admin_id">
+						<option value="">请选择</option>
+						{foreach $admins as $g}
+						<option value="{$g.id}" {if $g.id==$miniprogram.admin_id}selected{/if}>{$g.name}</option>
+						{/foreach}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right">第三方平台</label>
+				<div class="col-sm-10">
+					<select name="component_id">
+						<option value="">请选择</option>
+						{foreach $component as $g}
+						<option value="{$g.id}" {if $g.id==$miniprogram.component_id}selected{/if}>{$g.name}</option>
+						{/foreach}
+					</select>
+					<span class="some-line">更改前需登录小程序后台取消所有第三方授权，再到本后台更改</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right">类型</label>
+				<div class="col-sm-10">
+					<select name="type" id="type">
+						<option value="0" {if $miniprogram.type==0}selected{/if}>图文</option>
+						<!--<option value="1" {if $miniprogram.type==1}selected{/if}>视频</option>
+						<option value="2" {if $miniprogram.type==2}selected{/if}>祝福</option>
+						<option value="3" {if $miniprogram.type==3}selected{/if}>佛学</option>-->
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right">服务器域名</label>
+				<div class="col-sm-10">
+					<button type="button" class="btn btn-xs btn-warning tips" style="float:left;" tips-parent="parent" tips-follow="right" tips-style="border-radius:10px;box-shadow:0 0 15px rgba(0,0,0,0.4);" tips-fixx="5" tips-type="click" tips-content="serverContent" data-id="{$miniprogram.id}" data-name="{$miniprogram.name}" data-value="{$miniprogram.serverdomain}">
+						<i class="ace-icon fa fa-sitemap"></i>
+						设置服务器域名
+					</button>
+					<span class="some-line">不能加 http[s]://</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right">业务域名</label>
+				<div class="col-sm-10">
+					<button type="button" class="btn btn-xs btn-success tips" style="float:left;" tips-parent="parent" tips-follow="right" tips-style="border-radius:10px;box-shadow:0 0 15px rgba(0,0,0,0.4);" tips-fixx="5" tips-type="click" tips-content="businessContent" data-id="{$miniprogram.id}" data-name="{$miniprogram.name}" data-value="{$miniprogram.businessdomain}">
+						<i class="ace-icon fa fa-sitemap"></i>
+						设置业务域名
+					</button>
+					<span class="some-line">不能加 http[s]://</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right">导航文字颜色</label>
+				<div class="col-sm-10">
+					<span class="some-switch">
+						<label><input type="radio" name="navbar_textcolor" value="black" {if $miniprogram.navbar_textcolor=='' || $miniprogram.navbar_textcolor=='black'}checked{/if} /><div>黑色</div></label>
+						<label><input type="radio" name="navbar_textcolor" value="white" {if $miniprogram.navbar_textcolor=='white'}checked{/if} /><div>白色</div></label>
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right">导航背景颜色</label>
+				<div class="col-sm-10">
+					<input class="col-xs-2" type="text" id="navbar_bgcolor" name="navbar_bgcolor" value="{$miniprogram.navbar_bgcolor}" />
+					<span class="some-color" style="background:{$miniprogram.navbar_bgcolor};"></span>
+				</div>
+			</div>
+			
+			<div class="form-block article-property {if $miniprogram.type!=0}hidden{/if}">
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right">详情公众号标题</label>
+				<div class="col-sm-10">
+					<input class="col-xs-4" type="text" id="mp_title" name="mp_title" value="{$miniprogram.mp_title}" />
+					<span class="some-line">填写后将在详情时间隔壁显示，与订阅消息互斥</span>
+				</div>
+			</div>
+			<div class="form-group mp_title {if !strlen($miniprogram.mp_title)}hidden{/if}">
+				<label class="col-sm-2 control-label no-padding-right">详情公众号提示图片</label>
+				<div class="col-sm-10">
+					<input type="hidden" id="origin_mp_pic" name="origin_mp_pic" value="{$miniprogram.mp_pic}" />
+					<div class="col-file col-xs-3"><input type="file" name="mp_pic" /></div>
+					{if $miniprogram.mp_pic}<a href="{$miniprogram.mp_pic}" target="_blank"><img src="{$miniprogram.mp_pic}" height="34" /></a>{/if}
+					<span class="some-line">不填即使用内置图片</span>
+				</div>
+			</div>
+			<div class="form-group mp_title {if !strlen($miniprogram.mp_title)}hidden{/if}">
+				<label class="col-sm-2 control-label no-padding-right">详情公众号链接</label>
+				<div class="col-sm-10">
+					<input class="form-control" type="text" id="mp_url" name="mp_url" value="{$miniprogram.mp_url}" />
+				</div>
+			</div>
+			</div>
+			
+			<div class="form-block article-property {if $miniprogram.type!=0}hidden{/if}">
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right">订阅消息模板ID</label>
+				<div class="col-sm-10">
+					<input class="col-xs-4" type="text" id="subscribe_id" name="subscribe_id" value="{$miniprogram.subscribe_id}" />
+					<span class="some-line">填写后将显示订阅消息入口，多个模板使用英文逗号隔开</span>
+				</div>
+			</div>
+			<div class="form-group appsecret {if !strlen($miniprogram.subscribe_id)}hidden{/if}">
+				<label class="col-sm-2 control-label no-padding-right">订阅消息图片</label>
+				<div class="col-sm-10">
+					<input type="hidden" id="origin_subscribe_img" name="origin_subscribe_img" value="{$miniprogram.subscribe_img}" />
+					<div class="col-file col-xs-3"><input type="file" name="subscribe_img" /></div>
+					{if $miniprogram.subscribe_img}<a href="{$miniprogram.subscribe_img}" target="_blank"><img src="{$miniprogram.subscribe_img}" height="34" /></a>{/if}
+					<span class="some-line">不填即使用内置图片</span>
+				</div>
+			</div>
+			<div class="form-group appsecret {if !strlen($miniprogram.subscribe_id)}hidden{/if}">
+				<label class="col-sm-2 control-label no-padding-right">AppSecret</label>
+				<div class="col-sm-10">
+					<input class="col-xs-3" type="text" id="appsecret" name="appsecret" value="{$miniprogram.appsecret}" />
+					<span class="some-line">使用订阅消息需填写AppSecret</span>
+				</div>
+			</div>
+			</div>
+			
+			<div class="form-block article-property {if $miniprogram.type!=0}hidden{/if}">
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right">详情跳转栏标题</label>
+				<div class="col-sm-10">
+					<input class="col-xs-4" type="text" id="trans_title" name="trans_title" value="{$miniprogram.trans_title}" />
+					<span class="some-line">填写后将在详情时间下面显示</span>
+				</div>
+			</div>
+			<div class="form-group trans_title {if !strlen($miniprogram.trans_title)}hidden{/if}">
+				<label class="col-sm-2 control-label no-padding-right">详情跳转栏图片</label>
+				<div class="col-sm-10">
+					<input type="hidden" id="origin_trans_pic" name="origin_trans_pic" value="{$miniprogram.trans_pic}" />
+					<div class="col-file col-xs-3"><input type="file" name="trans_pic" /></div>
+					{if $miniprogram.trans_pic}<a href="{$miniprogram.trans_pic}" target="_blank"><img src="{$miniprogram.trans_pic}" height="34" /></a>{/if}
+				</div>
+			</div>
+			<div class="form-group trans_title {if !strlen($miniprogram.trans_title)}hidden{/if}">
+				<label class="col-sm-2 control-label no-padding-right">详情跳转栏链接</label>
+				<div class="col-sm-10">
+					<input class="form-control" type="text" id="trans_url" name="trans_url" value="{$miniprogram.trans_url}" />
+				</div>
+			</div>
+			</div>
+			
+			<div class="form-group article-property {if $miniprogram.type!=0}hidden{/if}">
+				<label class="col-sm-2 control-label no-padding-right">列表类型</label>
+				<div class="col-sm-10">
+					<span class="some-switch">
+						<label><input type="radio" name="list_type" value="" {if $miniprogram.list_type=='' || $miniprogram.list_type=='small'}checked{/if} /><div>小图</div></label>
+						<label><input type="radio" name="list_type" value="big" {if $miniprogram.list_type=='big'}checked{/if} /><div>大图</div></label>
+						<label><input type="radio" name="list_type" value="grid" {if $miniprogram.list_type=='grid'}checked{/if} /><div>网格</div></label>
+						<label><input type="radio" name="list_type" value="shuffle" {if $miniprogram.list_type=='shuffle'}checked{/if} /><div>混排</div></label>
+					</span>
+				</div>
+			</div>
+			<!--<div class="form-group article-property {if $miniprogram.type!=0}hidden{/if}">
+				<label class="col-sm-2 control-label no-padding-right">详情调用腾讯视频插件</label>
+				<div class="col-sm-10">
+					<input type="checkbox" data-type="app" data-style="float:left;" id="detail_video" name="detail_video" value="1" {if $miniprogram.detail_video==1}checked{/if} />
+					<span class="some-line">需要先在小程序后台申请调用</span>
+				</div>
+			</div>-->
+			<div class="form-group article-property {if $miniprogram.type!=0}hidden{/if}">
+				<label class="col-sm-2 control-label no-padding-right">详情隐藏评论</label>
+				<div class="col-sm-10">
+					<input type="checkbox" data-type="app" id="comment_hidden" name="comment_hidden" value="1" {if $miniprogram.comment_hidden==1}checked{/if} />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right">跳转小程序列表</label>
+				<div class="col-sm-10">
+					<textarea class="form-control" name="miniprogram_list" rows="5" placeholder="一行一个，不超过10个" style="font-family:'Courier New';">{$miniprogram.miniprogram_list}</textarea>
+					<span class="some-line">赞扬AppID: wx0ae318deb82a1d8d</span>
+				</div>
+			</div>
+		</div>
+		{foreach $list as $rs}
+		<div class="col-ra">
+			{foreach $rs as $row}
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right" for="{$row.name}">{$row.memo|raw}</label>
+				<div class="col-sm-10">
+					{if $row.type=='file'}
+					<input type="hidden" id="origin_{$row.name}" name="origin_{$row.name}" value="{$row.content}" />
+					<div class="col-file col-xs-3"><input type="file" name="{$row.name}" {$row.file_attr} /></div>
+					{if $row.content}
+						{if $row.is_image==1}
+						<a href="{$row.image}" target="_blank"><img src="{$row.image}" height="34" /></a>
+						{else}
+						<span class="some-line"><a href="{$row.content}" target="_blank">打开文件</a></span>
+						{/if}
+					{/if}
+					{elseif $row.type=='radio' || $row.type=='checkbox' || $row.type=='select' || $row.type=='switch'}
+					{$row.parse_content|raw}
+					{elseif $row.type=='color'}
+					{$row.parse_content|raw}
+					{elseif $row.type=='textarea'}
+					<textarea class="form-control" id="{$row.name}" name="{$row.name}" rows="5" placeholder="{$row.placeholder}">{$row.content}</textarea>
+					{else}
+					<input class="form-control" type="text" id="{$row.name}" name="{$row.name}" value="{$row.content}" placeholder="{$row.placeholder}" />
+					{/if}
+				</div>
+			</div>
+				{foreach $row.subconfig as $g}
+				<div class="form-group" style="display:none;" data-parent{$g.parent_id}-value=",{$g.parent_value},">
+					<label class="col-sm-2 control-label no-padding-right" for="{$g.name}">{$g.memo|raw}</label>
+					<div class="col-sm-10">
+						{if $g.type=='file'}
+						<input type="hidden" id="origin_{$g.name}" name="origin_{$g.name}" value="{$g.content}" />
+						<div class="col-file col-xs-3"><input type="file" name="{$g.name}" {$g.file_attr} /></div>
+						{if $g.content}
+							{if $g.is_image==1}
+							<a href="{$g.image}" target="_blank"><img src="{$g.image}" height="34" onerror="this.src='/images/nopic.png'" /></a>
+							{else}
+							<span class="some-line"><a href="{$g.content}" target="_blank">打开文件</a></span>
+							{/if}
+						{/if}
+						{elseif $g.type=='radio' || $g.type=='checkbox' || $g.type=='select' || $g.type=='switch'}
+						{$g.parse_content|raw}
+						{elseif $g.type=='color'}
+						{$g.parse_content|raw}
+						{elseif $g.type=='textarea'}
+						<textarea class="form-control" id="{$g.name}" name="{$g.name}" rows="5" placeholder="{$g.placeholder}">{$g.content}</textarea>
+						{else}
+						<input class="form-control" type="text" id="{$g.name}" name="{$g.name}" value="{$g.content}" placeholder="{$g.placeholder}" />
+						{/if}
+					</div>
+				</div>
+				{/foreach}
+			{/foreach}
+		</div>
+		{/foreach}
+		</div>
+		<div class="clearfix form-actions">
+			<div class="col-md-offset-3 col-md-9">
+				<button class="btn btn-info" type="submit">
+					<i class="ace-icon fa fa-check bigger-110"></i>
+					提交
+				</button>
+
+				&nbsp; &nbsp; &nbsp;
+				<button class="btn" type="reset">
+					<i class="ace-icon fa fa-undo bigger-110"></i>
+					重置
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+{include file="footer"}
+<script>
+function serverContent(tips){
+	let _btn = $(this), id = _btn.attr('data-id'), name = _btn.attr('data-name'), value = _btn.attr('data-value')||'';
+	let html = '<div style="width:440px;height:250px;background:#fff;box-sizing:border-box;padding:10px 15px;text-align:center;">\
+			<div style="color:#999;font-size:14px;line-height:30px;">设置 <font color="#333">'+name+'</font> 服务器域名</div>\
+			<textarea placeholder="不能加 http[s]://，一行一个" style="display:block;border:none;background-color:transparent;width:100%;height:170px;outline:none;resize:none;">'+value+'</textarea>\
+			<div style="height:30px;"><button type="button" class="btn btn-xs btn-info"><i class="ace-icon fa fa-check bigger-120"></i> 确定提交</button></div>\
+		</div>';
+	setTimeout(function(){
+		tips.find('button').on('click', function(){
+			let val = tips.find('textarea').val();
+			if(!val.length){
+				$.overloadError('请填写服务器域名');
+				return false;
+			}
+			$.postJSON('/wechat/miniprogram_serverdomain', { miniprogram_id:id, domain:val }, function(){
+				$.overlay(false);
+				setTimeout(function(){
+					$.overloadSuccess('设置服务器域名成功');
+					_btn.attr('data-value', val);
+					$.registControl(_btn);
+				}, 300);
+			});
+		});
+	}, 0);
+	return html;
+}
+function businessContent(tips){
+	let _btn = $(this), id = _btn.attr('data-id'), name = _btn.attr('data-name'), value = _btn.attr('data-value')||'';
+	let html = '<div style="width:440px;height:250px;background:#fff;box-sizing:border-box;padding:10px 15px;text-align:center;">\
+			<div style="color:#999;font-size:14px;line-height:30px;">设置 <font color="#333">'+name+'</font> 业务域名</div>\
+			<textarea placeholder="不能加 http[s]://，一行一个" style="display:block;border:none;background-color:transparent;width:100%;height:170px;outline:none;resize:none;">'+value+'</textarea>\
+			<div style="height:30px;"><button type="button" class="btn btn-xs btn-info"><i class="ace-icon fa fa-check bigger-120"></i> 确定提交</button></div>\
+		</div>';
+	setTimeout(function(){
+		tips.find('button').on('click', function(){
+			let val = tips.find('textarea').val();
+			if(!val.length){
+				$.overloadError('请填写业务域名');
+				return false;
+			}
+			$.postJSON('/wechat/miniprogram_businessdomain', { miniprogram_id:id, domain:val }, function(){
+				$.overlay(false);
+				setTimeout(function(){
+					$.overloadSuccess('设置业务域名成功');
+					_btn.attr('data-value', val);
+					$.registControl(_btn);
+				}, 300);
+			});
+		});
+	}, 0);
+	return html;
+}
+$(function(){
+	$('.some-color').colorpicker({
+		target: function(){
+			return this.prev();
+		},
+		callback: function(c){
+			$(this).css('background', c);
+		}
+	});
+	$('#mp_title').on('input', function(){
+		if(!$(this).val().length){
+			$('.mp_title').addClass('hidden');
+		}else{
+			$('.mp_title').removeClass('hidden');
+		}
+	});
+	$('#subscribe_id').on('input', function(){
+		if(!$(this).val().length){
+			$('.appsecret').addClass('hidden');
+		}else{
+			$('.appsecret').removeClass('hidden');
+		}
+	});
+	$('#trans_title').on('input', function(){
+		if(!$(this).val().length){
+			$('.trans_title').addClass('hidden');
+		}else{
+			$('.trans_title').removeClass('hidden');
+		}
+	});
+	$('#type').on('change', function(){
+		if(Number($(this).selected().val())===0){
+			$('.article-property').removeClass('hidden');
+		}else{
+			$('.article-property').addClass('hidden');
+			$('#ad_fixed').val(0);
+		}
+	});
+	$('.setKeyword').on('input', function(){
+		let val = $.trim($(this).val()), div = $('.form-block .form-group');
+		if(!val.length){
+			div.show().parent().show();
+		}else{
+			let vals = val.split(' ');
+			div.hide().parent().hide();
+			div.each(function(){
+				let _div = $(this), keywords = [];
+				$.each(vals, function(){
+					if(!$.trim(this).length){
+						keywords.push('');
+						return true;
+					}
+					if(_div.find('.control-label').text().indexOf(this)>-1)keywords.push(this);
+				});
+				if(keywords.length === vals.length)_div.show().parent().show();
+			});
+		}
+	});
+	$('[data-maxsize]').on('change', function(){
+		if(this.files.length && this.files[0]){
+			if(this.files[0].size > Number($(this).attr('data-maxsize'))){
+				$.overloadError('图片大小不能超过'+(Number($(this).attr('data-maxsize'))/1024/1024)+'M');
+				$(this).val('').parent().css('border-color', 'red');
+				return false;
+			}else{
+				$(this).parent().css('border-color', '');
+			}
+		}
+		return false;
+	});
+});
+</script>

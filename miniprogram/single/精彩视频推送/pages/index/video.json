@@ -1,0 +1,6 @@
+{
+	"navigationStyle": "custom",
+	"usingComponents": {
+		"txv-video": "plugin://tencentvideo/video"
+	}
+}

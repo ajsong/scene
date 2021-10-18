@@ -1,0 +1,309 @@
+{include file="header"}
+{literal}
+<style>
+.table-content .row{margin:0;}
+ul, li{margin:0; padding:0; list-style:none;}
+.plus{background:url("data:image/svg+xml;charset=utf-8,%3Csvg%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2064%2064%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%3Cg%20class%3D%22transform-group%22%3E%3Cg%20transform%3D%22scale(0.0625%2C%200.0625)%22%3E%3Cpath%20d%3D%22M863.328%20482.56l-317.344-1.12L545.984%20162.816c0-17.664-14.336-32-32-32s-32%2014.336-32%2032l0%20318.4L159.616%20480.064c-0.032%200-0.064%200-0.096%200-17.632%200-31.936%2014.24-32%2031.904C127.424%20529.632%20141.728%20544%20159.392%20544.064l322.592%201.152%200%20319.168c0%2017.696%2014.336%2032%2032%2032s32-14.304%2032-32l0-318.944%20317.088%201.12c0.064%200%200.096%200%200.128%200%2017.632%200%2031.936-14.24%2032-31.904C895.264%20496.992%20880.96%20482.624%20863.328%20482.56z%22%20fill%3D%22%23c7c7c7%22%3E%3C%2Fpath%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E") no-repeat center center; background-size:15px 15px;}
+.wx-nomenu, .wx-view{width:830px; height:440px; margin:0 auto; padding-left:340px; box-sizing:border-box; text-align:center; overflow:hidden; font-size:14px;}
+.wx-nomenu .wx-mobile{width:320px; height:100%; float:left; margin-left:-340px; background:url(/css/gm/images/wx_menu_preview.png) no-repeat center center; background-size:256px 456px;}
+.wx-tip{color:#999; padding-top:210px;}
+.wx-tip a{display:block; text-decoration:none; border-radius:3px; background:#09bb07; color:#fff; width:100px; line-height:36px; margin:0 auto; margin-top:15px;}
+.wx-view .wx-mobile{width:320px; height:100%; float:left; margin-left:-340px; background:url(/css/gm/images/wx_menu_head.png) no-repeat center top; background-size:100% auto;}
+.wx-mobile > div{position:relative; width:100%; height:100%; border:1px solid #e7e7eb; box-sizing:border-box; background:url(/css/gm/images/wx_menu_foot.png) no-repeat center bottom; background-size:100% auto;}
+.wx-head{position:absolute; left:0; top:0; z-index:1; width:100%; height:64px; text-align:center; font-size:14px; padding-top:20px; box-sizing:border-box; line-height:44px; color:#fff;}
+.wx-foot{position:absolute; left:0; bottom:0; z-index:1; border-top:1px solid #e7e7eb; width:100%; height:51px; padding-left:44px; box-sizing:border-box;}
+.wx-foot li{position:relative; width:100%; height:100%; box-sizing:border-box; padding:0 5px; line-height:50px; color:#333; float:left; -webkit-transition:background-color 0.3s ease-out; transition:background-color 0.3s ease-out; border:1px solid #fafafa; border-right-color:#e7e7eb; cursor:pointer;}
+.wx-foot li:last-child{border-right-color:#fafafa;}
+.wx-foot li:hover, .wx-foot li.this{background-color:#f5f5f5;}
+.wx-foot li.this{border-color:#09bb07;}
+.wx-foot li:first-child:nth-last-child(2), .wx-foot li:first-child:nth-last-child(2) ~ li{width:50%;}
+.wx-foot li:first-child:nth-last-child(3), .wx-foot li:first-child:nth-last-child(3) ~ li{width:33.3%;}
+.wx-foot li span{display:block; padding:0 5px; box-sizing:border-box; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.wx-foot li span i{display:inline-block; width:6px; height:6px; overflow:hidden; margin-right:3px; -webkit-transform:translateY(-2px); transform:translateY(-2px); background:url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2026.000000%2026.000000%22%3E%3Cg%0A%20%20%20%20%20%20%20%20fill%3D%22%23cccccc%22%20transform%3D%22translate(0.000000%2C26.000000)%20scale(0.100000%2C-0.100000)%22%20stroke%3D%22none%22%3E%3Cpath%20d%3D%22M0%20230%20l0%20-30%20130%200%20130%200%200%2030%200%2030%20-130%200%20-130%200%200%20-30z%22%2F%3E%3Cpath%20d%3D%22M0%20130%20l0%20-30%20130%200%20130%200%200%2030%200%2030%20-130%200%20-130%200%200%20-30z%22%2F%3E%3Cpath%20d%3D%22M0%2030%20l0%20-30%20130%200%20130%200%200%2030%200%2030%20-130%200%20-130%200%200%20-30z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") no-repeat center center; background-size:cover;}
+.wx-foot li .sub{position:absolute; z-index:1; display:none; left:-1px; bottom:0; margin-bottom:60px; width:calc(100% + 2px); border-bottom:none; box-sizing:border-box;}
+.wx-foot li.active .sub{display:block;}
+.wx-foot li .sub a{display:block; text-decoration:none; color:#333; height:50px; border:1px solid #e7e7eb; border-top:1px solid #fff; -webkit-transition:all 0.3s ease-out; transition:all 0.3s ease-out;}
+.wx-foot li .sub a:first-child{border-top:1px solid #e7e7eb;}
+.wx-foot li .sub a:hover{background-color:#f5f5f5; border-top-color:#f5f5f5;}
+.wx-foot li .sub a:first-child:hover{border-top-color:#e7e7eb;}
+.wx-foot li .sub a.this{border-color:#09bb07 !important;}
+.wx-editer{background:#f4f5f9; border:1px solid #e7e7eb; width:100%; height:100%; box-sizing:border-box; padding:0 20px; text-align:left;}
+.wx-editer .wx-tip{display:none; text-align:center;}
+.wx-editer .view{width:100%; height:100%;}
+.wx-editer .name{line-height:40px; height:40px;}
+.wx-editer .name a{display:block; float:right; color:#576b95; text-decoration:none;}
+.wx-editer .name font{display:block; float:left;}
+.wx-editer .only-title{color:#999; line-height:44px;}
+.wx-editer .title{height:68px; line-height:34px; padding-left:84px; margin-top:20px;}
+.wx-editer .title span{display:block; float:left; width:84px; height:100%; margin-left:-84px;}
+.wx-editer .title input.type{-webkit-transform:translateY(-4px); transform:translateY(-4px); margin-right:4px;}
+.wx-editer .title input:not(.type){width:100%; height:34px; font-size:14px; border:1px solid #d5d5d5; border-radius:2px; padding:0 5px; background:#fff; box-sizing:border-box;}
+.wx-editer .title font{display:block; color:#999;}
+.wx-noselected .wx-tip{display:block;}
+.wx-noselected .view{display:none;}
+.wx-mp{padding-top:34px;}
+.wx-mp .form-search{margin-top:-34px; padding-left:0; width:190px;}
+.wx-mp ul{height:470px; overflow:auto; overflow-x:hidden; padding-right:10px;}
+.wx-mp ul::-webkit-scrollbar{width:6px; height:6px;}
+.wx-mp ul::-webkit-scrollbar-track{display:none;}
+.wx-mp ul::-webkit-scrollbar-thumb{background:#666; border-radius:3px;}
+.wx-mp ul li{width:100%;}
+.wx-mp ul li:nth-child(2n+2){background:#f9f9f9;}
+.wx-mp ul li.this{background:#398bfc;}
+.wx-mp ul li a{display:block; text-decoration:none; height:44px; line-height:30px; padding:7px; text-align:left; font-size:12px;}
+.wx-mp ul li.this a{color:#fff;}
+.wx-mp ul li a i{display:block; float:left; width:30px; height:30px; border-radius:2px; margin-right:10px; background:no-repeat center center; background-size:cover;}
+</style>
+{/literal}
+<div class="page-header">
+	<h6>
+		微信管理
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			自定义菜单
+		</small>
+	</h6>
+</div>
+
+<div class="row">
+	<div class="col-xs-12">
+		<form class="form-horizontal" role="form" method="post" action="?app=wechat&act=wxmenu" enctype="multipart/form-data" onsubmit="return check()">
+			<input type="hidden" id="menu" name="menu" />
+			
+			{if is_array($list) && count($list)}
+			<div class="form-group">
+				<div class="col-sm-2 wx-mp">
+					<div class="navbar-form navbar-left form-search">
+						<div class="form-group">
+							<input type="text" class="mpKeyword" placeholder="搜索公众号" />
+						</div>
+						<button type="button" class="btn btn-mini btn-info2">
+							<i class="ace-icon fa fa-search icon-only bigger-110"></i>
+						</button>
+					</div>
+					<ul>
+						{foreach from=$list item=g}
+						<li data-name="{$g->name}" data-alias="{$g->alias}" data-appid="{$g->appid}" class="{if $g->appid==$appid}this{/if}">
+							<a href="?app=wechat&act=wxmenu&appid={$g->appid}"><i style="background-image:url({$g->pic});"></i>{$g->name}</a>
+						</li>
+						{/foreach}
+					</ul>
+				</div>
+				<div class="col-sm-10">
+					<div class="wx-nomenu {if strlen($menu)}hidden{/if}">
+						<div class="wx-mobile"></div>
+						<div class="wx-tip">当前还没创建菜单<a href="javascript:void(0)">开始创建</a></div>
+					</div>
+					<div class="wx-view {if !strlen($menu)}hidden{/if}">
+						<div class="wx-mobile">
+							<div>
+								<div class="wx-head"></div>
+								<ul class="wx-foot"></ul>
+							</div>
+						</div>
+						<div class="wx-editer wx-noselected">
+							<div class="wx-tip">点击左侧菜单进行编辑操作</div>
+							<div class="view">
+								<div class="name ge-bottom">
+									<a href="javascript:void(0)">删除菜单</a>
+									<font></font>
+								</div>
+								<div class="only-title hidden">已添加子菜单，仅可设置菜单名称。</div>
+								<div class="title">
+									<span>菜单名称</span>
+									<input type="text" id="title" />
+									<font class="tip"></font>
+								</div>
+								<div class="title con">
+									<span>菜单内容</span>
+									<div><input type="radio" class="type" value="VIEW" checked />跳转网页</div>
+									<input type="text" id="url" />
+									<font>订阅者点击该子菜单会跳到该链接</font>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="clearfix form-actions {if !strlen($menu)}hidden{/if}">
+				<div class="col-md-offset-3 col-md-9">
+					<button class="btn btn-info" type="submit">
+						<i class="ace-icon fa fa-check bigger-110"></i>
+						提交
+					</button>
+
+					&nbsp; &nbsp; &nbsp;
+					<button class="btn" type="reset">
+						<i class="ace-icon fa fa-undo bigger-110"></i>
+						重置
+					</button>
+				</div>
+			</div>
+			{/if}
+		</form>
+	</div>
+</div>
+{include file="footer"}
+<script>
+var menu = $.json('{$menu}'), newMenu = [], menuIndex = 0;
+function setMenu(){
+	var html = '';
+	$.each(newMenu, function(i){
+		html += '<li '+(typeof(this.type)==='undefined'?'':'type="'+this.type+'"')+' class="'+(menuIndex==(i+1)?'this':'')+' '+(parseInt(menuIndex)==(i+1)?'active':'')+'">';
+		html += '<div class="sub">';
+		$.each(this.sub_button, function(j){
+			html += '<a href="javascript:void(0)" class="'+(menuIndex==(parseInt(menuIndex)+parseFloat('0.'+(j+1)))?'this':'')+'"><span>'+this.name+'</span></a>';
+		});
+		if(this.sub_button.length<5)html += '<a href="javascript:void(0)" class="plus"></a>';
+		html += '</div>';
+		html += '<span>'+(this.sub_button.length?'<i></i>':'')+this.name+'</span></li>';
+	});
+	if(newMenu.length<3)html += '<li class="plus"></li>';
+	$('.wx-foot').html(html);
+	$('.wx-head').html($('.wx-mp li.this a').text());
+}
+function selectMenu(_this){
+	if(_this===null){
+		$('.wx-noselected').addClass('wx-noselected');
+		return;
+	}
+	var isRoot = _this.parent().parent().is('.wx-foot'), index = _this.parent().index(), name = '', url = '', delText = '', tipText = '', maxLength = 0;
+	$('.wx-foot li, .wx-foot li a').removeClass('this');
+	_this.parent().addClass('this');
+	$('.wx-noselected').removeClass('wx-noselected');
+	if(isRoot){
+		if(newMenu[index].sub_button.length){
+			$('.only-title').removeClass('hidden');
+			$('.con').addClass('hidden');
+		}else{
+			$('.only-title').addClass('hidden');
+			$('.con').removeClass('hidden');
+		}
+		_this.parent().addClass('active').siblings().removeClass('active');
+		menuIndex = index+1;
+		var g = newMenu[index];
+		name = g.name;
+		url = typeof(g.url)==='undefined' ? '' : g.url;
+		delText = '删除菜单';
+		tipText = '字数不超过4个汉字或8个字母';
+		maxLength = 8;
+	}else{
+		$('.only-title').addClass('hidden');
+		$('.con').removeClass('hidden');
+		menuIndex = parseInt(menuIndex) + parseFloat('0.'+(index+1));
+		var g = newMenu[parseInt(menuIndex-1)].sub_button[index];
+		name = g.name;
+		url = g.url;
+		delText = '删除子菜单';
+		tipText = '字数不超过8个汉字或16个字母';
+		maxLength = 16;
+	}
+	$('.wx-editer .name font').html(name);
+	$('.wx-editer #title').val(name);
+	$('.wx-editer #url').val(url);
+	$('.wx-editer .name a').html(delText);
+	$('.wx-editer .title .tip').html(tipText);
+	$('.wx-editer #title').maxLength(maxLength);
+}
+function check(){
+	if(!confirm('发布成功后会覆盖原版本，且将在24小时内对所有用户生效，确认发布？'))return false;
+	if(!newMenu.length){
+		$.overloadError('请先设置菜单');
+		return false;
+	}
+	var obj = { button:newMenu };
+	$('#menu').val($.jsonString(obj));
+	return true;
+}
+$(function(){
+	$('.mpKeyword').on('input', function(){
+		let val = $.trim($(this).val()), div = $('.wx-mp li');
+		if(!val.length){
+			div.show();
+		}else{
+			div.hide();
+			div.each(function(){
+				if($(this).attr('data-name').indexOf(val)>-1 || $(this).attr('data-alias').indexOf(val)>-1 || $(this).attr('data-appid').indexOf(val)>-1)$(this).show();
+			});
+		}
+	});
+	if($.isJson(menu)){
+		newMenu = menu.button;
+		menuIndex = 1;
+	}
+	setMenu();
+	selectMenu($('.wx-foot .this').length?$('.wx-foot .this span'):null);
+	$('.wx-foot').on('click', '.plus', function(){
+		if($(this).parent().is('.wx-foot')){
+			newMenu.push({ type:'view', name:'菜单名称', url:'', sub_button:[] });
+			menuIndex = newMenu.length;
+		}else{
+			var parent = $(this).parents('li').eq(0), index = parent.index();
+			var m = newMenu[index];
+			if(!m.sub_button.length){
+				if(!confirm('添加子菜单后，“'+m.name+'”的内容将被清除。确定添加子菜单？'))return;
+			}
+			delete m.type;
+			delete m.url;
+			newMenu.splice(index, 1, m);
+			var g = newMenu[index].sub_button;
+			g.push({ type:'view', name:'子菜单名称', url:'', sub_button:[] });
+			menuIndex = parseInt(index+1) + parseFloat('0.1');
+		}
+		setMenu();
+		selectMenu($('.wx-foot .this').length?$('.wx-foot .this span'):null);
+		$('#title').select().focus();
+	});
+	$('.wx-foot').on('click', 'li span', function(){
+		selectMenu($(this));
+	});
+	$('.wx-editer .name a').click(function(){
+		var _this = $('.wx-foot .this');
+		if(!confirm('删除后“'+_this.children('span').html()+'”菜单下设置的内容将被删除'))return;
+		var index = _this.index(), isRoot = _this.parent().is('.wx-foot');
+		if(isRoot){
+			newMenu.splice(index, 1);
+			menuIndex = 0;
+			setMenu();
+		}else{
+			var parentIndex = _this.parents('li').eq(0).index(), sub = newMenu[parentIndex].sub_button;
+			if(sub.length===1){
+				newMenu[parentIndex].sub_button = [];
+				newMenu[parentIndex].type = 'VIEW';
+				newMenu[parentIndex].url = '';
+			}else{
+				sub.splice(index, 1);
+				newMenu[parentIndex].sub_button = sub;
+			}
+			menuIndex = parentIndex+1;
+			setMenu();
+			selectMenu($('.wx-foot li:eq('+parentIndex+') > span'));
+		}
+	});
+	$('.wx-editer #title').blur(function(){
+		var val = $(this).val(), _this = $('.wx-foot .this'), index = _this.index(), isRoot = _this.parent().is('.wx-foot');
+		if(isRoot){
+			newMenu[index].name = val;
+		}else{
+			var parentIndex = _this.parents('li').eq(0).index();
+			newMenu[parentIndex].sub_button[index].name = val;
+		}
+		_this.children('span').html(val);
+		$('.wx-editer .name font').html(val);
+	});
+	$('.wx-editer #url').blur(function(){
+		var val = $(this).val(), _this = $('.wx-foot .this'), index = _this.index(), isRoot = _this.parent().is('.wx-foot');
+		if(isRoot){
+			newMenu[index].url = val;
+		}else{
+			var parentIndex = _this.parents('li').eq(0).index();
+			newMenu[parentIndex].sub_button[index].url = val;
+		}
+	});
+	$('.wx-nomenu a').click(function(){
+		$('.wx-nomenu').addClass('hidden');
+		$('.wx-view, .form-actions').removeClass('hidden');
+	});
+});
+</script>

@@ -1,0 +1,86 @@
+{include file="header"}
+
+<div class="page-header">
+	<h6>
+		系统设置
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			参数设置
+		</small>
+	</h6>
+</div>
+
+<form class="form-inline" action="?" method="get">
+<input type="text" class="input-medium" placeholder="参数标识" name="name" value="{$name}" />
+<input type="text" class="input-medium" placeholder="参数说明" name="memo" value="{$memo}" />
+<button type="submit" class="btn btn-info btn-sm">
+	<i class="ace-icon fa fa-search bigger-110"></i>搜索
+</button>
+</form>
+
+<div class="table-content">
+<table id="simple-table" class="table table-striped table-bordered table-hover">
+	<thead>
+		<tr>
+			<th class="hidden">ID</th>
+			<th>参数标识</th>
+			<th>参数说明</th>
+			<th>参数值</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		{if count($rs)}
+		{foreach $rs as $row}
+		<tr>
+			<td class="hidden">{$row.id}</td>
+			<td><a href="/setting/configs_edit?id={$row.id}" class="iframe-layer">{$row.name}</a></td>
+			<td>{:changeColor($row.memo)}</td>
+			<td>
+				{if $row.is_image==1}
+				<a href="{$row.image}" target="_blank"><img src="{$row.image}" height="34" onerror="this.src='/images/nopic.png'" /></a>
+				{else}
+				{$row.content|raw}
+				{/if}
+			</td>
+			<td>
+				<a href="/setting/configs_edit?id={$row.id}">
+					<button type="button" class="btn btn-xs btn-info">
+					<i class="ace-icon fa fa-pencil bigger-120"></i>
+				</button>
+				</a>
+			</td>
+		</tr>
+		{/foreach}
+		{literal}
+		<tr class="template">
+			<td class="hidden">{$row.id}</td>
+			<td><a href="/setting/configs_edit?id={$row.id}" class="iframe-layer">{$row.name}</a></td>
+			<td>{changeColor($row.memo)}</td>
+			<td>
+				{if $row.is_image==1}
+				<a href="{$row.image}" target="_blank"><img src="{$row.image}" height="34" onerror="this.src='/images/nopic.png'" /></a>
+				{else}
+				{$row.content}
+				{/if}
+			</td>
+			<td>
+				<a href="/setting/configs_edit?id={$row.id}">
+					<button type="button" class="btn btn-xs btn-info">
+					<i class="ace-icon fa fa-pencil bigger-120"></i>
+				</button>
+				</a>
+			</td>
+		</tr>
+		{/literal}
+		{else}
+		<tr bgcolor="white"><td colspan="13" height="50">暂无记录</td></tr>
+		{/if}
+	</tbody>
+</table>
+</div>
+<div class="mypage">
+	{$viewpage|raw} {$rs|raw}
+</div>
+{include file="footer"}

@@ -1,0 +1,48 @@
+@charset "utf-8";
+/* CSS Document */
+@import url("base.css");
+
+html, body{width:100%; height:100%; overflow:hidden;}
+body{font-size:0.14rem; background:#fff;}
+a, a:hover{text-decoration:none;}
+*{touch-action:pan-y;}
+
+.num{position:fixed; z-index:999; right:0; bottom:0; line-height:0.15rem; font-size:12px; color:#fff; padding-right:0.05rem;}
+
+.wap-detail, .wap-detail ul, .wap-detail ul li{position:relative; width:100%; height:100%; overflow:hidden;}
+.wap-detail ul li{position:absolute; left:0; top:0; -webkit-transition:-webkit-transform 0.5s ease-out; transition:transform 0.5s ease-out; background:no-repeat center center; background-size:cover;}
+.wap-detail ul li.swipeOutTop{-webkit-transform:translateY(-100%); transform:translateY(-100%);}
+.wap-detail ul li.swipeOutBottom{-webkit-transform:translateY(100%); transform:translateY(100%);}
+.wap-detail ul li > div{position:absolute; text-align:left; overflow:hidden;}
+.wap-detail ul li > div a{display:block; text-decoration:none; color:inherit; font-size:inherit; font-weight:inherit; width:100%; height:100%; overflow:hidden;}
+.wap-detail ul li > div span{display:block; color:inherit; font-size:inherit; font-weight:inherit; width:100%; height:100%; overflow:hidden;}
+.wap-detail ul li > div span font{display:block; color:inherit; font-size:inherit; font-weight:inherit; word-wrap:break-word; box-sizing:border-box; padding:0.07rem 0.15rem; height:100%;}
+.wap-detail ul li > div img{width:100%; height:100%; vertical-align:bottom;}
+
+.wap-detail section{position:absolute; left:50%; bottom:0.3rem; z-index:150; cursor:default; width:2.5rem; height:0.14rem; -webkit-transform:translateX(-50%); transform:translateX(-50%);}
+.wap-detail section div{position:relative; width:100%; height:100%; text-align:center; color:#fff; font-size:0.18rem; font-weight:bold; -webkit-animation:start 1.5s infinite ease-in-out; animation:start 1.5s infinite ease-in-out;}
+.wap-detail section div img{width:0.22rem; height:0.22rem; margin:-0.07rem 0 0 0.01rem; -webkit-animation:start 1.5s infinite ease-in-out; animation:start 1.5s infinite ease-in-out;}
+
+.wap-detail .music{position:absolute; z-index:101; top:0.1rem; right:0.1rem; cursor:pointer; text-align:center; width:0.34rem; height:0.34rem; box-sizing:border-box; border-radius:100%; border:0.01rem dashed #fff; padding:0.02rem;}
+.wap-detail .music:after{content:""; display:block; width:100%; height:100%; border-radius:100%; background:url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%201024%201024%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M1024%20512c0-282.763636-229.236364-512-512-512C229.236364%200%200%20229.236364%200%20512c0%20282.763636%20229.236364%20512%20512%20512C794.763636%201024%201024%20794.763636%201024%20512zM428.916364%20672.628364c0%2012.520727-3.490909%2030.114909-7.540364%2039.144727-11.543273%2025.088-48.174545%2046.638545-77.730909%2046.638545-18.059636%200-32.116364-5.026909-40.634182-14.522182-6.516364-8.005818-11.031273-19.549091-11.031273-30.114909%200-22.574545%2017.035636-43.147636%2044.637091-54.178909%2011.031273-4.514909%2021.085091-6.516364%2030.580364-6.516364%2015.546182%200%2029.602909%202.513455%2039.610182%207.028364L406.807273%20355.095273l291.467636-70.749091%200%20317.021091c0%2025.088-8.517818%2045.149091-25.088%2060.695273-18.059636%2016.058182-40.634182%2025.6-62.184727%2025.6-18.059636%200-31.604364-5.026909-40.122182-14.522182-6.516364-8.005818-11.031273-19.549091-11.031273-30.114909%200-19.549091%2013.032727-38.120727%2034.629818-49.664%2011.543273-6.004364%2029.602909-11.543273%2039.144727-11.543273%2015.546182%200%2030.580364%202.513455%2042.635636%207.540364L676.258909%20366.638545%20428.916364%20428.311273%20428.916364%20672.628364z%22%20fill%3D%22%23ffffff%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") no-repeat center center; background-size:cover;}
+.wap-detail .music.isPlaying{-webkit-animation:playing-spin 3s steps(36, end) infinite; animation:playing-spin 3s steps(36, end) infinite;}
+.wap-detail audio{display:none;}
+
+@-webkit-keyframes start{
+0%,30%{opacity:0; -webkit-transform:translate(0, 0.1rem);}
+60%{opacity:1; -webkit-transform:translate(0, 0);}
+100%{opacity:0; -webkit-transform:translate(0, -0.08rem);}
+}
+@keyframes start{
+0%,30%{opacity:0; transform:translate(0, 0.1rem);}
+60%{opacity:1; transform:translate(0, 0);}
+100%{opacity:0; transform:translate(0, -0.08rem);}
+}
+@-webkit-keyframes playing-spin{
+0%{-webkit-transform:rotateY(0);}
+100%{-webkit-transform:rotateY(360deg);}
+}
+@keyframes playing-spin{
+0%{transform:rotateY(0);}
+100%{transform:rotateY(360deg);}
+}

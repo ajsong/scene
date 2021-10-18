@@ -1,0 +1,105 @@
+<import src="libs/wxParse/wxParse.wxml" />
+<wxs module="helper" src="helper.wxs"></wxs>
+
+<!-- 登录授权页面 -->
+<template name="loginAuth">
+<view wx:if="{{loginAuth.show}}" class="login-auth {{loginAuth.cls}} {{loginAuth.showIn}} {{loginAuth.showOut}}">
+	<view wx:if="{{loginAuth.cls=='wxauth'}}">
+		<label></label>
+		<text>获得你的微信公开信息(昵称、头像等)进行登录，而无需账号与密码。</text>
+		<button hover-class="none" open-type="getUserInfo" bindgetuserinfo="loginAuthUserInfo">进行授权</button>
+	</view>
+	<view wx:elif="{{loginAuth.cls=='image-wxauth'}}">
+		<view class="ge-bottom ge-light">需要您的授权</view>
+		<text>为了提供更好的服务\n请在稍后的提示框中点击“允许”</text>
+		<label></label>
+		<button hover-class="none" open-type="getUserInfo" bindgetuserinfo="loginAuthUserInfo">我知道了</button>
+	</view>
+</view>
+</template>
+
+<!-- toast提示框 -->
+<template name="toast">
+<view wx:if="{{toast.show}}" class="toast-view {{toast.cls}} {{toast.showIn}} {{toast.showOut}}"><text>{{toast.text}}</text></view>
+</template>
+
+<!-- 自定义内容弹框 -->
+<template name="dialogView">
+<view class="dialog-bg" wx:if="{{dialogView.show}}" bindtap="{{dialogView.bgClose?'dialogViewCancel':''}}"></view>
+<view class="dialog-view {{dialogView.cls}} {{dialogView.showIn}} {{dialogView.showOut}}" wx:if="{{dialogView.show}}">
+	<text class="dialog-title" wx:if="{{dialogView.title.length}}">{{dialogView.title}}</text>
+	<view class="dialog-content"><template is="wxParse" data="{{wxParseData:dialogView.dialogContent.nodes}}" /></view>
+	<view class="dialog-btns" wx:if="{{dialogView.btns.length>0}}">
+		<view wx:for="{{dialogView.btns}}" wx:key="index" class="dialog-btn {{item.cls}}" style="width:{{100/dialogView.btns.length}}%;">
+			<button wx:if="{{item.cls=='wxauth'}}" open-type="getUserInfo" bindgetuserinfo="dialogViewUserInfo" data-index="{{index}}">{{item.title}}</button>
+            <button wx:elif="{{item.openType && item.openType=='contact'}}" open-type="contact" show-message-card="true" data-index="{{index}}">{{item.title}}</button>
+            <button wx:elif="{{item.openType && item.openType=='share'}}" open-type="share" data-index="{{index}}">{{item.title}}</button>
+            <button wx:elif="{{item.openType && item.openType=='getPhoneNumber'}}" open-type="getPhoneNumber" data-index="{{index}}">{{item.title}}</button>
+            <button wx:elif="{{item.openType && item.openType=='getUserInfo'}}" open-type="getUserInfo" data-index="{{index}}">{{item.title}}</button>
+            <button wx:elif="{{item.openType && item.openType=='launchApp'}}" open-type="launchApp" data-index="{{index}}">{{item.title}}</button>
+            <button wx:elif="{{item.openType && item.openType=='openSetting'}}" open-type="openSetting" data-index="{{index}}">{{item.title}}</button>
+            <button wx:elif="{{item.openType && item.openType=='feedback'}}" open-type="feedback" data-index="{{index}}">{{item.title}}</button>
+			<button wx:else bindtap="{{(item.cls=='cancel'&&item.boolean)?'dialogViewCancel':'dialogViewHandler'}}" data-index="{{index}}">{{item.title}}</button>
+		</view>
+	</view>
+</view>
+</template>
+
+<!-- 提示框 -->
+<template name="overload">
+<view class="load-overlay" wx:if="{{overload.showDelay}}"></view>
+<view class="load-view {{overload.view}}" wx:if="{{overload.show}}">
+	<view class="load-animate {{overload.icon}}"></view>
+	<text>{{overload.text}}</text>
+</view>
+</template>
+
+<!-- 滚动广告图 -->
+<template name="swiper">
+<view class="swiper">
+	<swiper wx:if="{{flashes.length}}" indicator-dots="true" indicator-color="rgba(255,255,255,0.4)" indicator-active-color="#fff" autoplay="true" interval="4000" duration="500">
+		<swiper-item wx:for="{{flashes}}" wx:key="index">
+			<navigator wx:if="{{item.ad_type=='html5'}}" hover-class="none" url="/pages/global/outlet?url={{helper.urlencode(item.ad_content)}}" class='preloader' style="{{item.pic.length?'background-image:url('+item.pic+');':''}}"><text>{{item.title}}</text></navigator>
+			<navigator wx:elif="{{item.ad_type=='goods'}}" hover-class="none" url="/pages/goods/detail?id={{item.ad_content}}" class='preloader' style="{{item.pic.length?'background-image:url('+item.pic+');':''}}"><text>{{item.title}}</text></navigator>
+			<navigator wx:elif="{{item.ad_type=='shop'}}" hover-class="none" url="/pages/shop/detail?id={{item.ad_content}}" class='preloader' style="{{item.pic.length?'background-image:url('+item.pic+');':''}}"><text>{{item.title}}</text></navigator>
+			<navigator wx:elif="{{item.ad_type=='article'}}" hover-class="none" url="/pages/article/detail?id={{item.ad_content}}" class='preloader' style="{{item.pic.length?'background-image:url('+item.pic+');':''}}"><text>{{item.title}}</text></navigator>
+			<navigator wx:elif="{{item.ad_type=='type' || item.ad_type=='subtype'}}" hover-class="none" url="/pages/goods/goods?category_id={{item.ad_content}}" class='preloader' style="{{item.pic.length?'background-image:url('+item.pic+');':''}}"><text>{{item.title}}</text></navigator>
+			<navigator wx:elif="{{item.ad_type=='brand'}}" hover-class="none" url="/pages/goods/goods?brand_id={{item.ad_content}}" class='preloader' style="{{item.pic.length?'background-image:url('+item.pic+');':''}}"><text>{{item.title}}</text></navigator>
+			<navigator wx:elif="{{item.ad_type=='coupon'}}" hover-class="none" url="" class='preloader' style="{{item.pic.length?'background-image:url('+item.pic+');':''}}"><text>{{item.title}}</text></navigator>
+			<navigator wx:elif="{{item.ad_type=='recharge'}}" hover-class="none" url="/pages/recharge/commit?id={{item.ad_content}}" class='preloader' style="{{item.pic.length?'background-image:url('+item.pic+');':''}}"><text>{{item.title}}</text></navigator>
+			<navigator wx:elif="{{item.ad_type=='country'}}" hover-class="none" url="/pages/goods/goods?country_id={{item.ad_content}}" class='preloader' style="{{item.pic.length?'background-image:url('+item.pic+');':''}}"><text>{{item.title}}</text></navigator>
+			<navigator wx:elif="{{item.ad_type=='register'}}" hover-class="none" url="" class='preloader' style="{{item.pic.length?'background-image:url('+item.pic+');':''}}"><text>{{item.title}}</text></navigator>
+			<navigator wx:elif="{{item.ad_type=='web'}}" hover-class="none" url="/pages/index/web?url={{helper.urlencode(item.ad_content)}}" class='preloader' style="{{item.pic.length?'background-image:url('+item.pic+');':''}}"><text>{{item.title}}</text></navigator>
+			<navigator wx:elif="{{item.ad_type=='detail'}}" hover-class="none" url="/pages/index/detail?id={{item.ad_content}}" class='preloader' style="{{item.pic.length?'background-image:url('+item.pic+');':''}}"><text>{{item.title}}</text></navigator>
+			<view wx:else class='preloader' style="{{item.pic.length?'background-image:url('+item.pic+');':''}}"><text>{{item.title}}</text></view>
+		</swiper-item>
+	</swiper>
+</view>
+</template>
+
+<!-- 密码框 -->
+<template wx:if="{{passwordView}}">
+<view class="passwordView">
+	<view class="{{passwordView.cls}}">
+		<input type="text" name="password" maxlength="{{passwordView.length}}" class="inp" style="{{passwordView.style}}" bindinput="changePasswordView" bindfocus="setPasswordViewStyle" bindblur="removePasswordViewStyle" focus="true" confirm-hold="true" />
+		<view class="ul">
+			<view wx:for="{{passwordView.length}}" wx:key="index" style="width:{{100/passwordView.length}}%;padding-top:{{100/passwordView.length}}%;" class="li"><text wx:if="{{passwordView.string.length<=passwordView.length}}">{{passwordView.string[index]}}</text></view>
+		</view>
+	</view>
+</view>
+</template>
+
+<!-- 滚动选项卡 -->
+<template name="switchView">
+<view class="switchView" style="{{switchView.bgcolor.length?'background:'+switchView.bgcolor:''}}">
+	<view class="row">
+		<view class="ul" style="{{switchView.switchViewWidth>0?'width:'+switchView.switchViewWidth+'px;':''}}">
+			<view wx:for="{{switchView.list}}" wx:key="index" class="li {{switchView.selected==item.value?'this':''}} {{item.cls?item.cls:''}}">
+				<button wx:if="{{item.value=='contact'}}" open-type="contact">{{item.name}}</button>
+				<button wx:elif="{{item.value=='share'}}" open-type="share">{{item.name}}</button>
+				<view wx:else data-index="{{index}}" bindtap="switchViewHandler">{{item.name}}</view>
+			</view>
+		</view>
+	</view>
+</view>
+</template>

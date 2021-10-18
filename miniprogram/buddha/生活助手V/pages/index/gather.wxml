@@ -1,0 +1,19 @@
+<wxs module="helper" src="../../common/helper.wxs"></wxs>
+<import src="../../common/template.wxml" />
+<template is="overload" data="{{overload}}" />
+<template is="dialogView" data="{{dialogView}}" />
+<template is="loginAuth" data="{{loginAuth}}" />
+<view class="index">
+    <block wx:if="{{data.length>0}}">
+	<view class="list">
+		<view class="li" wx:for="{{data}}" wx:key="index" data-id="{{item.id}}" data-index="{{index}}" bindtap="handleShowDetail">
+			<view style="background-image:url({{item.pic}});"></view>
+			<text>{{item.title}}</text>
+		</view>
+		<view class="clear"></view>
+	</view>
+	</block>
+	<block wx:else>
+		<view class="norecord">没有任何记录</view>
+	</block>
+</view>

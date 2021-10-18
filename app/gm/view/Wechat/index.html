@@ -1,0 +1,140 @@
+{include file="header"}
+<div class="page-header">
+	<h6>
+		微信管理
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			公众号管理
+		</small>
+		<div>
+			<a class="tips" href="javascript:void(0)" tips-follow="bottom" tips-list="[{foreach $component as $g}{ text:绑定到{$g.name}, attr:'data-appid=`{$g.appid}`', callback:'component_auth' },{/foreach}]">绑定公众号</a>
+		</div>
+	</h6>
+</div>
+
+<form class="form-inline" action="?" method="get">
+<input type="text" placeholder="ID" name="id" value="{$id}" />
+<input type="text" class="input-medium" placeholder="关键词" name="keyword" value="{$keyword}" />
+<select name="component_id">
+	<option value="">第三方平台</option>
+	{foreach $component as $g}
+	<option value="{$g.id}" {if $component_id==$g.id}selected{/if}>{$g.name}</option>
+	{/foreach}
+</select>
+<button type="submit" class="btn btn-info btn-sm">
+	<i class="ace-icon fa fa-search bigger-110"></i>搜索
+</button>
+</form>
+
+<div class="table-content">
+<table id="simple-table" class="table table-striped table-bordered table-hover">
+	<thead>
+		<tr>
+			<th width="50"><input type="checkbox" data-type="ace" data-seleteAll=".checkbox" class="checkboxes" title="全选" /></th>
+			<th width="100">ID</th>
+			<th>公众号</th>
+			<th>第三方平台</th>
+			<th>AppID</th>
+			<th>二维码</th>
+			<th>原始ID</th>
+			<th>类型</th>
+			<th>粉丝数</th>
+			<th>互动粉丝数</th>
+			<th width="100">操作</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		{if count($rs)}
+		{foreach $rs as $row}
+		<tr>
+			<td><input type="checkbox" data-type="ace" name="checkbox[]" class="checkbox" id="{$row.id}" value="{$row.id}" /></td>
+			<td>{$row.id}</td>
+			<td><img src="{$row.pic}" width="30" style="float:left;margin-right:5px;border-radius:2px;" />{$row.name}<div style="color:#999;">{$row.alias}</div></td>
+			<td>{$row.component_name}</td>
+			<td>{$row.appid}</td>
+			<td><a href="{$row.qrcode}" target="_blank" data-preview-image="{$row.qrcode}" data-padding="15" data-width="300" data-height="300"><img src="{$row.qrcode}" width="30" /></a></td>
+			<td>{$row.username}</td>
+			<td>{if $row.type==0 || $row.type==1}订阅号{else}服务号{/if}</td>
+			<td>{$row.fans}</td>
+			<td>{$row.alive_fans}</td>
+			<td>
+				<a href="/wechat/wechat_update?id={$row.id}" class="tips" title="更新公众号资料" tips-follow="top" tips-fixy="-5">
+					<button type="button" class="btn btn-xs btn-warning">
+					<i class="ace-icon fa fa-refresh bigger-120"></i>
+				</button>
+				</a>
+				<a href="/wechat/customer_add?wechat_id={$row.id}" class="tips" title="发送客服消息" tips-follow="top" tips-fixy="-5">
+					<button type="button" class="btn btn-xs btn-info">
+					<i class="ace-icon fa fa-send bigger-120"></i>
+				</button>
+				</a>
+				<!--<a href="/wechat/delete?id={$row.id}" class="delete">
+					<button type="button" class="btn btn-xs btn-danger">
+					<i class="ace-icon far fa-trash-alt bigger-120"></i>
+				</button>
+				</a>-->
+			</td>
+		</tr>
+		{/foreach}
+		{literal}
+		<tr class="template">
+			<td><input type="checkbox" data-type="ace" name="checkbox[]" class="checkbox" id="{$row.id}" value="{$row.id}" /></td>
+			<td>{$row.id}</td>
+			<td><img src="{$row.pic}" width="30" style="float:left;margin-right:5px;border-radius:2px;" />{$row.name}<div style="color:#999;">{$row.alias}</div></td>
+			<td>{$row.component_name}</td>
+			<td>{$row.appid}</td>
+			<td><a href="{$row.qrcode}" target="_blank" data-preview-image="{$row.qrcode}" data-padding="15" data-width="300" data-height="300"><img src="{$row.qrcode}" width="30" /></a></td>
+			<td>{$row.username}</td>
+			<td>{if $row.type==0 || $row.type==1}订阅号{else}服务号{/if}</td>
+			<td>{$row.fans}</td>
+			<td>{$row.alive_fans}</td>
+			<td>
+				<a href="/wechat/wechat_update?id={$row.id}" class="tips" title="更新公众号资料" tips-follow="top" tips-fixy="-5">
+					<button type="button" class="btn btn-xs btn-warning">
+					<i class="ace-icon fa fa-refresh bigger-120"></i>
+				</button>
+				</a>
+				<a href="/wechat/customer_add?wechat_id={$row.id}" class="tips" title="发送客服消息" tips-follow="top" tips-fixy="-5">
+					<button type="button" class="btn btn-xs btn-info">
+					<i class="ace-icon fa fa-send bigger-120"></i>
+				</button>
+				</a>
+			</td>
+		</tr>
+		{/literal}
+		{else}
+		<tr bgcolor="white"><td colspan="13" height="50">暂无记录</td></tr>
+		{/if}
+
+	</tbody>
+</table>
+</div>
+<div style="float:left;margin:17px 0 17px 20px;"><button type="button" class="btn btn-xs btn-info getfans" style="border-radius:2px;"><i class="ace-icon fab fa-weixin bigger-120"></i>获取粉丝数</button></div>
+<div class="mypage">
+	{$rs|raw}
+</div>
+{include file="footer"}
+<script>
+function component_auth(){
+	$.overlay('{$host}/wx_interface?act=component_auth&component_appid='+$(this).attr('data-appid')+'||80%*80%||scrolling=no', 0);
+}
+$(function(){
+	$('.getfans').on('click', function(){
+		let ids = [];
+		$('.checkbox:checked').each(function(){
+			ids.push($(this).val());
+		});
+		if(!ids.length){
+			$.overloadError('请选择公众号');
+			return;
+		}
+		$.overload();
+		$.postJSON('/wechat/getfans', { ids:ids.join(',') }, function(json){
+			$('.checkbox:checked').each(function(i){
+				$(this).parents('tr').eq(0).find('td:eq(8)').html(json.data[i]);
+			});
+		});
+	});
+});
+</script>

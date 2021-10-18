@@ -1,0 +1,92 @@
+<wxs module="helper" src="../../common/helper.wxs"></wxs>
+<import src="../../common/template.wxml" />
+<template is="overload" data="{{overload}}" />
+<template is="dialogView" data="{{dialogView}}" />
+<view class="detail">
+	<view class="video-box">
+		<view class="video-view"><!-- style="height:{{videoHeight}}rpx;"-->
+			<view class="video">
+				<txv-video wx:if="{{video.tencentvideo && video.vid}}" playerid="txv1" width="100%" height="100%" vid="{{video.vid}}" autoplay="{{true}}"></txv-video>
+				<block wx:else>
+				<video wx:if="{{wxVideoAd.enable==1}}" id="player" src="{{video.url}}" poster="{{video.img}}" autoplay="true" controls="false" bindtimeupdate="timeupdate" unit-id="{{wxVideoAd.adunit}}"></video>
+				<video wx:else id="player" src="{{video.url}}" poster="{{video.img}}" autoplay="true" controls="false" bindtimeupdate="timeupdate"></video>
+				</block>
+			</view>
+		</view>
+		<view class="btns" wx:if="{{!singleScene}}">
+			<button open-type='share'>发送给好友</button>
+			<button open-type='share'>分享到群</button>
+		</view>
+	</view>
+	<view class="video-placeholder"></view>
+
+	<view class="title">{{video.title}}</view>
+
+	<view class="font">
+		<view class="date">
+			<button open-type='contact'>联系客服</button>
+			<button open-type='share'>分享这个视频</button>
+			<text class="span">{{date}}</text>
+		</view>
+		<view class="opa">
+			<view wx:if="{{btn.enable==1}}" data-url="{{btn.url}}" bindtap="handleShowAd">{{btn.text}}</view>
+			<text class="likes">{{video.likes}}</text><!-- bindtap="handleLike"-->
+			<text class="played">{{video.played}}</text>
+		</view>
+	</view>
+
+	<view class="bannerBox {{banner.type==3?'videoAdMinHeight':''}}" wx:if="{{banner.enable==1 && !singleScene}}">
+	<ad wx:if="{{banner.type==0}}" unit-id="{{banner.adunit}}"></ad>
+	<ad wx:elif="{{banner.type==1}}" unit-id="{{banner.adunit}}" ad-type="video" ad-theme="white"></ad>
+	<view wx:elif="{{banner.type==2}}" class="banner" data-url="{{banner.url}}" bindtap="handleShowAd" style="background-image:url({{banner.image}});"></view>
+	<button wx:elif="{{banner.type==3}}" class="banner" open-type="contact" show-message-card="true" send-message-title="{{banner.message_title}}" send-message-path="{{banner.message_path}}" send-message-img="{{banner.message_image}}" style="background-image:url({{banner.image}});"></button>
+	</view>
+
+    <view class="feedbackTips" wx:if="{{feedback}}">
+        若对本文内容有疑议，点击<text bindtap="handleFeedbackShow">投诉举报</text>
+    </view>
+
+	<block wx:if="{{list.length>0}}">
+	<view class="ul list">
+		<view class="tips">更多推荐欣赏</view>
+		<view class="li type{{item.type}}" wx:for="{{list}}" wx:key="index">
+			<block wx:if="{{item.type==0}}">
+			<navigator url="/pages/index/detail?id={{item.id}}"><view style="background-image:url({{item.img}});" class="i"></view><view>{{item.title}}</view><text class="span">{{item.played}}次播放</text></navigator>
+			</block>
+			<block wx:elif="{{item.type==1}}">
+			<view data-url="{{item.url}}" bindtap="handleShowAd" style="background-image:url({{item.img}});"></view>
+			</block>
+			<block wx:elif="{{item.type==3 && !singleScene}}">
+			<ad unit-id="{{item.adunit}}"></ad>
+			</block>
+			<block wx:elif="{{item.type==4 && !singleScene}}">
+			<ad unit-id="{{item.adunit}}" ad-type="video" ad-theme="white"></ad>
+			</block>
+		</view>
+		<view class="loadmore {{loadmore}}"></view>
+	</view>
+    </block>
+</view>
+
+<navigator wx:if="{{!singleScene}}" class="home" open-type="reLaunch" url="/pages/index/index">首页</navigator>
+
+<view wx:if="{{addMy && !singleScene}}" class="addMy" bindtap="handleAddMy">添加到我的小程序</view>
+
+<view class="cover {{cover}}" bindtap="showShare"></view>
+
+<template is="toast" data="{{toast}}" />
+<view class="dialog-bg" wx:if="{{feedbackShown}}"></view>
+<view class="dialog-view wx feedback" wx:if="{{feedbackShown}}">
+<text class="dialog-title">请选择举报原因</text>
+<view class="dialog-content clear-after">
+    <view class="{{feedbackContent==item?'this':''}}" wx:for-items="{{feedbackItems}}" wx:key="index" data-value="{{item}}" bindtap="handleFeedbackChange">{{item}}</view>
+</view>
+<view class="dialog-btns">
+    <view class="dialog-btn blue">
+        <button bindtap="handleFeedbackSubmit">提交</button>
+    </view>
+    <view class="dialog-btn cancel">
+        <button bindtap="handleFeedbackShow">取消</button>
+    </view>
+</view>
+</view>

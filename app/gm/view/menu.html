@@ -1,0 +1,57 @@
+
+		<div class="main-container container" id="main-container">
+
+
+			<!-- #section:basics/sidebar.horizontal -->
+			<div id="sidebar" class="sidebar h-sidebar navbar-collapse collapse" style="{if $admin.menu_direction==1 && strlen($admin.bgcolor)}background:{$admin.bgcolor} !important;{/if}">
+				<script type="text/javascript">
+					try { ace.settings.check('sidebar' , 'fixed') } catch(e) { }
+				</script>
+
+				<ul class="nav nav-list">
+					<li class="hover home">
+						<a href="/">
+							<i class="menu-icon fa fa-home"></i>
+							<span class="menu-text">首页</span>
+						</a>
+					</li>
+					{foreach $nav as $f}
+					<li class="hover {if strpos(cat(',', $f.app, ','), cat(',', $app, ','))!==false}active{/if} {if !isset($f.checked)}hidden{/if}">
+						<a menu-id="{$f.id}" href="{if strlen($f.url)}{$f.url}{else}javascript:void(0){/if}">
+							{$f.icon|raw}
+							<span class="menu-text">{$f.name}</span>
+							<b class="arrow fa fa-angle-down"></b>
+						</a>
+						{if is_array($f.sub) && count($f.sub)}
+						<b class="arrow"></b>
+						<ul class="submenu">
+							{foreach $f.sub as $s}
+							<li class="hover {if strpos(cat(',', $s.app, ','), cat(',', $app, ','))!==false && strpos(cat(',', $s.act, ','), cat(',', $act, ','))!==false && (gettype($s.param)=='NULL' || strpos($Request.server.request_uri, $s.param)!==false)}active{/if} {if !isset($s.checked)}hidden{/if}">
+								<a menu-id="{$s.id}" href="{$s.url}">
+									<i class="menu-icon fa fa-caret-right"></i>
+									{$s.name}
+								</a>
+								<b class="arrow"></b>
+							</li>
+							{/foreach}
+						</ul>
+						{/if}
+					</li>
+					{/foreach}
+				</ul><!-- /.nav-list -->
+
+				<!-- #section:basics/sidebar.layout.minimize -->
+
+				<!-- /section:basics/sidebar.layout.minimize -->
+				<script type="text/javascript">
+					try { ace.settings.check('sidebar' , 'collapsed') } catch(e) { }
+				</script>
+			</div>
+
+			<!-- /section:basics/sidebar.horizontal -->
+			<div class="main-content {if $nav_sub==1}nav_sub{/if}">
+				<div class="main-content-inner">
+					<div class="page-content">
+						<div class="row">
+							<div class="col-xs-12">
+								<!-- PAGE CONTENT BEGINS -->

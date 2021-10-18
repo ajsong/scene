@@ -1,0 +1,19 @@
+{
+	"pages": [
+		"pages/index/index",
+		"pages/index/list",
+		"pages/index/detail",
+		"pages/index/video",
+		"pages/index/web",
+		"pages/index/qians",
+		"pages/index/qiansDetail"
+	],
+	"window": {
+		"backgroundTextStyle": "dark",
+		"navigationBarBackgroundColor": "#fff",
+		"navigationBarTitleText": "禅道佛音",
+		"navigationBarTextStyle": "black",
+		"onReachBottomDistance": 0
+	},
+	"sitemapLocation": "sitemap.json"
+}

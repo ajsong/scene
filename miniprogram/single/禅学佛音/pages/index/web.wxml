@@ -1,0 +1,5 @@
+<web-view wx:if="{{url.length}}" src="{{url}}"></web-view>
+<block wx:if="{{payParam}}">
+	<view class="pay-icon"></view>
+	<view class="pay-tip">微信支付</view>
+</block>

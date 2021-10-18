@@ -1,0 +1,148 @@
+{include file="header"}
+
+<div class="page-header">
+	<h6>
+		会员管理
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			{if $row.id>0}会员详情{else}添加会员{/if}
+		</small>
+	</h6>
+</div>
+<div class="row">
+<div class="col-xs-12">
+	<form class="form-horizontal" role="form" method="post" action="/member/edit" enctype="multipart/form-data">
+		{if $row.id>0}
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="id">ID</label>
+			<div class="col-sm-10">
+				<input type="text" id="id" name="id" readonly value="{$row.id}" class="col-xs-1" />
+			</div>
+		</div>
+		{/if}
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="name">账号</label>
+			<div class="col-sm-10">
+				<input type="text" id="name" name="name" value="{$row.name}" class="col-xs-2" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="password">密码</label>
+			<div class="col-sm-10">
+				<input type="password" id="password" name="password" class="col-xs-2" />
+				{if $row.id>0}<span class="some-line">留空不修改</span>{/if}
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="nick_name">昵称</label>
+			<div class="col-sm-10">
+				<input type="text" id="nick_name" name="nick_name" value="{$row.nick_name}" class="col-xs-2" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right">头像</label>
+			<div class="col-sm-10">
+				<input type="hidden" name="origin_avatar" id="origin_avatar" value="{$row.avatar}" />
+				{if $is_member_add}
+				<div class="col-file col-xs-3"><input type="file" id="avatar" name="avatar" value="" /></div>
+				{if $row.avatar}<a href="{$row.avatar}" target="_blank"><img src="{$row.avatar}" width="34" onerror="this.src='/images/nopic.png'" /></a>{/if}
+				{else}
+				{if $row.avatar}<a href="{$row.avatar}" target="_blank"><img src="{$row.avatar}" width="101" onerror="this.src='/images/nopic.png'" /></a>{/if}
+				{/if}
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="mobile">手机号码</label>
+			<div class="col-sm-10">
+				<input type="text" id="mobile" name="mobile" value="{$row.mobile}" class="col-xs-2" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="qq">QQ</label>
+			<div class="col-sm-10">
+				<input type="text" id="qq" name="qq" value="{$row.qq}" class="col-xs-2" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right">状态</label>
+			<div class="col-sm-10">
+				<div class="radio">
+					<label>
+						<input {if $row.status==1}checked{/if} value="1" name="status" type="radio" class="ace" />
+						<span class="lbl">正常</span></label>
+				</div>
+				<div class="radio">
+					<label>
+						<input {if $row.status==0}checked{/if} value="0" name="status" type="radio" class="ace" />
+						<span class="lbl">冻结</span></label>
+				</div>
+			</div>
+		</div>
+		{if $row.id>0}
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right">登录次数</label>
+			<div class="col-sm-10">
+				<input type="text" value="{$row.logins}" disabled class="col-xs-1" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right">注册时间</label>
+			<div class="col-sm-10">
+				<input type="text" value="{:date('Y-m-d H:i:s',$row.reg_time)}" disabled class="col-xs-2" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right">注册IP</label>
+			<div class="col-sm-10">
+				<input type="text" value="{$row.reg_ip}" disabled class="col-xs-2" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right">上次登录时间</label>
+			<div class="col-sm-10">
+				<input type="text" value="{:date('Y-m-d H:i:s',$row.last_time)}" disabled class="col-xs-2" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right">上次登录IP</label>
+			<div class="col-sm-10">
+				<input type="text" value="{$row.last_ip}" disabled class="col-xs-2" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right">sign</label>
+			<div class="col-sm-10">
+				<input type="text" value="{$row.sign}" disabled class="col-xs-6" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right">udid</label>
+			<div class="col-sm-10">
+				<input type="text" value="{$row.udid}" disabled class="col-xs-6" />
+			</div>
+		</div>
+		{/if}
+		<div class="clearfix form-actions">
+			<div class="col-md-offset-3 col-md-9">
+				<button class="btn btn-info" type="submit">
+					<i class="ace-icon fa fa-check bigger-110"></i>
+					提交
+				</button>
+
+				&nbsp; &nbsp; &nbsp;
+				<button class="btn" type="reset">
+					<i class="ace-icon fa fa-undo bigger-110"></i>
+					重置
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+
+{include file="footer"}
+<script>
+$(function(){
+
+});
+</script>

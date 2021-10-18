@@ -1,0 +1,84 @@
+{include file="header"}
+<body>
+<div class="scene-lib scene-lib-template">
+	<div class="header">
+		<a href="javascript:void(0)" class="eqf-wrong" coo-click="dialogClose"></a>
+		<h4>模板库</h4>
+	</div>
+	<div class="view">
+		<ul class="rs">
+			{if count($data.rs)}
+			{foreach $data.rs as $g}
+			<li>
+				<a href="javascript:void(0)" data-bg="{$g.bg}" style="{if substr($g.bg,0,1)=='#'}background-color:{$g.bg};{else}background-image:url({$g.bg});{/if}"></a>
+				<textarea>{$g.content}</textarea>
+				<em class="eqf-wrong" data-id="{$g.id}"></em>
+			</li>
+			{/foreach}
+			{else}
+			<span>当前没有模板</span>
+			{/if}
+		</ul>
+	</div>
+</div>
+
+{include file="footer"}
+<script>
+$(function(){
+	$('.view .rs').on('click', 'a', function(e){
+		let _this = $(this), bg = _this.attr('data-bg'), content = _this.next().val();
+		let obj = { bg:bg, content:content };
+		window.top.setTemplate(obj);
+		dialogClose();
+	});
+	$('.view .rs li > em').on('click', function(e){
+		if(!confirm('确定删除吗？'))return;
+		let _this = $(this), id = _this.attr('data-id');
+		$.postJSON('/scene/delTemplate', { id:id }, function(){
+			_this.parent().remove();
+		});
+	});
+	$('.view .rs a').each(function(){
+		let _this = $(this), content = _this.next().val();
+		if(!content.length)return;
+		content = $.json(content);
+		if(!$.isArray(content))return;
+		let images = [];
+		$.each(content, function(){
+			if(this.type === 'image'){
+				images.push(this.url);
+			}
+		});
+		let s = function(){
+			$.each(content, function(){
+				if(this.type === 'image'){
+					window.top.setSimplePic(_this, this);
+				}else if(this.type === 'text'){
+					window.top.setSimpleText(_this, this);
+				}else if(this.type === 'video'){
+					window.top.setSimpleVideo(_this, this);
+				}else if(this.type === 'web'){
+					window.top.setSimpleWeb(_this, this);
+				}else if(this.type === 'map'){
+					window.top.setSimpleMap(_this, this);
+				}else if(this.type === 'chart'){
+					window.top.setSimpleChart(_this, this);
+				}
+			});
+		};
+		if(images.length){
+			let count = 0;
+			for(let i=0; i<images.length; i++){
+				let image = new Image();
+				image.src = images[i];
+				image.onload = function(){
+					count++;
+					if(count === images.length)s();
+				};
+			}
+		}else{
+			s();
+		}
+	});
+});
+</script>

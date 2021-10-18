@@ -1,0 +1,169 @@
+//https://developers.weixin.qq.com/miniprogram/dev/framework/view/wxs/06datatype.html
+//<wxs module="helper" src="../../common/helper.wxs"></wxs>
+//调用 {{helper.round(price, 2)}}
+module.exports = {
+	//保留n位小数
+	round: function (value, num) {
+		if (typeof (num) == 'undefined') num = 2;
+		if (!value) value = 0;
+		return parseFloat(value).toFixed(num);
+	},
+	//网址编码
+	urlencode: function (url) {
+		return encodeURIComponent(url);
+	},
+	//网址解码
+	urldecode: function (url) {
+		return decodeURIComponent(url);
+	},
+	//转为整数
+	INT: function (str) {
+		return parseInt(str);
+	},
+	//转为浮点数
+	FLOAT: function (str) {
+		return parseFloat(str);
+	},
+	//判断字符串里是否包含某字符串
+	indexOf: function (string, str) {
+		return string.indexOf(str);
+	},
+	//获取字符串length
+	length: function (str) {
+		return str.length;
+	},
+	//截取字符串
+	substring: function (str, start, stop) {
+		if (!str.length) return '';
+		if (str.length < start) return '';
+		if (typeof (stop) == 'undefined' || str.length < stop) return str.substring(start);
+		return str.substring(start, stop);
+	},
+	//是否数组
+	isArray: function (obj, yesReturn, noReturn) {
+		if (!obj) {
+			if (typeof noReturn != 'undefined') {
+				return noReturn;
+			} else {
+				return false;
+			}
+		}
+		if (typeof yesReturn != 'undefined' &&
+			typeof noReturn != 'undefined') {
+			return (obj.constructor === 'Array') ? yesReturn : noReturn;
+		} else {
+			return true;
+		}
+	},
+	//是否在数组里
+	inArray: function (obj, arrayObj) {
+		var index = -1;
+		if (arrayObj && arrayObj.constructor === 'Array' && arrayObj.length) {
+			for (var i = 0; i < arrayObj.length; i++) {
+				if (obj == arrayObj[i]) {
+					index = i;
+					break;
+				}
+			}
+		}
+		return index;
+	},
+	//合并数组为字符串
+	join: function (obj, separate) {
+		var str = '';
+		if (obj && obj.constructor === 'Array' && obj.length) {
+			str = obj.join(separate);
+		}
+		return str;
+	},
+	//三元式
+	IF: function (filter, yesReturn, noReturn) {
+		return (filter) ? yesReturn : noReturn;
+	},
+	//使用一个数字创建数组
+	arrayFromInt: function (start, end) {
+		start = parseInt(start);
+		end = parseInt(end);
+		var array = [];
+		for (var i = start; i <= end; i++) {
+			array.push(i);
+		}
+		return array;
+	},
+	//字符串替换
+	replace: function (find, replace, string) {
+		return string.replace(find, replace);
+	},
+	//字符串转JSON对象
+	json: function (string) {
+		return JSON.parse(string);
+	},
+	//JSON对象转字符串
+	jsonString: function (json) {
+		return JSON.stringify(json);
+	},
+	//时间戳/日期字符串转日期对象
+	toDate: function (value) {
+		if (value.constructor == 'Number') {
+			return getDate(parseInt(value) * 1000);
+		} else {
+			return getDate(value);
+		}
+	},
+	//日期字符串转时间戳
+	time: function (dateStr) {
+		return getDate(dateStr).getTime() / 1000;
+	},
+	//日期格式化
+	date: function (formatStr, date) {
+		if (!date) return '';
+		if (!isNaN(date)) date = getDate(parseInt(date) * 1000);
+		var format = formatStr ? formatStr : 'yyyy-mm-dd hh:nn:ss',
+			monthName = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+			monthFullName = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+			weekName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+			weekFullName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+			monthNameCn = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+			monthFullNameCn = monthNameCn,
+			weekNameCn = ['日', '一', '二', '三', '四', '五', '六'],
+			weekFullNameCn = ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+		getYearWeek = function (y, m, d) {
+			var dat = getDate(y, m, d), firstDay = getDate(y, 0, 1),
+				day = Math.round((dat.valueOf() - firstDay.valueOf()) / 86400000);
+			return Math.ceil((day + ((firstDay.getDay() + 1) - 1)) / 7);
+		},
+			year = date.getFullYear() + '', month = (date.getMonth() + 1) + '', day = date.getDate() + '', week = date.getDay(),
+			hour = date.getHours() + '', minute = date.getMinutes() + '', second = date.getSeconds() + '',
+			yearWeek = getYearWeek(date.getFullYear(), date.getMonth(), date.getDate()) + '';
+		format = format.replace(getRegExp('yyyy', 'g'), year);
+		//format = format.replace(getRegExp('yy', 'g'), (date.getYear()%100)>9 ? (date.getYear()%100)+'' : '0'+(date.getYear()%100));
+		format = format.replace(getRegExp('Y', 'g'), year);
+		format = format.replace(getRegExp('mme', 'g'), monthFullName[month - 1]);
+		format = format.replace(getRegExp('me', 'g'), monthName[month - 1]);
+		format = format.replace(getRegExp('mmc', 'g'), monthFullNameCn[month - 1]);
+		format = format.replace(getRegExp('mc', 'g'), monthNameCn[month - 1]);
+		format = format.replace(getRegExp('mm', 'g'), month.length < 2 ? '0' + month : month);
+		format = format.replace(getRegExp('m', 'g'), month);
+		format = format.replace(getRegExp('dd', 'g'), day.length < 2 ? '0' + day : day);
+		format = format.replace(getRegExp('d', 'g'), day);
+		format = format.replace(getRegExp('hh', 'g'), hour.length < 2 ? '0' + hour : hour);
+		format = format.replace(getRegExp('h', 'g'), hour);
+		format = format.replace(getRegExp('H', 'g'), hour);
+		format = format.replace(getRegExp('G', 'g'), hour);
+		format = format.replace(getRegExp('nn', 'g'), minute.length < 2 ? '0' + minute : minute);
+		format = format.replace(getRegExp('n', 'g'), minute);
+		format = format.replace(getRegExp('ii', 'g'), minute.length < 2 ? '0' + minute : minute);
+		format = format.replace(getRegExp('i', 'g'), minute);
+		format = format.replace(getRegExp('ss', 'g'), second.length < 2 ? '0' + second : second);
+		format = format.replace(getRegExp('s', 'g'), second);
+		format = format.replace(getRegExp('wwe', 'g'), weekFullName[week]);
+		format = format.replace(getRegExp('we', 'g'), weekName[week]);
+		format = format.replace(getRegExp('ww', 'g'), weekFullNameCn[week]);
+		format = format.replace(getRegExp('w', 'g'), weekNameCn[week]);
+		format = format.replace(getRegExp('WW', 'g'), yearWeek.length < 2 ? '0' + yearWeek : yearWeek);
+		format = format.replace(getRegExp('W', 'g'), yearWeek);
+		format = format.replace(getRegExp('a', 'g'), hour < 12 ? 'am' : 'pm');
+		format = format.replace(getRegExp('A', 'g'), hour < 12 ? 'AM' : 'PM');
+		return format;
+	}
+};

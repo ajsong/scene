@@ -1,0 +1,73 @@
+{include file="header"}
+<body>
+<div class="scene-copy scene-map">
+	<div class="header">
+		<a href="javascript:void(0)" class="eqf-wrong" coo-click="dialogClose"></a>
+		<h4>地图组件</h4>
+	</div>
+	<div class="view">
+		<span>地址：<input type="text" /><a href="javascript:void(0)">搜索</a></span>
+		<div></div>
+	</div>
+	<div class="btns">
+		<a href="javascript:void(0)">确定</a>
+		<a href="javascript:void(0)">取消</a>
+	</div>
+</div>
+
+{include file="footer"}
+<script>
+$(function(){
+	let data = window.top.getMap(), longitude = data.longitude, latitude = data.latitude, zoom = data.zoom, map = null;
+	$('.view > div').baiduMapApi({
+		longitude: longitude,
+		latitude: latitude,
+		zoom: zoom,
+		detailEnable: false,
+		setOverlaysTime: 400,
+		controlType: 1,
+		getCoordinate: function(x, y){
+			longitude = x;
+			latitude = y;
+		},
+		complete: function(baiduMap){
+			map = baiduMap;
+			$('.view a').click(function(){
+				let input = $(this).prev();
+				if(!input.val().length){
+					$.overloadError('请输入搜索地址');
+					return;
+				}
+				let geo = new BMap.Geocoder();
+				geo.getPoint(input.val(), function(point){
+					if(point){
+						longitude = point.lng;
+						latitude = point.lat;
+						map.clearOverlays();
+						map.centerAndZoom(point, zoom);
+						map.addOverlay(new BMap.Marker(point));
+					}else{
+						$.overloadError('没有找到该地址，请尝试增加省市区');
+					}
+				});
+			});
+			$('.view input').onkey(function(code){
+				if(code===13)$(this).next().click();
+			});
+		}
+	});
+	$('.btns a').click(function(){
+		switch($(this).index()){
+			case 0:
+				let obj = { longitude:longitude, latitude:latitude, zoom:map.getZoom(), control:window.top.getControl() };
+				window.top.setMap(obj);
+				window.top.sceneSaved = false;
+				dialogClose();
+				break;
+			case 1:
+				dialogClose();
+				break;
+		}
+	});
+});
+</script>

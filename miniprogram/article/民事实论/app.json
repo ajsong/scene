@@ -1,0 +1,17 @@
+{
+	"pages": [
+		"pages/index/index",
+		"pages/index/list",
+		"pages/index/detail",
+		"pages/index/video",
+		"pages/index/web"
+	],
+	"window": {
+		"backgroundTextStyle": "dark",
+		"navigationBarBackgroundColor": "#fff",
+		"navigationBarTitleText": "民事实论",
+		"navigationBarTextStyle": "black",
+		"onReachBottomDistance": 0
+	},
+	"sitemapLocation": "sitemap.json"
+}

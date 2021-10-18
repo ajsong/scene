@@ -1,0 +1,308 @@
+{include file="header"}
+<script type="text/javascript" src="/js/clipboard.js"></script>
+<style>
+.col-splitfile-copy, .col-splitfile-copy:hover{ display:block; text-decoration:none; float:right; width:100px; height:34px; line-height:34px; text-align:center; font-size:12px; color:#fff; background:#00a0e9; border-radius:3px; }
+.reply-list div{ height:44px; line-height:34px; }
+</style>
+<div class="page-header">
+	<h6>
+		文章管理
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			{if $row.id>0}编辑{else}添加{/if}文章
+		</small>
+	</h6>
+</div>
+<div class="row">
+<div class="col-xs-12">
+	<form class="form-horizontal" role="form" method="post" action="/article/edit" enctype="multipart/form-data">
+		<input type="hidden" name="id" id="id" value="{$row.id}" />
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="title">标题</label>
+			<div class="col-sm-10">
+				<input type="text" id="title" name="title" value="{$row.title}" class="col-xs-6" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="category_id">分类</label>
+			<div class="col-sm-10">
+				<select name="category_id" id="category_id" style="min-width:120px;">
+					{foreach $categories as $g}
+					<option value="{$g.id}" {if $g.id==$row.category_id}selected{/if}>{$g.name}</option>
+					{/foreach}
+				</select>
+			</div>
+		</div>
+		{if $row.mark==''}
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="pic">主图</label>
+			<div class="col-sm-10">
+				<input type="hidden" name="origin_pic" id="origin_pic" value="{$row.pic}" />
+				<div class="col-file col-xs-3"><input type="file" id="pic" name="pic" value="" /></div>
+				{if $row.pic}<a href="{$row.pic}" target="_blank"><img src="{$row.pic}" height="34" onerror="this.src='/images/nopic.png'" /></a>{/if}
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="type">类型</label>
+			<div class="col-sm-10">
+				<select name="type" id="type">
+					<option value="0" {if $row.type==0}selected{/if}>图文</option>
+					<option value="5" {if $row.type==5}selected{/if}>视频</option>
+				</select>
+			</div>
+		</div>
+		<!--<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="memo">摘要</label>
+			<div class="col-sm-10">
+				<input type="text" id="memo" name="memo" value="{$row.memo}" class="col-xs-6" />
+			</div>
+		</div>-->
+		{/if}
+		<div class="form-block data-type hidden">
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right" for="music">背景音乐</label>
+				<div class="col-sm-10">
+					<a href="/index/music" class="music iframe-layer">{if $row.music_name}<h5><font color="blue">{$row.music_name}</font></h5>{else}<h5>未选择任何音乐</h5>{/if}</a>
+					<input type="hidden" id="music" name="music" value="{$row.music}" />
+					<input type="checkbox" data-type="app" data-style="margin-left:15px;" name="music_enable" value="1" {if $row.music_enable==1}checked{/if} />
+					{if $row.music}<div class="audio" style="margin-top:15px;"><audio src="{$row.music}" controls></audio></div>{/if}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right" for="content">
+					内容
+					<div class="clear"></div>
+					<div class="checkbox not-mobile" >
+						<label><input type="checkbox" class="premobile ace" /> <span class="lbl">预览</span></label>
+					</div>
+				</label>
+				<div class="col-sm-10">
+					<textarea class="ckeditor_custom" name="content" id="content" rows="20">{$row.content|raw}</textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right">wxParse</label>
+				<div class="col-sm-10">
+					<input type="checkbox" data-type="app" name="wxparse" value="1" {if $row.wxparse==1}checked{/if} />
+				</div>
+			</div>
+		</div>
+		<div class="form-block data-type hidden"></div>
+		<div class="form-block data-type hidden"></div>
+		<div class="form-block data-type hidden"></div>
+		<div class="form-block data-type hidden"></div>
+		<div class="form-block data-type hidden">
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right" for="url">视频</label>
+				<div class="col-sm-10">
+					<div style="width:415px;">
+						<a class="col-splitfile-copy" href="javascript:void(0)" data-clipboard-action="copy" data-clipboard-target="#url">复制视频链接</a>
+						<div class="col-splitfile" data-url="/video/upload_video" data-fileType="mp4"><input type="text" id="url" name="url" value="{$row.url}" /></div>
+						{if $row.url}<div style="clear:both;padding-top:15px;"><video src="{$row.url}" controls style="width:220px;height:220px;"></video></div>{/if}
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right" for="time">弹窗时间</label>
+				<div class="col-sm-10">
+					<input type="text" id="time" name="time" value="{$row.time}" class="col-xs-1" />
+					<span class="some-block">秒</span>
+				</div>
+			</div>
+		</div>
+		{if $row.mark==''}
+		<!--
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="ext_property">扩展属性</label>
+			<div class="col-sm-10">
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="ext_property[]" value="1" class="ace" {if strpos(cat(',', $row.ext_property, ','), ',1,')!==false }checked{/if} />
+						<span class="lbl">推荐</span></label>
+				</div>
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" name="ext_property[]" value="2" class="ace" {if strpos(cat(',', $row.ext_property, ','), ',2,')!==false }checked{/if} />
+						<span class="lbl">热销</span></label>
+				</div>
+			</div>
+		</div>
+		-->
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="sort">排序</label>
+			<div class="col-sm-10">
+				<input type="text" name="sort" id="sort" value="{$row.sort}" class="col-xs-2" />
+				<span class="some-line">数字越小，排在越前</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="more">更多列表</label>
+			<div class="col-sm-10">
+				<input type="checkbox" data-type="app" name="more" value="1" {if $row.more==1}checked{/if} />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="recommend">热文</label>
+			<div class="col-sm-10">
+				<input type="checkbox" data-type="app" name="recommend" value="1" {if $row.recommend==1}checked{/if} />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="featured">精选</label>
+			<div class="col-sm-10">
+				<input type="checkbox" data-type="app" name="featured" value="1" {if $row.featured==1}checked{/if} />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="status">状态</label>
+			<div class="col-sm-10">
+				<div class="radio">
+					<label>
+						<input type="radio" name="status" value="1" class="ace" {if $row.status==1}checked{/if} />
+						<span class="lbl">显示</span></label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type="radio" name="status" value="0" class="ace" {if $row.status==0}checked{/if} />
+						<span class="lbl">隐藏</span></label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="add_time">添加时间</label>
+			<div class="col-sm-10">
+				<input type="text" name="add_time" id="add_time" value="{if $row.add_time==0}{:date('Y-m-d H:i:s')}{else}{:date('Y-m-d H:i:s', $row.add_time)}{/if}" class="col-xs-2" />
+			</div>
+		</div>
+		{/if}
+		
+		{if $miniprogram}
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right">评论</label>
+			<div class="col-sm-10">
+				<div class="col-sm-10">
+					<select class="selectpicker" search="true">
+						<option value="">选择所属小程序</option>
+						{foreach $miniprogram as $g}
+						<option value="{$g.id}">{$g.name}　显示{if $g.shown>0}<strong style="color:green;">{$g.shown}</strong>{else}{$g.shown}{/if}　隐藏{if $g.hidden>0}<strong style="color:red;">{$g.hidden}</strong>{else}{$g.hidden}{/if}</option>
+						{/foreach}
+					</select>
+				</div>
+				<div class="clear"></div>
+				<ul class="comment"></ul>
+			</div>
+		</div>
+		{/if}
+		
+		<div class="clearfix form-actions">
+			<div class="col-md-offset-3 col-md-9">
+				<button class="btn btn-info" type="submit">
+					<i class="ace-icon fa fa-check bigger-110"></i>
+					提交
+				</button>
+
+				&nbsp; &nbsp; &nbsp;
+				<button class="btn" type="reset">
+					<i class="ace-icon fa fa-undo bigger-110"></i>
+					重置
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+{include file="footer"}
+<script>
+function showType(index){
+	index = Number(index);
+	$('.data-type').addClass('hidden').eq(index).removeClass('hidden');
+}
+$(function(){
+	ckeditorUploadPath('content', 'article');
+	window.top.selectMusic = function(name, url){
+		$('#music_name').val(name);
+		$('#music').val(url).prev().html('<h5><font color="blue">'+name+'</font></h5>');
+		$('#music').parent().find('.audio').remove();
+		$('#music').parent().append('<div class="audio" style="margin-top:15px;"><audio src="'+url+'" controls></audio></div>');
+		$.iframeLayer(false);
+	};
+	showType('{$row.type}');
+	var clipboard = new ClipboardJS('.col-splitfile-copy');
+	clipboard.on('success', function(e) {
+		$.overloadSuccess('复制成功');
+	});
+	clipboard.on('error', function(e) {
+		//alert($.debug(e));
+	});
+	$('#add_time').datepicker({ readonly:false, showTime:true, format:'yyyy-mm-dd hh:ii:ss' });
+	$('.selectpicker').selectpicker().on('change', function(){
+		let miniprogram_id = $(this).selected().val(), comment = $('.comment');
+		if(!miniprogram_id.length){
+			comment.html('');
+			return;
+		}
+		$.getJSON('/article/comment', { article_id:'{$row.id}', miniprogram_id:miniprogram_id }, function(json){
+			let html = '';
+			if($.isArray(json.data) && json.data.length){
+				$.each(json.data, function(){
+					html += '<li>\
+						<div class="col-height">\
+							'+this.content+' <span style="color:#ccc;">['+this.ip+' - '+this.add_time+']</span>\
+							[<a class="reply-add" parent_id="'+this.id+'" href="javascript:void(0)">回复</a> <a class="comment-show" self_id="'+this.id+'" href="javascript:void(0)">'+(this.status==0?'显示':'隐藏')+'</a> <a class="comment-delete" self_id="'+this.id+'" href="javascript:void(0)">删除</a>]\
+						</div>\
+						<div class="reply-list">';
+						if($.isArray(this.replys)){
+							$.each(this.replys, function(){
+								html += '<div>'+this.content+' <span style="color:#ccc;">['+this.ip+' - '+this.add_time+']</span> <a class="reply-delete" self_id="'+this.id+'" href="javascript:void(0)">删除</a></div>';
+							});
+						}
+						html += '</div>\
+					</li>';
+				});
+			}else{
+				html += '<div class="col-height" style="color:#ccc;">暂无评论</div>';
+			}
+			comment.html(html);
+		});
+	});
+	$('#type').on('change', function(){
+		showType($(this).selected().val());
+	});
+	$(document.body).on('click', 'a.comment-show', function(){
+		let _this = $(this), id = _this.attr('self_id');
+		$.postJSON('/article/comment_show', { id:id }, function(json){
+			_this.html(_this.html()==='显示' ? '隐藏' : '显示');
+		});
+	});
+	$(document.body).on('click', 'a.comment-delete', function(){
+		if(!confirm('真的删除吗？'))return;
+		let _this = $(this), id = _this.attr('self_id');
+		$.postJSON('/article/comment_delete', { id:id }, function(json){
+			_this.parent().parent().removeOut(500);
+		});
+	});
+	$(document.body).on('click', 'a.reply-add', function(){
+		let parent_id = $(this).attr('parent_id');
+		let html = $('<div><input type="text" placeholder="请填写回复内容" style="width:33%;" /> <a href="javascript:void(0)">提交</a></div>');
+		$(this).parent().next().append(html);
+		html.css('opacity', 0).animate({ opacity:1 }, 500).find('a').click(function(){
+			let div = $(this).parent(), content = $(this).prev().val();
+			if(!content.length){
+				alert('请填写回复内容');
+				return;
+			}
+			$.postJSON('/article/reply_add', { parent_id:parent_id, content:content, article_id:'{$row.id}' }, function(json){
+				let g = json.data;
+				div.html(g.content+' <a class="reply-delete" self_id="'+g.id+'" href="javascript:void(0)">删除</a>');
+			});
+		});
+	});
+	$(document.body).on('click', 'a.reply-delete', function(){
+		if(!confirm('真的删除吗？'))return;
+		let _this = $(this), id = _this.attr('self_id');
+		$.postJSON('/article/reply_delete', { id:id }, function(json){
+			_this.parent().removeOut(500);
+		});
+	});
+});
+</script>

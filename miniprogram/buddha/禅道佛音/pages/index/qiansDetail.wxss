@@ -1,0 +1,27 @@
+page{background:#e8dfd0;}
+
+.result{margin:0 23rpx; height:auto; overflow:hidden;}
+.result .h1{text-align:left; font-weight:700; font-size:51rpx; padding:0; margin:46rpx 0; height:auto;}
+.result .click{display:block; background-color:transparent; color:#00a5e0; text-align:left; text-decoration:none; line-height:51rpx; height:51rpx; overflow:hidden; font-size:32rpx;}
+.result .click text{color:#a2a9b6;}
+.result .tips{color:#e36c09; font-weight:700; text-align:left; font-size:32rpx; height:117rpx;}
+.result .tips view{display:inline-block; width:46rpx; height:67rpx; vertical-align:bottom; background:no-repeat center center; background-size:cover;}
+.result .tips text{color:#00b0f0;}
+.result .img{position:relative; margin-top:35rpx; width:100%; height:auto; overflow:hidden;}
+.result .img view{display:none; text-decoration:none; position:absolute; z-index:1; left:0; bottom:0; width:100%; height:152rpx; font-size:32rpx; font-weight:600; line-height:196rpx; color:#666; background:repeat-x left top; background-size:auto 100%;}
+.result .img::after{content:""; display:none; position:absolute; z-index:1; left:50%; bottom:0; width:51rpx; height:32rpx; margin-left:-26rpx; background:url(data:image/svg+xml;charset=utf-8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201820%201024%22%3E%3Cpath%20d%3D%22M917.33333327%20623.189333l332.394667-333.525333a52.906667%2052.906667%200%200%201%2075.136%200%2053.461333%2053.461333%200%200%201%200%2075.392L956.80000027%20734.4a52.864%2052.864%200%200%201-39.445334%2015.530667%2052.672%2052.672%200%200%201-39.424-15.530667L509.82400027%20365.056a53.418667%2053.418667%200%200%201%200-75.392%2052.949333%2052.949333%200%200%201%2075.114666%200L917.33333327%20623.189333z%20m0%200%22%20style%3D%22fill%3A%23ff0000%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E) no-repeat center center; background-size:cover; -webkit-animation:jt-spin 0.5s infinite; animation:jt-spin 0.5s infinite;}
+@keyframes jt-spin{0%{transform:translateY(0);}50%{transform:translateY(-24rpx);}100%{transform:translateY(0);}}
+@-webkit-keyframes jt-spin{0%{-webkit-transform:translateY(0);}50%{-webkit-transform:translateY(-24rpx);}100%{-webkit-transform:translateY(0);}}
+.result .img image{width:100%; height:auto; vertical-align:bottom;}
+.result .img-hidden{height:375rpx;}
+.result .img-hidden view{display:block;}
+.result .img-hidden::after{display:block;}
+.result .btnView{padding:58rpx 0;}
+.result .btn, .result .show{display:block; text-decoration:none; color:#fef4e9; margin:0 auto; background:#f78d1d; border:solid 2rpx #da7c0c; font-size:37rpx; width:562rpx; height:79rpx; line-height:75rpx; box-sizing:border-box; border-radius:39rpx; text-shadow:0 2rpx 2rpx rgba(0,0,0,0.3); box-shadow:0 2rpx 4rpx rgba(0,0,0,0.2);}
+.result .banner, .result .footer{margin:0 28rpx; border-radius:11rpx; height:234rpx; background:no-repeat center center; background-size:cover;}
+
+.addMy{position:fixed; z-index:1000; right:35rpx; top:11rpx; width:375rpx; height:60rpx; line-height:60rpx; border-radius:30rpx; background:#fff; font-size:28rpx; color:#333; text-align:center; box-shadow:0 0 23rpx rgba(0,0,0,0.15); -webkit-animation:addMy-spin 0.5s steps(12, end) infinite; animation:addMy-spin 0.5s steps(12, end) infinite;}
+.addMy:before{content:""; display:block; position:absolute; right:24%; top:0; width:0; height:0; overflow:hidden; border:11rpx solid; border-color:transparent transparent #fff transparent; -webkit-transform:translate(-50%,-100%); transform:translate(-50%,-100%);}
+.addMy:after{content:""; display:block; position:absolute; right:0; top:0; width:60rpx; height:60rpx; background:url(data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%201024%201024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M511.1%20459.5l256.6-256.6c15.2-15.2%2039.8-15.2%2055%200%2015.2%2015.2%2015.2%2039.8%200%2055L566%20514.4%20822.6%20771c15.2%2015.2%2015.2%2039.8%200%2055-15.2%2015.2-39.8%2015.2-55%200L511.1%20569.4%20254.4%20826.1c-15.2%2015.2-39.8%2015.2-55%200-15.2-15.2-15.2-39.8%200-55L456%20514.5%20199.4%20257.8c-15.2-15.2-15.2-39.8%200-55%2015.2-15.2%2039.8-15.2%2055%200l256.7%20256.7z%22%20fill%3D%22%23333333%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E) no-repeat center center; background-size:32rpx 32rpx;}
+@-webkit-keyframes addMy-spin{0%{-webkit-transform:translateY(0);}50%{-webkit-transform:translateY(23rpx);}100%{-webkit-transform:translateY(0);}}
+@keyframes addMy-spin{0%{transform:translateY(0);}50%{transform:translateY(23rpx);}100%{transform:translateY(0);}}

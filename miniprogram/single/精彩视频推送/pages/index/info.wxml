@@ -1,0 +1,82 @@
+<wxs module="helper" src="../../common/helper.wxs"></wxs>
+<import src="../../common/template.wxml" />
+<template is="overload" data="{{overload}}" />
+<template is="dialogView" data="{{dialogView}}" />
+<view class="info-index">
+    <view class="header">
+        <view class="shadow">
+            <text>Easy Online Scheduling</text>
+            We Cover Large Range of Cleaning Services
+        </view>
+    </view>
+
+    <view class="ul">
+        <view class="li">
+            <text>Our Introduction</text>
+            The Best <label>Home Services</label>
+            <view>Excepteur sint occaecat non proident, sunt in culpa quis.</view>
+        </view>
+        <view class="li">
+            <text>Most Popular</text>
+            Our <label>Quality</label> Services
+            <view class="grid">
+                <view>
+                    <text>Shopping</text>
+                    Lorem ipsum viverra
+                </view>
+                <view>
+                    <text>Repairs</text>
+                    Lorem ipsum viverra
+                </view>
+                <view>
+                    <text>Spring</text>
+                    Lorem ipsum viverra
+                </view>
+                <view>
+                    <text>Carpenter</text>
+                    Lorem ipsum viverra
+                </view>
+                <view>
+                    <text>Shifting</text>
+                    Lorem ipsum viverra
+                </view>
+                <view>
+                    <text>Plumbing</text>
+                    Lorem ipsum viverra
+                </view>
+            </view>
+        </view>
+        <view class="li">
+            <text>Our Process</text>
+            How Its <label>Works</label>
+            <view class="grid grid2">
+                <view>
+                    <text>Book Service</text>
+                    Lorem ipsum dolor sit amet
+                </view>
+                <view>
+                    <text>Service Delivery</text>
+                    Lorem ipsum dolor sit amet
+                </view>
+                <view>
+                    <text>Payment & Leave Feedback</text>
+                    Lorem ipsum dolor sit amet
+                </view>
+            </view>
+        </view>
+        <view class="email">
+            <view class="shadow">
+                <text>Stay Updated!</text>
+                <label>Lets Stay <text>In Touch</text></label>
+                <text>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.</text>
+                <view><text bindtap="sendEmail"></text><input placeholder="Email address" value="{{data}}" bindinput="inputEmail"></input></view>
+                <text>Subscribe to our free weekly newsletter for new update releases (no spam)</text>
+            </view>
+        </view>
+    </view>
+
+    <view class="footer">
+        <text>Our information</text>
+        AbodeDesk
+    </view>
+</view>

@@ -1,0 +1,97 @@
+{include file="header"}
+
+<div class="page-header">
+	<h6>
+		修改个人资料
+	</h6>
+</div>
+<div class="row">
+<div class="col-xs-12">
+	<form class="form-horizontal" role="form" method="post" action="/index/info" enctype="multipart/form-data">
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="real_name">姓名</label>
+			<div class="col-sm-10">
+				<input type="text" id="real_name" name="real_name" value="{$row.real_name}" class="col-xs-6" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="mobile">电话</label>
+			<div class="col-sm-10">
+				<input type="text" id="mobile" name="mobile" value="{$row.mobile}" class="col-xs-6" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="qq">QQ</label>
+			<div class="col-sm-10">
+				<input type="text" id="qq" name="qq" value="{$row.qq}" class="col-xs-6" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="weixin">微信</label>
+			<div class="col-sm-10">
+				<input type="text" id="weixin" name="weixin" value="{$row.weixin}" class="col-xs-6" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right">菜单布局</label>
+			<div class="col-sm-10">
+				<div class="radio">
+					<label>
+						<input type="radio" name="menu_direction" value="0" class="ace direction" {if $row.menu_direction==0}checked{/if} />
+						<span class="lbl">横向</span></label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type="radio" name="menu_direction" value="1" class="ace direction" {if $row.menu_direction==1}checked{/if} />
+						<span class="lbl">竖向</span></label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group direction-property {if $row.menu_direction==0}hidden{/if}">
+			<label class="col-sm-2 control-label no-padding-right">菜单配色</label>
+			<div class="col-sm-10">
+				<input class="col-xs-1" type="text" id="bgcolor" name="bgcolor" value="{$row.bgcolor}" maxlength="7" />
+				<span class="some-color" style="background:{$row.bgcolor};"></span>
+				<span class="some-line">仅支持竖向</span>
+			</div>
+		</div>
+
+		<div class="clearfix form-actions">
+			<div class="col-md-offset-3 col-md-9">
+				<button class="btn btn-info" type="submit">
+					<i class="ace-icon fa fa-check bigger-110"></i>
+					提交
+				</button>
+
+				&nbsp; &nbsp; &nbsp;
+				<button class="btn" type="reset">
+					<i class="ace-icon fa fa-undo bigger-110"></i>
+					重置
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+
+{include file="footer"}
+<script>
+$(function(){
+	$('.direction').on('click', function(){
+		if(Number($(this).val())===0){
+			$('.direction-property').addClass('hidden');
+		}else{
+			$('.direction-property').removeClass('hidden');
+		}
+	});
+	$('.some-color').colorpicker({
+		target: '#bgcolor',
+		type: 'panel',
+		readonly: false,
+		callback: function(c){
+			$(this).css('background', c);
+		}
+	});
+});
+</script>

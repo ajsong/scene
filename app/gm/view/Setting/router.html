@@ -1,0 +1,63 @@
+{include file="header"}
+
+<div class="page-header">
+	<h6>
+		系统设置
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			访问路由
+		</small>
+	</h6>
+</div>
+
+<form class="form-inline" action="?" method="get">
+<input type="text" class="input-medium" placeholder="会员账号" name="member_name" value="{$member_name}" />
+<input type="text" class="input-medium" placeholder="app" name="router_app" value="{$router_app}" />
+<input type="text" class="input-medium" placeholder="act" name="router_act" value="{$router_act}" />
+<input type="text" class="input-medium" placeholder="ip" name="ip" value="{$ip}" />
+<button type="submit" class="btn btn-info btn-sm">
+	<i class="ace-icon fa fa-search bigger-110"></i>搜索
+</button>
+</form>
+
+<div class="table-content">
+<table id="simple-table" class="table table-striped table-bordered table-hover">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>会员</th>
+			<th>文件</th>
+			<th>app</th>
+			<th>act</th>
+			<th>参数</th>
+			<th>用户浏览器</th>
+			<th>IP</th>
+			<th>时间</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		{foreach $rs as $row}
+		<tr>
+			<td>{$row.id}</td>
+			<td>{if $row.member_id}<a href="{if $row.type==1}?app=setting&act=manager_edit{elseif $row.type==2}?app=agent&act=edit{elseif $row.type==3}?app=setting&act=manager_edit{else}?app=member&act=edit{/if}&id={$row.member_id}" target="_blank">{$row.member_name}</a>{else}-{/if}</td>
+			<td>{$row.script_name}</td>
+			<td>{$row.app}</td>
+			<td>{$row.act}</td>
+			<td><div class="some-tips">{$row.query_string}</div></td>
+			<td><div class="some-tips">{$row.user_agent}</div></td>
+			<td>{$row.ip}</td>
+			<td>{:date('Y-m-d H:i:s',$row.add_time)}</td>
+		</tr>
+		{foreachelse}
+		<tr bgcolor="white"><td colspan="13" height="50">暂无记录</td></tr>
+		{/foreach}
+
+	</tbody>
+</table>
+</div>
+<div class="mypage">
+	{$rs|raw}
+</div>
+{include file="footer"}
+

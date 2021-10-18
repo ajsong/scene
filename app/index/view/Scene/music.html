@@ -1,0 +1,210 @@
+{include file="header"}
+<body>
+<div class="scene-lib scene-lib-music">
+	<div class="header">
+		<a href="javascript:void(0)" class="eqf-wrong" coo-click="dialogClose"></a>
+		<h4>音乐库</h4>
+	</div>
+	<div class="view">
+		<ul class="list">
+			<li><a href="javascript:void(0)" coo-click="selectGroup(0)">全局</a></li>
+			{foreach $data.list as $g}
+			<li><a href="javascript:void(0)" coo-click="selectGroup({$g.id})">{$g.title}</a></li>
+			{/foreach}
+			<a href="javascript:addGroup()"><em class="eqf-plus2"></em> 添加分组</a>
+		</ul>
+		<ul class="rs">
+			{if count($data.rs)}
+			{foreach $data.rs as $g}
+			<li><a href="javascript:void(0)" id="{$g.id}" url="{$g.url}" title="{$g.title}" size="{$g.size}"><div class="eqf-play2"></div><em class="eqf-scene-list"></em>{$g.title}<span>[{$g.size}]</span></a></li>
+			{/foreach}
+			{else}
+			<span>通过本地电脑上传或添加外链</span>
+			{/if}
+		</ul>
+	</div>
+	<div class="btns">
+		<a href="javascript:void(0)" class="right manage {if !count($data)}hidden{/if}"><em class="eqf-option"></em>管理</a>
+		<a href="javascript:void(0)" class="right del hidden"><em class="eqf-exclamation-sign"></em>删除</a>
+		<a href="javascript:void(0)" class="right cancel hidden"><em class="eqf-wrong"></em>取消</a>
+		<a href="javascript:void(0)" class="uploadMusic"><em class="eqf-update"></em>上传</a>
+		<a href="javascript:void(0)" class="remoteMusic"><em class="eqf-link"></em>外链</a>
+	</div>
+	<ul class="group hidden">
+		<div>转到分组</div>
+		<li><a href="javascript:void(0)" coo-click="transferGroup(0)">全局</a></li>
+		{foreach $data.list as $g}
+		<li><a href="javascript:void(0)" coo-click="transferGroup({$g.id})">{$g.title}</a></li>
+		{/foreach}
+	</ul>
+	<audio id="audio"></audio>
+</div>
+
+{include file="footer"}
+<script>
+let uploading = false, managing = false, gid = 0;
+function selectGroup(group_id){
+	$('.view .list a').removeClass('this');
+	gid = Number(group_id);
+	if(Number(group_id)<=0){
+		group_id = '';
+	}else{
+		$(this).addClass('this');
+	}
+	$.getJSON('/scene/music', { group_id:group_id }, function(json){
+		let html = '';
+		if($.isArray(json.data.rs) && json.data.rs.length){
+			$.each(json.data.rs, function(){
+				html += '<li><a href="javascript:void(0)" id="'+this.id+'" url="'+this.url+'" title="'+this.title+'" size="'+this.size+'"><div class="eqf-play2"></div><em class="eqf-scene-list"></em>'+this.title+'<span>['+this.size+']</span></a></li>';
+			});
+		}else{
+			html = '<span>通过本地电脑上传或添加外链</span>';
+		}
+		$('.view .rs').html(html);
+	});
+}
+function addGroup(){
+	let title = prompt('请填写分组名称', '');
+	if(!title)return;
+	if(!title.length){
+		$.overloadError('请填写分组名称');
+		return;
+	}
+	$.postJSON('/scene/addGroup', { type:'music', title:title }, function(json){
+		$('.view .list > a').before('<li><a href="javascript:void(0)" coo-click="selectGroup('+json.data+')">'+title+'</a></li>');
+		$('.group').append('<li><a href="javascript:void(0)" coo-click="transferGroup('+json.data+')">'+title+'</a></li>');
+	});
+}
+function transferGroup(group_id){
+	if(group_id<0)group_id = 0;
+	group_id = Number(group_id);
+	let obj = $('.group').data('obj');
+	$.postJSON('/scene/transferGroup', { type:'music', group_id:group_id, id:obj.attr('id') }, function(){
+		$('.group').addClass('hidden');
+		let group = $('.list .this');
+		if(group.length && group_id!==gid)obj.parent().remove();
+		$.overloadSuccess('转组成功');
+	});
+}
+function restore(json){
+	uploading = false;
+	$.overload(false);
+	$('.manage').removeClass('hidden');
+	$('.view .rs > span').remove();
+	$('.view .rs').prepend('<li><a href="javascript:void(0)" id="'+json.data.id+'" url="'+json.data.url+'" title="'+json.data.title+'" size="'+json.data.size+'"><div class="eqf-play2"></div><em class="eqf-scene-list"></em>'+json.data.title+'<span>['+json.data.size+']</span></a></li>');
+}
+$(function(){
+	$(document.body).data('overload.caller', document.body);
+	$('.uploadMusic').ajaxupload({
+		url: '/scene/music',
+		data: { group_id:gid },
+		fileType: ['mp3'],
+		beforeSelect: function(){
+			if(uploading)return false;
+			uploading = true;
+		},
+		cancel: function(){
+			uploading = false;
+			$.overload(false);
+		},
+		uploading: function(){
+			$.overload(null, '.load-animate load-animate2');
+		},
+		callback: function(json){
+			restore(json);
+		}
+	});
+	$('.remoteMusic').click(function(){
+		let url = prompt('请填写背景音乐(只支持mp3)的完整链接', '');
+		if(!url)return;
+		if(!url.length || !/^http/.test(url)){
+			$.overloadError('音乐链接格式错误');
+			return;
+		}
+		$.overload();
+		$.postJSON('/scene/music', { url:url, group_id:gid, remote:1 }, function(json){
+			restore(json);
+		});
+	});
+	$('.manage').click(function(){
+		managing = true;
+		$('.manage').addClass('hidden');
+		$('.uploadMusic').addClass('hidden');
+		$('.remoteMusic').addClass('hidden');
+		$('.del').removeClass('hidden');
+		$('.cancel').removeClass('hidden');
+		$('.view').addClass('delete');
+	});
+	$('.del').click(function(){
+		let ids = [], checked = $('.view .rs a.checked');
+		if(!checked.length){
+			alert('请选择要删除的文件');
+			return;
+		}
+		if(!confirm('真的要删除吗？'))return;
+		checked.each(function(){
+			ids.push($(this).attr('id'));
+		});
+		$.overload(null, '.load-animate load-animate2');
+		$.postJSON('/scene/deleteMusic', { ids:ids }, function(){
+			checked.parent().remove();
+			if(!$('.view .rs a').length){
+				$('.view .rs').html('<span>通过本地电脑上传或添加外链</span>');
+				$('.manage').addClass('hidden');
+			}
+		});
+	});
+	$('.cancel').click(function(){
+		managing = false;
+		$('.manage').removeClass('hidden');
+		$('.uploadMusic').removeClass('hidden');
+		$('.remoteMusic').removeClass('hidden');
+		$('.del').addClass('hidden');
+		$('.cancel').addClass('hidden');
+		$('.view').removeClass('delete');
+		$('.view .rs a.checked').removeClass('checked');
+	});
+	$(document).on('mousedown', function(e){
+		let o = e.target||e.srcElement;
+		do{
+			if($(o).is('em, .group'))return false;
+			o = o.parentNode;
+		}while(o.parentNode);
+		$('.group').addClass('hidden');
+		return true;
+	});
+	$('.view .rs').on('click', 'a', function(e){
+		let o = e.target||e.srcElement;
+		if(o.tagName.toUpperCase()==='DIV'){
+			let audio = $('.scene-lib audio');
+			if($(o).hasClass('eqf-play2')){
+				$(o).removeClass('eqf-play2').addClass('eqf-stop');
+				audio.attr('src', $(o).parent().attr('url'));
+				audio[0].play();
+			}else{
+				$(o).removeClass('eqf-stop').addClass('eqf-play2');
+				audio.removeAttr('src');
+				audio[0].pause();
+				audio[0].currentTime = 0;
+			}
+			return false;
+		}else if(o.tagName.toUpperCase()==='EM'){
+			let em = $(o), group = $('.group'), ul = group.removeClass('hidden').data('obj', em.parent());
+			ul.css({ left:em.offset().left-(group.outerWidth(false)-em.outerWidth(false)), top:em.offset().top+em.outerHeight(false)+3 });
+			return false;
+		}
+		let _this = $(this);
+		if(managing){
+			if(_this.hasClass('checked')){
+				_this.removeClass('checked');
+			}else{
+				_this.addClass('checked');
+			}
+			return false;
+		}
+		let obj = { url:_this.attr('url'), title:_this.attr('title'), size:_this.attr('size') };
+		window.top.setMusic(obj);
+		dialogClose();
+	});
+});
+</script>

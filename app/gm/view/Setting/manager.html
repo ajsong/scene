@@ -1,0 +1,92 @@
+{include file="header"}
+
+<div class="page-header">
+	<h6>
+		系统设置
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			所有管理员
+		</small>
+		<div>
+			<a href="/setting/manager_edit">增加管理员</a>
+		</div>
+	</h6>
+</div>
+
+<form class="form-inline" action="?" method="get">
+<input type="text" name="keyword" id="keyword" value="{$keyword}" placeholder="关键词" />
+<input type="text" name="date" id="date" value="{$date}" placeholder="月份" />
+<button type="submit" class="btn btn-info btn-sm">
+	<i class="ace-icon fa fa-search bigger-110"></i>搜索
+</button>
+</form>
+
+<div class="table-content">
+<table id="simple-table" class="table table-striped table-bordered table-hover">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>登录名称</th>
+			<th>真实姓名</th>
+			<th>上次登录时间</th>
+			<th>上次登录IP</th>
+			<th>登录次数</th>
+			<th>{$month}点击</th>
+			<th>状态</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+	<tbody>
+		{if count($rs)}
+		{foreach $rs as $row}
+		<tr>
+			<td>{$row.id}</td>
+			<td><a href="/setting/power?id={$row.id}">{$row.name}</a></td>
+			<td>{$row.real_name}</td>
+			<td>{if $row.last_time>0}{:date('Y-m-d H:i:s',$row.last_time)}{else}-{/if}</td>
+			<td>{$row.last_ip}</td>
+			<td>{$row.logins}</td>
+			<td>{$row.clicks}</td>
+			<td>{if $row.status==1}<font class="fa fa-check"></font>{else}<font class="fa fa-close"></font>{/if}</td>
+			<td>
+				<a href="/setting/manager_edit?id={$row.id}">
+					<button type="button" class="btn btn-xs btn-info">
+					<i class="ace-icon fa fa-pencil bigger-120"></i>
+				</button>
+				</a>
+				{if $is_power_edit}
+				<a href="/setting/power?id={$row.id}" class="tips" title="设置权限" tips-follow="top" tips-fixy="-5" tips-bgcolor="#333">
+					<button type="button" class="btn btn-xs btn-warning">
+					<i class="ace-icon fa fa-cog bigger-120"></i>
+				</button>
+				</a>
+				{/if}
+				<a href="/setting/manager_delete?id={$row.id}" class="delete">
+					<button type="button" class="btn btn-xs btn-danger">
+					<i class="ace-icon far fa-trash-alt bigger-120"></i>
+				</button>
+				</a>
+			</td>
+		</tr>
+		{/foreach}
+		{else}
+		<tr bgcolor="white"><td colspan="14" height="50">暂无记录</td></tr>
+		{/if}
+	</tbody>
+</table>
+</div>
+<div class="mypage">
+	{$viewpage|raw} {$rs|raw}
+</div>
+
+{include file="footer"}
+<script>
+$(function(){
+	$('#date').datepicker({
+		just: 'month',
+		readonly: true,
+		maxDate: '+1m',
+		format: 'yyyy-mm'
+	});
+});
+</script>

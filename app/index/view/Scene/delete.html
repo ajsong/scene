@@ -1,0 +1,26 @@
+{include file="header"}
+<body>
+<div class="scene-copy">
+	<div class="notice">确定要删除此场景？<br />注意：该场景删除后将无法恢复</div>
+	<div class="btns">
+		<a href="javascript:void(0)">确定</a>
+		<a href="javascript:void(0)">取消</a>
+	</div>
+</div>
+
+{include file="footer"}
+<script>
+$(function(){
+	$('.btns a').click(function(){
+		switch($(this).index()){
+			case 0:
+				window.top.sceneDelete('{$id}');
+				dialogClose();
+				break;
+			case 1:
+				dialogClose();
+				break;
+		}
+	});
+});
+</script>

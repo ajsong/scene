@@ -1,0 +1,12 @@
+{include file="header"}
+
+<body>
+{if is_array($data)}
+<ul class="article-view">
+	{foreach $data as $g}
+	<li><a href="javascript:void(0)"><div>[{$g.add_time|date="Y-m-d"}]</div>{$g.title}</a></li>
+	{/foreach}
+</ul>
+{/if}
+
+{include file="footer"}

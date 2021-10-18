@@ -1,0 +1,76 @@
+<wxs module="helper" src="../../common/helper.wxs"></wxs>
+<import src="../../common/template.wxml" />
+<template is="overload" data="{{overload}}" />
+<template is="dialogView" data="{{dialogView}}" />
+<template is="shareView" data="{{shareView}}" />
+
+<view class="nav {{nav_shown}} {{nav_x}}">
+	<text class="return return-white" bindtap="handleGoHome"></text>
+	<view>{{title}}</view>
+</view>
+
+<view class="header {{header_x}}">
+	<view class="bg" style="background-image:url({{bg}});"></view>
+	<view class="cell">
+		<view class="pic" style="background-image:url({{bg}});"><text wx:if="{{clicks.length}}">{{clicks}}</text></view>
+		<view class="title">{{title}}</view>
+		<view wx:if="{{trans && trans.title && trans.title.length}}" class="trans ge-top ge-light" data-url="{{trans.url}}" bindtap="handleShowAd">
+			<view class="btn">免费订阅</view>
+			<view class="pic" style="{{trans.image?'background-image:url('+trans.image+');':''}}"></view>
+			<view class="tit">{{trans.title}}</view>
+			<view class="tip">点击按钮免费订阅</view>
+		</view>
+	</view>
+</view>
+
+<view wx:if="{{trans && trans.title && trans.title.length}}" class="trans-placeholder {{trans_placeholder_hide}}" data-url="{{trans.url}}" bindtap="handleShowAd"></view>
+
+<view class="index {{view_x}}">
+	<view class="list" style="background-image:url({{listBg}});">
+		<view class="top ge-bottom ge-light" wx:if="{{data.length>0}}">
+			<text>共{{count}}篇</text>
+			<view wx:if="{{review==0}}" data-url="/pages/index/detail?id={{data[0].id}}" bindtap="handlePlayAll">全部播放</view>
+		</view>
+        <block wx:if="{{data.length>0}}">
+			<view class="li ge-bottom ge-light" wx:for="{{data}}" wx:key="index">
+				<block wx:if="{{item.type==0}}">
+				<view class="type type{{item.type}}" data-id="{{item.id}}" data-index="{{index}}" bindtap="handleShowDetail">
+					<view class="pic {{review==1?'review':''}}" style="background-image:url({{item.pic}});"></view>
+					<text class="span">{{index+1}}、{{item.title}}</text>
+					<view class="bottom">
+						<view class="ico"><view class="i look"></view> {{item.clicks}}</view>
+						<view class="ico"><view class="i share"></view> {{item.likes}}</view>
+						{{item.add_time}}
+					</view>
+				</view>
+				</block>
+				<block wx:elif="{{item.type==1}}">
+				<view class="type type{{item.type}}" data-url="{{item.url}}" bindtap="handleShowAd" style="background-image:url({{item.pic}});"></view>
+				</block>
+				<block wx:elif="{{item.type==3}}">
+				<ad unit-id="{{item.adunit}}"></ad>
+				</block>
+				<block wx:elif="{{item.type==4}}">
+				<ad unit-id="{{item.adunit}}" ad-type="video" ad-theme="white"></ad>
+				</block>
+				<block wx:elif="{{item.type==5}}">
+				<view class="type type{{item.type}}">
+					<view class="pic" style="background-image:url({{item.pic}});" data-id="{{item.id}}" data-index="{{index}}" bindtap="handleShowDetail">
+						<text class="span">{{item.title}}</text>
+					</view>
+					<view class="bottom">
+						{{item.add_time}}
+						<view class="i look"></view> {{item.clicks}}
+						<view class="i share"></view> {{item.likes}}
+					</view>
+				</view>
+				</block>
+				<text class="clear"></text>
+			</view>
+            <view class="loadmore {{loadmore}}"></view>
+        </block>
+        <block wx:else>
+            <view class="norecord">没有任何记录</view>
+        </block>
+	</view>
+</view>

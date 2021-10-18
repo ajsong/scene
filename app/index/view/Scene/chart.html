@@ -1,0 +1,193 @@
+{include file="header"}
+<link type="text/css" href="/css/excelTable.css" rel="stylesheet" />
+<link type="text/css" href="/css/scrollBar.css" rel="stylesheet" />
+<script type="text/javascript" src='/js/jquery.excelTable.js'></script>
+<script type="text/javascript" src='/js/jquery.scrollBar.js'></script>
+<style>
+.excel-tips{ text-align:left; }
+.excel{ width:100%; height:100%; }
+.excel:before, .excel:after{ content:""; display:block; position:absolute; z-index:20; right:0; bottom:0; background:#ccc; }
+.excel:before{ left:0; height:1px; }
+.excel:after{ top:0; width:1px; }
+.excel table th div, .excel table td div{ height:24px; line-height:24px; }
+.excel table th, .excel table td:first-child{ background:#f0f0f0; text-align:center; }
+.excel .excel-head th, .excel .excel-head td, .excel .excel-side th, .excel .excel-side td{ text-align:center; }
+.excel .excel-head th div, .excel .excel-head td div, .excel .excel-side th div, .excel .excel-side td div{ justify-content:center!important; }
+.excel table th:first-child div, .excel table td:first-child div{ min-width:60px; }
+.excel table tr:first-child th:first-child i{ display:block; width:100%; height:100%; cursor:pointer; background:url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%201024%201024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M922.048%20593.536H102.016c-3.072%200-6.08%200-7.616%201.664h-3.008c-1.536%200-3.072%201.6-4.544%201.6-1.6%201.792-1.6%201.792-3.072%201.792-1.536%201.6-3.008%201.6-3.008%201.6-3.072%201.664-4.608%203.328-6.144%204.992-1.472%201.664-3.008%204.992-4.544%206.656%200%200%200%201.664-1.472%203.328%200%201.664-1.472%201.664-1.472%203.328s0%203.392-1.472%204.992v3.328c-1.664%203.264-1.664%209.92-0.128%2014.848v3.328c1.472%201.664%201.472%203.392%201.472%204.992%201.472%201.664%201.472%201.664%201.472%203.328%201.472%201.664%201.472%203.328%201.472%203.328%201.536%203.328%203.072%204.992%204.544%206.656l261.248%20285.504a37.12%2037.12%200%200%200%2053.12%200%2042.816%2042.816%200%200%200%200-58.112l-197.44-215.744h730.496c21.248%200%2037.952-16.64%2037.952-39.872s-16.576-41.536-37.824-41.536zM102.016%20430.848h827.712c1.472%200%201.472-1.664%203.008-1.664s1.472%200%203.072-1.6c1.472%200%201.472-1.664%203.008-1.664%201.536-1.6%203.072-1.6%203.072-1.6%203.072-1.664%204.544-3.328%206.08-4.992s3.072-4.992%204.544-6.656c0%200%200-1.664%201.472-3.328%200-1.664%201.536-1.664%201.536-3.392%200-1.6%200-3.328%201.472-4.928v-3.328a25.728%2025.728%200%200%200%200-14.912v-3.392c-1.472-1.664-1.472-3.328-1.472-4.928-1.536-1.664-1.536-1.664-1.536-3.328-1.472-1.664-1.472-3.328-1.472-3.328-1.472-3.392-3.072-4.992-4.544-6.656l-261.184-285.504c-7.744-8.32-16.768-11.648-25.92-11.648s-19.776%203.328-27.392%2011.648a46.4%2046.4%200%200%200%200%2058.112l198.912%20215.744H102.016c-21.248%200-38.016%2018.304-38.016%2039.872%200%2023.232%2016.768%2041.472%2038.016%2041.472z%22%20fill%3D%22%23999999%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") no-repeat center center; background-size:14px auto; }
+.scrollbar-bar{ right:3px; bottom:3px; }
+
+.example{ display:block; margin-top:5px; width:218px; height:100px; background:url("data:image/jpg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBUODAsLDBkSEw8VHhsgHx4bHR0hJTApISMtJB0dKjkqLTEzNjY2ICg7Pzo0PjA1NjP/2wBDAQkJCQwLDBgODhgzIh0iMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzP/wgARCADIAbQDAREAAhEBAxEB/8QAGwABAAMBAQEBAAAAAAAAAAAAAAMEBQECBgf/xAAWAQEBAQAAAAAAAAAAAAAAAAAAAQL/2gAMAwEAAhADEAAAAP2k9gAAHgkOAAAAAiJQAAAAREoAEBQA6RnsACAoAZxokoAABESgAGYaYABESgAzjpoAAiJQAeaxTcgACIlABjVoliABll8lAAAIiUAHD4jWPri1nYAiJQBHzGkh9HkoCIlABU2x4+jyAAiJQAfMal+tjFAGWXyUAAAiJQABqMFoAiJQBHNOjJQERKABQQABESgA5b0SADLLRMAAAQlsAAAAAiJQAAAAREoAAAABESgAAAAxzSJQAACI0joAAAAK5YAAAABXLAAAAAOEJOAAAADDLJKAZppAERpHQAAAAVzIqK5tFQpLv5umACuVbnMqQjIz0v0+aAOFIyNZmPUcMuz6jOrSgDDLJKAUi6ARGkdAAAABXMSvNzpxl1yXbluAArmXc+Kpl05HlfoZQBwomNrMxYj2Z1n0GdWFAGGWSUAAAiNI6AAAACuWAAAAAVywAAAADhCTgAAAAwyQmAAAITQOgAAAAgJwAAAAQE4AAAAPJETgAAAAxy4SgAAERpAHQAAAVywcB0AAArliAAoAAcISYHQAAAYZZJQDKNUAiLJ87qa0VJfoQAACuUSvYN6UAACuVqonTTLcAADhSM2ztWs3VAAAMMskoBgm8ARGkfAbxtxmt/b5AAAVyoY+sdPqs7AAArmXVYiTYNKUAAcKR8/rEi3862wAADDLJKAAARGkdQFQoAAVywEBQAAK5YBwHQAAcISdAUAAAYZISgAAERoAAAAAEJMAAAACEmAAAABwiJgAAAAY5dJQAACI0joAAAAK5YAAAABXLAAAAAOEJOAAAADDLJKAZumlCBEWzISYq2fR50oAAVyvVaZVszQAAFcr3MJ4NEsTQAA4VCinomt0slAADDLJKAfP6fQQgRFk+T1iyZVfoGdepQABXPma83I+wzoAACuY+s0TybUa00AAOGQYesSGlN72SgABhlklAAAIjSOHk6ejoAAK5YAAAABXLAAAAAOEJOAAAADDJCUAAAiNA6AAAACAnAAAABATgAAAA8kROAAAADHLhKAAARGkdgKAAAFcsAAAAArlgAAAAHCEngKAAAGGWSUAhJgCIumTVorRtgAAFcokgNIAAArkRAei6SgAA4VSvXT3F8AAAwyySgHy2n1OQER6PmdYtlC6+4zfcAACuZpi6wPtM7AAArmFrNFPJuS7M0AAOGSfM6xYNXO/oAAADDLJKABk0ERpFROHitDNUAAK5YPKD0oAAFcmQK9ZqgABwhJUBfQAABhkx7AAAIjRAAAAAICcAAAAEBOAAAAAQkwAAAAMg//EACkQAAIBBAAHAAIDAQEBAAAAAAMEAAECBRQREhMgMDM0BjEQFUIhJBb/2gAIAQEAAQgAAANVx1u1wzXDNcM1wzXDNcM1wwwA0XLW3XDNcM1wzXDNcM1wzXDNcM1wzXDNcMGANbzcdcM1wzXDNcM1wzXDNcM1wzXDNcMIANLw8NcM1wzXDNcM1wzXDNcM1wzXDNcM1wwAA1XHW7XDNcM1wzXDNcM1wzXDNcM1wzXDHh2WscLVvnH4GPlJP8drmcSRyymNN2h9pu3JZceNMsGYzLAyfXoPsL7Q9t19lll194PyhMxQUr2f4i3yj7WfyEKzzKtqTYH1AtLdmQ+ikW+cfgY+Uk/x2Ww+KzGZsy7lmOZI7jV2Tdgfabt/KAX35HElr+MAOFrI307C+0PbklL38S4pYhlnqAx+Ps7P8Rb5R9trpcV+TZg1340gfG4MIGezIfRSLfOPwMfKSf48Yfabt417i+0Pdxr+u3/EW+Ufbxr3ZD6KQFDa4+HA84HnA84HnA84HnA8PQ2uTjqnmqeap5qnmqeap5qnmqeap5qnmqeCWNUhqU1TzVPNU81TzVPNU81TzVPNU81TwqxqEFSuqeap5qnmqeap5qnmqeap5qnmqeap4sseqw601TzVPNU81TzVPNU81TzVPNU81TzKCJa1bS5b5x+Bj5SS3xg97PjP71/HX9VifxB8eZ+y2LfOPs32f70KXYx8pJb4we9mGyGRWZCQ4M07fUDd4ckzfnr0b0842SiDRz5t5PcOTFtlbtLdf2H968dvyPWHYmtmnslYoJQWSyLyYDqrZnI5PWtTYy7LKyDQcbnGXW+ld2V/VZQhh4mhAGzTuNIyN21/KBMZMq+ScE80m0jlHz4xw1wM6ytqrRIt5kxkv7Mz9lsW+cfYZW8uWTap/LHyklvjB72YshlaZe51oOGds1k7qqErnrHotgTf2QjGyOEf0m7gqLtBrfsdh/evM2k+/UIQ3J5KxkDwCYLI0UURoRXKWNWOAtwJRJIrixeOyY9mpOyv6rK7H9P/AOJfCOVxriZ7ksyUrDswiLSFCCMqgyALtltMM+s5jhgWGUQKWn7Mz9lsW+cfgY+Ukt8YPez4z+9fx1/VYn8QfHmfstgKm1x8OJ5xPOJ5xPOJ5xPOJ4aptcnGlzU5mpzNTmanM1OZqczU5mpzNTmanM1A3MdQ/DmanM1OZqczU5mpzNTmanM1OZqczULcx1AceZqczU5mpzNTmanM1OZqczU5mpzNSt7UVvY1BcOZqczU5mpzNTmanM1OZqczU5mpzNTKdWrNvMt84/Ax8pJb4we9nxn96/jr+qxP4g+PM/ZbFvnH2X5Y4b6Xl/X8sfKSNM2Jr1Nf/wDTG69TxzKVsw9zq6uYOXJrrU7we9mW5il+bpjrAZ24hRXxfPXlKC6/vP714640EwhKCzpWrFrU7c9e1q2IIODyCImhd1f1WWmqDFULbXP3q7VMhXPXqUZ30siYzxEnO/M/ZbFvnH2W0ePl9h3+WPlJLYBA58TyCeZIf+tLUxchp15u8HvZh1zX55JixdB+2xTGxXHvUsRx1/ef3rzN1yZOkunYBhI6rqiaD+IqsxMKkTH4ddY3dX9VlNimJpVU2LZevfIJtF/MXsmvRG0zmL8gfvzP2Wxb5x+Bj5SS3xg97PjP71/HX9VifxB8eZ+y2AJfRcdJ1STqknVJOqSdUk6pJ1SQxL6rllDknXJOuSdck65J1yTrknXJOuSdck65IE19CnnXJOuSdck65J1yTrknXJOuSdck65IU19SgnXJOuSdck65J1yTrknXJOuSdck65JU5eEVNfRQNKdck65J1yTrknXJOuSdck65J1yTrkmUvvuapWLfOPwMfKSW+MHvZ8Z/ev46/qsT+IPjzP2Wxb5x9luXBtUDX+WPlJDmosG4lbfyMVcncrHc1rBBfaT8hLYCrHgB72YXKLhyq+NqLOAMzYKgM6udqwdO8/vXj2TtQvAOpszYKgLa3Z1e6i1VVGROKjYD3V/VYI41sXYcw86HkNezZnV6WHq0llRuGICvfmfsti3zj7HCFbfW5K8Ob+WPlJGbWKgrRVTg5iLLUnarNKY7UqagTW1ltaXU407ge9mWY7LgzSBSriPRdDExUJ71sZivAf3rzNhUK6tV5HYxxlHHEBnxBVW2sAsZPBrBP3V/VZkVDO/i5lwFTI6FuxDIDPmSsnWSvvfz971vfmfsti3zj7ONeXh2MfKSWylKUt4UvHYW2tt9LLaVur4Ae9nxn96/jr+qxP4g+PM/ZbAHsouOk2LJsWTYsmxZNiybFk2LIY9lVy0lGhzbHNsc2xzbHNsc2xzbHNsc2xzbHAsWUIes2xzbHNsc2xzbHNsc2xzbHNsc2xwrFlSArNsc2xzbHNsc2xzbHNsc2xzbHNsc2xxRiyigaTbHNsc2xzbHNsc2xzbHNsc2xzbHMmay5m2sW+UfgY+Ukt8YPez4z+9fx1/VYn8QfHmfsti3zj7CNgC0BYn8sfKSHOJZe8xqflGL2aiqzlQrAWLSn5GrwFWneD3syufx1p6CuHmESOalgsuidzUs7z+9eOZFdCo6HJmkBAAaHzCCwhEuEWw4rSi7q/qsCSwOOGUq2ZQatJcMGYRZEYliWTVyHPr9+Z+y2LfOP+beHN/wB4ZGzPIHa/lj5STNCIfBuCDrZGuVKKjlWqYxBRW/jSih1LOPLTm7ge9mD/APd+TGrcqS2qWNxcUJZVLE4yzvP715nL+GWR58UcCB0GW8QUWLOoy9+NivF+PKWXd1f1WPAGz+NGCZkjWWoySmXKLLnbOgkyF/8AJ72k+/M/ZbFvnH4GPlJLYzjk3b7b2f6xHWsXlMRjqVsr4Ae9n+OFOPGcKcePgP715W2l9vC7hS6nCtaUu/5Xvr+qxP4gylKUltLafqltKfrvzP2WwBw0XHbdsBmwGbAZsBmwGbAZsBhjhuXLSlGl5tLzaXm0vNpebS82l5tLzaXm0vNpeBZBaQ9a7S82l5tLzaXm0vNpebS82l5tLzaXhWQVICtNpebS82l5tLzaXm0vNpebS82l5tLzaXirIKKCpXaXm0vNpebS82l5tLzaXm0vNpebS8yhRXs21t//xAA8EAACAQIDBAcHAQgDAQEBAAABAgMAEQQS0SFSkpMTICIwMZHhFEFRU2GxsgUQIzJicYGhwTNCQzRyc//aAAgBAQAJPwCJCSguctRR8IqKPhFRR8IqKPhFRR8IqKPhFRR8IqJAQhsctRR8NRR8IqKPhFRR8IqKPhFRR8IqKPhFRR8IqKPhFRR8IqKPhFRJsfZ2fpUUfCKij4RUUfCKij4RUUfCKij4RUUfCKij4RUUfCKij4RUSbX29n6Goo+EVFHwioo+EVFHwioo+EVFHwioo+EVFHwioo+EVFHwioo+GokJKC5y1FHwioo+EVFHwioo+EVFHwioo+EVFHwioo+EVFHwioo+EUgtlH/WtwfbuNw9bP02K8CB2UubDN8Lnrb/APodXC4nEzYnNkTDqCeyNvjUU8MsBCzQzJldCRcdXf8A9HqsqIgJZj4KBWGxsWGxL5MPinitFIx8PqL+6/W3B1cBj8S+FAMphQMFBF/jT54ZRmRvDZr1dwVuD7dxuHrJBD7TKOiGIDCZREbpl+FzUTwyyRgvE62ZG9+zq7/+h1Ysa8EfS53wIOdLjZYiocYmAkdTE+NH793t2rnxI+F+rv8A+j1TkeaFkVj4KSK/RcSmJjCR4kzC0cSKLFg3g30624Or+nY+dMQIuiOHhLByFoZJndpHTcLtfL1dwVuD7dxuHvN//Q7vf/0e83B3e4KdLZBbsHWnTlnWnTlnWnTlnWnTlnWnTlnWnTlnWnTlnWnS2Q37B1qdOX61OnL9anTl+tTpy/Wp05frU6cv1qdOX61OnL9anTl+tTpy/Wp05frUsex/l/yj61OnL9anTl+tTpy/Wp05frU6cv1qdOX61OnL9anTl+tTpy/Wp05frUqbX+X/ACn61OnL9anTl+tTpy/Wp05frU6cv1qdOX61OnL9anTl+tTpy/Wp05frU6cv1qVACgsOj+n9anTl+tTpy/Wp05frU6cv1qdOX61OnL9anTl+tTpy/Wp05frU6cv1qVL5Pl/U/WtwfbuNw95vj8R3e+fxPebg7v5Y+5rcH26mFyYZ0c9K52yFQP4R7l2+J6m4e83x+IpMOIZsUIEgFzJYkgPmvbw7RFvCkh9hxOJ6BAAc4GYqrE3ttI8LVhujgEJdHZru5DgXsPBa9m9lx8pjjjW+dDZiLnwPht2C1YiFJbqRg5YmcxIbAXZTYEjtEViIpQrAAxwPH+RN+rvn8TSwrGQTJNLdgtvABQRe9LBHPJE8zs4Z0yq+UZbWJDeIpMNh4jGTNLNdlV1bKVABBtsPaqGCGR8IMQ5muy9okKBa3jYm9OuCwzhZHlcF87m4EQUbTt2k1iMPsmaOy4aUFgPfcmw60XTTLFdI7hc5tsF/dQw8zxYTpx7OGWzZsoU3v/EfA1FBPjPZ+mh6O6KxzZSpuT4EiljxLwQLNfCoQbkns2ZjtNtm2sEGxcWIeJMOkg9xAF2+5r9Sw2Kzhs85wspNx/Q04cst8yoUB/sdo6vyx9zW4Pt1GGSGOUMPfdwLW8upuHvN8fiKhwkzlyEfpm/cxE+Crktm+JvTQ+xYbE9OjgnOwDFlUrb3E+N6I6JcM0X1uWBqDBxiKUymWG4aVrEDs+CeN2t4mv1CWeWZ0LJ0SC5BUfYVjTiAbZQY1XL5dXfP4mugfBbTPE8jIZfgtwD2fjUOFGISEwyQZ2CZc11ytl939KOFxGDRC08bu0fTSE322U9m9R4T2h8P0MkZdgikMSrBrXI2m4tWPeMYRVtliU5nAN22/G/hWPdAcU7WMKfvFv4/S/Wye09D+6Ml8t7bL2qOBHnTt4kSM7ySDwZrqKOEhxvs/QQAMzoCWuzE2B/oLVBAiN2mlSZpHlc+LMSoqcRST4l5UdRmspI9x2XrHymGFHUOYk7AsPO9Tmdxe7lQt/7DZ1flj7mtwfbuNw95vj8R3e+fxPebg7v5Y+5pEtkFu2dKROYdKROYdKROYdKROYdKROYdKROYdKROYdKRLZTftnSoouM6VFFxnSoouM6VFFxnSoouM6VFFxnSoouM6VFFxnSoouM6VFFxnSoouM6VFHfP8w7o+lRRcZ0qKLjOlRRcZ0qKLjOlRRcZ0qKLjOlRRcZ0qKLjOlRRcZ0qKLjOlRR3z/MO6fpUUXGdKii4zpUUXGdKii4zpUUXGdKii4zpUUXGdKii4zpUUXGdKii4zpUUXMOlRRkZBbtnSoouM6VFFxnSoouM6VFFxnSoouM6VFFxnSoouM6VFFxnSoouM6VFFxnSo0vk3z8T9K3B9u43D3m+PxHd75/E95uDu/lj7mtwfbqYJkwZxAgEpks5JOUPlt/CT9b9TcNK7KLALGhZiT4AAVk6D5Fje1/mfw5/5PD+ahkIKi0yMMt2CnMuw7KxWCxCSlg4hjdWUBSb7WI8RbuN8fiKw0tsjlpmFlzLl2Lfx8awmXBTzmCKfPclrkAlbbFJFhtrC5cHiZTDDPnuWIvYlbbASDbb3G+fxNYPp3cEs7NkRAPi1jtN9grBdJiJldnieUIECNlO0A37WwVhOmmmiMxSR8mQA5SCbHbm2VcI4vY+I+IPcRPKY4cwRBdnsPAfU1g+heCET5Yn6QFb2tew7V6wnQSxQiYJG+fOCbWBsNt7CsMsE6xiUBHzgre3jYeB7j5Y+5rcH26n6ZO8cUpGGAkjyRjw6Ru1cv8AYeHU3D+zD4qQWZnVYijA5rgKXIDUMa8UiOZRgg69qy2v4EDx8aH6sZ/ZYTGUz2Dbc2e3v+Pcb4/EUl4Y4ZVc3Gwkrb7GsMRDhcX0xxPZs6Biy2F738AawxWHB4npTiLrldVLFbC97nZfuN8/iagnOGe5nlhkRZAPcq5iLX+NfpTrEMMYGwqOgaOzXX32PnWF9pc4dkmSJ1BVi5kFi1gRdiKIMqgl7eGYksbf3PcBDiBF+7D3Ck22XtWA9g9ow9nDup6WcMCpOW/hYi/vvWF9mIwoiiSRlJZw4c+FxluAKwrYZRhxCkblSxJbMx7JI7j5Y+5rcH27jcPeb4/Ed3vn8T3m4O7+WPuagc9gbdlQP/jWoH/xrUD/AONagf8AxrUD/wCNagf/ABrUD/41qBxsO3ZWGl4l1rCy+a61hZfNdawsvmutYWXzXWsLL5rrWFl811rCy+a61hZfNdawsvmutYWXzXWoJTd/5dnZH1rCy+a61hZfNdawsvmutYWXzXWsLL5rrWFl811rCy+a61hZfNdawsvmutYWXzXWoJRZ/wCXb2T9awsvmutYWXzXWsLL5rrWFl811rCy+a61hZfNdawsvmutYWXzXWsLL5rrWFl811rCy8S61BKbINvZ1rCy+a61hZfNdawsvmutYWXzXWsLL5rrWFl811rCy+a61hZfNdawsvmutYWXzXWo3XseHZ+J+tbg+3cbh7zfH4ju98/ie83B3fyx9zW4Pt1IpxGZegWcpZDJu/Hx2XtbqbhpJJMtuzGpZj/asHizaMOLQtmvfaCP6WNQWM2awxL9Dlyi+24rCJ0Suq2M1mdmCmyi23+LuN8fiKuZ51ZlAGwBR76inETytCmIIGRnF7gG9/cbG1jUU6xSO0Uc5tkdlvcA3v7jbZt7jfP4moJp5JiQqQgE7BcnaRWDxRnmQsIAq51A8S3asPOop8UZ4jKqQqMwQeJOYj37LeN6OaORQyn6HuGCxxxZnc+AAFYfFYVI4unvMlgUHwtfb/KdtRzYUwRiVkmUZih8CLE3+FvG9QzwTooYxzABipvYixPcfLH3Nbg+3Uw2KTHYbEABHBMPR32uT/DtXwP8QPU3DTqspsAzgkAX2m3vNqmmk/U4ZXlkkQWaS7FWGa2VWZfCmEWGjima86ZsiqMpDK/vubbaxEyXMecIdmHARLyke4W7NbQfA9ffH4ivZ5s+IeSWZA/gVI2+4WXsrWGnEmHxud3KELkV2bNfwN6w8okwmLDyuyEIFRmIYHwObZbuN8/iawWJmhCOOlhzsEJtsZU27ahxTIcPJF/xmSRB0maMPa5vlrDT5ZMMyMkSF2jYyFwpC/RqTJLYsybpZi1v7X7j/mfD2T/9W2VDjBHJhLypiswzThlKgZv+1gbkbKw04WPCBAsqFGd86uVAb6LUMsUKYUQ3lQoWYtmIsduzuPlj7mtwfbuNw/s2ClVgdhBFxSi7eJ+Pcb4/Ed3vn8T3m4O7+WPuaV9iD/zNCTlmhJyzQk5ZoScs0JOWaEnLNCTlmlk2g/8AmaWXlNpSy8ptKWXlNpSy8ptKWXlNpSy8ptKWXlNpSy8ptKWXlNpSy8ptKWXlNpQk2v8ALbdFLLym0pZeU2lLLym0pZeU2lLLym0pZeU2lLLym0pZeU2lLLym0pZeU2lCTY/y23TSy8ptKWXlNpSy8ptKWXlNpSy8ptKWXlNpSy8ptKWXlNpSy8ptKWXlNpSy8ptKEmxB/wCbfCll5TaUsvKbSll5TaUsvKbSll5TaUsvKbSll5TaUsvKbSll5TaUsvKbSg/8G43xNbg+3cbh7zfH4ju98/ie83B3fyx9zW4Pt1JVE2IzdEnvawuepuGnVIkF2Y+AFTkIED58jW2nw8KUyLiSBHkKi91LXuxA8BUUpEqRtfsCwc2XZmuf7X7jfH4ipZQ5lES3hcAuTa17Wqa81yo2HKWHiobwJHwvUt5blRsOVmH8QDeBI947jfP4mmbPISEVEZ2awubBQTU+ZJwWi6NWcuANpsoJsKnukyZ4zGrSFlAuTZQTa1MGRwCrDaCD3DBUSMFmOwAAVNYInSN0gKdjf7Vuz9amskKZ5OlVoyq2uGswBtb307Era4dGRgD4GzAGx7j5Y+5rcH2/b4V+nfv5cQ4DCZSAgRgFX4ADtfU9TcNKXkeIhVXxJpMf0hwyn/71DWzN77Vld1thnIMZVJFXb2XHaIyn3inxs/RZGPTGJGUyEgWa3x91iteNuvvj8RX/ABfp6KqL7ukcXJ/sth/c1tx8P6hmlj/7KFdmZz9CPPNX/wBsGOvLH/2UKzF2P0IPj783cb5/E1ivYUCSFcXs8Tbsdrsi427d2iIIDhJYkle6q5El8233uvbo+ywy4NxGZeyBeUvbhIpChKlgh8QCxIHl3BcI+HOYoMzAW9w99TwYzo8AVc4RDkN3RrbbnMQp7NH2iKPBASFP/wCge31OUGpRLAmDEbyJtW5e4F/jbuPlj7mtwfbuNw/sw8crpsUsNoBrCRGBDdIygyqfjasFBeMKEOQXAU3W39O43x+I/YNvhehtPcb5/E0Lj4GhcUL9zuD9gtQt3Hyx9zUqAhBcZqlj4hUsfEKlj4hUsfEKlj4hUsfEKlj4hUsZJQ2Gap4eYKni4xU8XGKni4xU8XGKni4xU8XGKni4xU8XGKni4xU8XGKnTa9x2huip4uMVPFxip4uMVPFxip4uMVPFxip4uMVPFxip4uMVPFxip49j3PaG6ani4xU8XGKni4xU8XGKni4xU8XGKni4xU8XGKni4xU8XGKnh5gqeMEILjMPhU8XGKni4xU8XGKni4xU8XGKni4xU8XGKni4xU8XGKni4xUiEZN4fE1/8QAGxEBAQADAQEBAAAAAAAAAAAAEQAwUHBAAWD/2gAIAQIBAT8A0hGMjVEYyPy3zkhGMjVM43kJER7iMZHlI8j34jbPAyNCR5DqX//EABwRAQEAAgIDAAAAAAAAAAAAABEAMFABcEBgkP/aAAgBAwEBPwDp4jbEdGM42dURjI7BZxs+Kz8PONvx7F//2Q==") no-repeat center center; background-size:cover; }
+</style>
+<body>
+<div class="scene-copy scene-chart">
+	<div class="header">
+		<a href="javascript:void(0)" class="eqf-wrong" coo-click="dialogClose"></a>
+		<h4>图表组件</h4>
+		<span></span>
+	</div>
+	<ul class="view">
+		<li>
+			<span><label for="type">图表类型</label></span><label><select id="type"><option value="bar">柱状图</option><option value="line">折线图</option><option value="pie">饼形图</option></select></label>
+		</li>
+		<li>
+			<span><label>图表数据</label><i class="tips" tips-cls="excel-tips" tips-follow="right" title="格式如下：<b class='example'></b>"></i><div><a href="javascript:void(0)" class="import">+导入Excel</a></div></span><div class="excel"></div>
+		</li>
+	</ul>
+	<div class="btns">
+		<a href="javascript:void(0)">确定</a>
+		<a href="javascript:void(0)">取消</a>
+	</div>
+</div>
+
+{include file="footer"}
+<script>
+let useThead = true; //表格使用thead
+if(window.self === window.top)$('.scene-chart .view li:eq(1)').height(500);
+let letter = ('ABCDEFGHIJKLMNOPQRSTUVWXYZ').split('');
+function setLetter(row){
+	let k = 0;
+	row.find('th, td').not(':eq(0)').each(function(i){
+		$(this).children('div').html((i<letter.length?'':letter[k])+letter[i-letter.length*parseInt(String(i/letter.length))]);
+		if(i>=letter.length)k = parseInt(String((i+1)/letter.length)) - 1;
+	});
+}
+function setNumber(side){
+	side.children('section').find('tbody').find('tr').each(function(i){
+		$(this).children('th, td').eq(0).children('div').html(i + 1);
+	});
+}
+$(function(){
+	//data格式: :2019年:2020年:2021年,食品:100:200:300,衣服:400:500:600,电器:700:800:900
+	let data = window.top.getChart(), type = data.type||'bar', cdata = data.data||'', res = [], maxRow = 0;
+	$('#type').selected(type);
+	if(cdata.length)res = $.excelTable(cdata);
+	$.each(res, function(i, row){
+		if(maxRow < row.length)maxRow = row.length;
+	});
+	if(maxRow < 26)maxRow = 26;
+
+	let html = '<table>'+(useThead?'<thead>':'')+'<tr><th><div><i title="交换行列" class="convert" tips-bgcolor="#444" tips-follow="top"></i></div></th>';
+	for(let i=0; i<letter.length; i++)html += '<th><div></div></th>';
+	html += '</tr>'+(useThead?'</thead><tbody>':'');
+	for(let i=0; i<maxRow; i++){
+		html += '<tr><td><div>'+(i+1)+'</div></td>';
+		for(let j=0; j<letter.length; j++)html += '<td><div></div></td>';
+		html += '</tr>';
+	}
+	html += (useThead?'</tbody>':'')+'</table>';
+
+	let excel = $('.excel').html(html);
+	setLetter(excel.find(useThead?'thead tr':'tr:eq(0)'));
+	excel.excelTable({
+		data: res,
+		row: 1,
+		column: 1,
+		newline: false,
+		//debug: true,
+		edit: function(td, input, key, row, column, maxRow, maxColumn){
+			let value = typeof input === 'string' ? input : input.val();
+			//res[key][row][column] = value;
+			if(res.length <= row){ //new row
+				for(let i=0; i<=row; i++){
+					if(typeof res[i] === 'undefined'){
+						res.push([]);
+						for(let j=0; j<=maxColumn; j++){
+							if(j === column)res[i].push(value);
+							else res[i].push('');
+						}
+					}else if(res[i].length <= maxColumn){
+						for(let j=0; j<=maxColumn; j++){
+							if(i === row && j === column)res[i].push(value);
+							else if(typeof res[i][j] === 'undefined')res[i].push('');
+						}
+					}
+				}
+			}else if(res[row].length <= column){ //new column
+				for(let i=0; i<res.length; i++){
+					for(let j=0; j<=column; j++){
+						if(i === row && j === column)res[i].push(value);
+						else if(typeof res[i][j] === 'undefined')res[i].push('');
+					}
+				}
+			}else{
+				res[row][column] = value;
+			}
+			setTimeout(() => this.children('section').scrollBarUpdate(), 300);
+		},
+		insertRow: function(){
+			setNumber(this);
+			setNumber(this.children('.excel-side'));
+		},
+		deleteRow: function(){
+			setNumber(this);
+			setNumber(this.children('.excel-side'));
+		},
+		insertColumn: function(){
+			$('.excel-head').each(function(){
+				setLetter($(this).find('tr:eq(0)'));
+			});
+		},
+		deleteColumn: function(){
+			$('.excel-head').each(function(){
+				setLetter($(this).find('tr:eq(0)'));
+			});
+		},
+		getData: function(data){
+			setTimeout(() => this.find('.excel-sheet').children('section').scrollBarUpdate(), 300);
+			res = data;
+		},
+		complete: function(){
+			this.find('.convert').tips();
+			setTimeout(() => this.children('section').scrollBar(), 300);
+			this.find('.excel-corner i').on('click', function(){
+				excel.excelTableConvert();
+				res = excel.excelTableGetData();
+			});
+		},
+		/*insertSheet: function(sheet, key, autoInsert){
+			setTimeout(() => sheet.children('section').scrollBar(), 300);
+			if(!autoInsert)res[key] = [];
+		},
+		deleteSheetBefore: function(){
+			return confirm('确定删除?');
+		},
+		deleteSheet: function(key){
+			delete res[key];
+		}*/
+	});
+
+	$('.import').ajaxupload({
+		url: '/scene/importExcel',
+		fileType: ['xls', 'xlsx'],
+		before: function(){
+			$.overload();
+		},
+		callback: function(json){
+			if(typeof(json.error) !== 'undefined' && typeof(json.msg) !== 'undefined' && Number(json.error) !== 0){
+				if(json.msg.length)$.overloadError(json.msg);
+				return;
+			}
+			$.overload(false);
+			$('.excel').excelTableSetData(json.data);
+		}
+	});
+
+	$('.btns a').click(function(){
+		switch($(this).index()){
+			case 0:
+				if(!res.length){ //!Object.keys(res).length
+					$.overloadError('请先填充数据');
+					return;
+				}
+				window.top.setChart({ ctype: $('#type').selected().val(), data: res, control:window.top.getControl() });
+				window.top.sceneSaved = false;
+				dialogClose();
+				break;
+			case 1:
+				dialogClose();
+				break;
+		}
+	});
+});
+</script>

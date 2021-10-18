@@ -1,0 +1,136 @@
+{include file="header"}
+<script type="text/javascript" src="/js/clipboard.js"></script>
+<div class="page-header">
+	<h6>
+		佛学管理
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			佛学列表
+		</small>
+		<div>
+			{if $is_buddha_add}<a href="/buddha/add" class="iframe-layer">添加佛学</a>{/if}
+		</div>
+	</h6>
+</div>
+
+<form class="form-inline" action="?" method="get">
+<div style="float:right;line-height:34px;">　{$last_count}</div>
+<div style="float:right;line-height:34px;">总点击 <strong style="color:red;">{$clicks}</strong>　昨点击 <strong style="color:blue;">{$yesterday_clicks}</strong>　今点击 <strong style="color:green;">{$today_clicks}</strong></div>
+<input type="text" placeholder="ID" name="id" value="{$id}" />
+<input type="text" class="input-medium" placeholder="关键词" name="keyword" value="{$keyword}" />
+<select name="category_id">
+	<option value="">分类</option>
+	{foreach $categories as $g}
+	<option value="{$g.id}" {if $g.id==$category_id}selected{/if}>{$g.name}</option>
+	{/foreach}
+</select>
+<button type="submit" class="btn btn-info btn-sm">
+	<i class="ace-icon fa fa-search bigger-110"></i>搜索
+</button>
+</form>
+
+<div class="table-content">
+<table id="simple-table" class="table table-striped table-bordered table-hover" muldelete="/buddha/multiple_delete">
+	<thead>
+		<tr>
+			<th width="100">ID</th>
+			<th>标题</th>
+			<th>类型</th>
+			<th>分类</th>
+			<th data-sortby="clicks">点击数</th>
+			<th>排序</th>
+			<th>状态</th>
+			<!--<th>点赞数</th>-->
+			<th>添加时间</th>
+			<th width="100">操作</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		{if count($rs)}
+		{foreach $rs as $row}
+		<tr>
+			<td>{$row.id}</td>
+			<td><a href="/buddha/edit?id={$row.id}" title="{$row.title}" class="iframe-layer">{$row.title}</a></td>
+			<td>{if $row.type==0}{:changeColor('#R图文#')}{else}{:changeColor('#B视频#')}{/if}</td>
+			<td>{$row.category_name}</td>
+			<td>{$row.clicks}</td>
+			<td>{$row.sort}</td>
+			<td><input type="checkbox" data-type="app" value="{$row.id}" coo-ajax="post" data-url="/buddha/status" data-data="{ id:{$row.id}, status:this.checked }" {if $row.status==1}checked{/if} /></td>
+			<!--<td>{$row.likes}</td>-->
+			<td>{:date('Y-m-d',$row.add_time)}</td>
+			<td>
+				<input type="text" id="url{$row.id}" value="/pages/index/detail?id={$row.id}" style="position:absolute;left:-9999px;top:-9999px;" readonly />
+				<a class="copy" data-clipboard-action="copy" data-clipboard-target="#url{$row.id}" href="javascript:void(0)">
+					<button type="button" class="btn btn-xs btn-warning">
+					<i class="ace-icon fa fa-copy bigger-120"></i>
+				</button>
+				</a>
+				<a href="/buddha/edit?id={$row.id}">
+					<button type="button" class="btn btn-xs btn-info">
+					<i class="ace-icon fa fa-pencil bigger-120"></i>
+				</button>
+				</a>
+				<a href="/buddha/delete?id={$row.id}" class="delete">
+					<button type="button" class="btn btn-xs btn-danger">
+					<i class="ace-icon far fa-trash-alt bigger-120"></i>
+				</button>
+				</a>
+			</td>
+		</tr>
+		{/foreach}
+		{literal}
+		<tr class="template">
+			<td>{$row.id}</td>
+			<td><a href="/buddha/edit&id={$row.id}" title="{$row.title}" class="iframe-layer">{$row.title}</a></td>
+			<td>{if $row.type==0}{changeColor('#R图文#')}{else}{changeColor('#B视频#')}{/if}</td>
+			<td>{$row.category_name}</td>
+			<td>{$row.clicks}</td>
+			<td>{$row.sort}</td>
+			<td><input type="checkbox" data-type="app" value="{$row.id}" coo-ajax="post" data-url="/buddha/status" data-template-data-data="setStatusData" data-template-attr="{if $row.status==1}checked{/if}" /></td>
+			<td>{Number($row.add_time).formatDate('yyyy-mm-dd')}</td>
+			<td>
+				<input type="text" id="url{$row.id}" value="/pages/index/detail?id={$row.id}" style="position:absolute;left:-9999px;top:-9999px;" readonly />
+				<a class="copy" data-clipboard-action="copy" data-clipboard-target="#url{$row.id}" href="javascript:void(0)">
+					<button type="button" class="btn btn-xs btn-warning">
+					<i class="ace-icon fa fa-copy bigger-120"></i>
+				</button>
+				</a>
+				<a href="/buddha/edit?id={$row.id}">
+					<button type="button" class="btn btn-xs btn-info">
+					<i class="ace-icon fa fa-pencil bigger-120"></i>
+				</button>
+				</a>
+				<a href="/buddha/delete?id={$row.id}" class="delete">
+					<button type="button" class="btn btn-xs btn-danger">
+					<i class="ace-icon far fa-trash-alt bigger-120"></i>
+				</button>
+				</a>
+			</td>
+		</tr>
+		{/literal}
+		{else}
+		<tr bgcolor="white"><td colspan="13" height="50">暂无记录</td></tr>
+		{/if}
+
+	</tbody>
+</table>
+</div>
+<div class="mypage">
+	{$rs|raw}
+</div>
+{include file="footer"}
+<script>
+function setStatusData(){
+	return '{ id:'+this.val()+', status:this.checked }';
+}
+$(function(){
+	var clipboard = new ClipboardJS('a.copy');
+	clipboard.on('success', function(e) {
+		$.overloadSuccess('复制成功');
+	});
+	clipboard.on('error', function(e) {
+		//alert($.debug(e));
+	});
+});
+</script>

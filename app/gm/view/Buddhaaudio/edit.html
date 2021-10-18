@@ -1,0 +1,158 @@
+{include file="header"}
+<script type="text/javascript" src="/js/clipboard.js"></script>
+<style>
+.col-splitfile-copy, .col-splitfile-copy:hover{ display:block; text-decoration:none; float:right; width:100px; height:34px; line-height:34px; text-align:center; font-size:12px; color:#fff; background:#00a0e9; border-radius:3px; }
+.reply-list div{ height:44px; line-height:34px; }
+</style>
+<div class="page-header">
+	<h6>
+		佛音管理
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			{if $row.id}编辑{else}添加{/if}佛音
+		</small>
+	</h6>
+</div>
+<div class="row">
+<div class="col-xs-12">
+	<form class="form-horizontal" role="form" method="post" action="/buddhaaudio/edit" enctype="multipart/form-data">
+		<input type="hidden" name="id" id="id" value="{$row.id}" />
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="title">标题</label>
+			<div class="col-sm-10">
+				<input type="text" id="title" name="title" value="{$row.title}" class="col-xs-6" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="category_id">分类</label>
+			<div class="col-sm-10">
+				<select name="category_id" id="category_id" style="min-width:120px;">
+					{foreach $categories as $g}
+					<option value="{$g.id}" {if $g.id==$row.category_id}selected{/if}>{$g.name}</option>
+					{/foreach}
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="pic">主图</label>
+			<div class="col-sm-10">
+				<input type="hidden" name="origin_pic" id="origin_pic" value="{$row.pic}" />
+				<div class="col-file col-xs-3"><input type="file" id="pic" name="pic" value="" /></div>
+				{if $row.pic}<a href="{$row.pic}" target="_blank"><img src="{$row.pic}" height="34" onerror="this.src='/images/nopic.png'" /></a>{/if}
+			</div>
+		</div>
+		<!--<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="type">类型</label>
+			<div class="col-sm-10">
+				<select name="type" id="type">
+					<option value="0" {if $row.type==0}selected{/if}>图文</option>
+					<option value="5" {if $row.type==5}selected{/if}>视频</option>
+				</select>
+			</div>
+		</div>-->
+		<div class="form-block data-type hidden">
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right" for="music">音乐</label>
+				<div class="col-sm-10">
+					<input type="hidden" name="origin_music" id="origin_music" value="{$row.music}" />
+					<div class="col-file col-xs-3"><input type="file" id="music" name="music" value="" /></div>
+					{if $row.music}<div class="audio" style="margin-top:15px;"><audio src="{$row.music}" controls></audio></div>{/if}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right" for="content">
+					内容
+					<div class="clear"></div>
+					<div class="checkbox not-mobile" >
+						<label><input type="checkbox" class="premobile ace" /> <span class="lbl">预览</span></label>
+					</div>
+				</label>
+				<div class="col-sm-10">
+					<textarea class="ckeditor_custom" name="content" id="content" rows="20">{$row.content|raw}</textarea>
+				</div>
+			</div>
+		</div>
+		<div class="form-block data-type hidden"></div>
+		<div class="form-block data-type hidden"></div>
+		<div class="form-block data-type hidden"></div>
+		<div class="form-block data-type hidden"></div>
+		<div class="form-block data-type hidden">
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right" for="url">视频</label>
+				<div class="col-sm-10">
+					<div style="width:415px;">
+						<a class="col-splitfile-copy" href="javascript:void(0)" data-clipboard-action="copy" data-clipboard-target="#url">复制视频链接</a>
+						<div class="col-splitfile" data-url="/video/upload_video" data-fileType="mp4"><input type="text" id="url" name="url" value="{$row.url}" /></div>
+						{if $row.url}<div style="clear:both;padding-top:15px;"><video src="{$row.url}" controls style="width:220px;height:220px;"></video></div>{/if}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="sort">排序</label>
+			<div class="col-sm-10">
+				<input type="text" name="sort" id="sort" value="{$row.sort}" class="col-xs-2" />
+				<span class="some-line">数字越小，排在越前</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="status">状态</label>
+			<div class="col-sm-10">
+				<div class="radio">
+					<label>
+						<input type="radio" name="status" value="1" class="ace" {if $row.status==1}checked{/if} />
+						<span class="lbl">显示</span></label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type="radio" name="status" value="0" class="ace" {if $row.status==0}checked{/if} />
+						<span class="lbl">隐藏</span></label>
+				</div>
+			</div>
+		</div>
+
+		<div class="clearfix form-actions">
+			<div class="col-md-offset-3 col-md-9">
+				<button class="btn btn-info" type="submit">
+					<i class="ace-icon fa fa-check bigger-110"></i>
+					提交
+				</button>
+
+				&nbsp; &nbsp; &nbsp;
+				<button class="btn" type="reset">
+					<i class="ace-icon fa fa-undo bigger-110"></i>
+					重置
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+{include file="footer"}
+<script>
+function showType(index){
+	index = Number(index);
+	$('.data-type').addClass('hidden').eq(index).removeClass('hidden');
+}
+$(function(){
+	ckeditorUploadPath('content', 'buddha');
+	var clipboard = new ClipboardJS('.col-splitfile-copy');
+	clipboard.on('success', function(e) {
+		$.overloadSuccess('复制成功');
+	});
+	clipboard.on('error', function(e) {
+		//alert($.debug(e));
+	});
+	showType('{$row.type}');
+	$('#type').on('change', function(){
+		showType($(this).selected().val());
+	});
+	window.top.selectMusic = function(name, url){
+		$('#music_name').val(name);
+		$('#music').val(url).prev().html('<h5><font color="blue">'+name+'</font></h5>');
+		$('#music').parent().find('.audio').remove();
+		$('#music').parent().append('<div class="audio" style="margin-top:15px;"><audio src="'+url+'" controls></audio></div>');
+		$.iframeLayer(false);
+	};
+});
+</script>

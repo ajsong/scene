@@ -1,0 +1,11 @@
+@charset "utf-8";
+/* CSS Document */
+
+.scrollbar-bar{position:absolute; z-index:99; right:2px; bottom:2px; opacity:0; -webkit-transition:opacity 0.12s ease-out; transition:opacity 0.12s ease-out;}
+.scrollbar-bar.scrollbar-bar-draging{opacity:1;}
+.scrollbar-bar.scrollbar-horizontal{left:2px; height:8px;}
+.scrollbar-bar.scrollbar-vertical{top:2px; width:8px;}
+.scrollbar-bar .scrollbar-thumb{border-radius:4px; position:absolute; top:0; left:0; width:0; height:0; background-color:rgba(144,147,153,0.3); -webkit-transition:background-color 0.3s ease-out; transition:background-color 0.3s ease-out;}
+.scrollbar-horizontal .scrollbar-thumb{height:100%;}
+.scrollbar-vertical .scrollbar-thumb{width:100%;}
+.scrollbar-bar .scrollbar-thumb:hover{background-color:rgba(144,147,153,0.5);}

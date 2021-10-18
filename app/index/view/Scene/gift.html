@@ -1,0 +1,38 @@
+{include file="header"}
+<body>
+<div class="scene-copy">
+	<div class="header">
+		<a href="javascript:void(0)" class="eqf-wrong" coo-click="dialogClose"></a>
+		<h4>场景转赠</h4>
+	</div>
+	<ul class="view">
+		<li><span>接收账号</span><input type="text" id="username" placeholder="受赠方的登录账号" /></li>
+	</ul>
+	<div class="tips"><span class="red">*</span> 转赠后将不再拥有此场景</div>
+	<div class="btns">
+		<a href="javascript:void(0)">确定</a>
+		<a href="javascript:void(0)">取消</a>
+	</div>
+</div>
+
+{include file="footer"}
+<script>
+$(function(){
+	$('.btns a').click(function(){
+		switch($(this).index()){
+			case 0:
+				let username = $('#username');
+				if(!username.val().length){
+					username.addClass('error');
+					return;
+				}
+				window.top.sceneGift('{$id}', username.val());
+				dialogClose();
+				break;
+			case 1:
+				dialogClose();
+				break;
+		}
+	});
+});
+</script>

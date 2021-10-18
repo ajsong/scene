@@ -1,0 +1,76 @@
+<wxs module="helper" src="../../common/helper.wxs"></wxs>
+<import src="../../common/template.wxml" />
+<template is="overload" data="{{overload}}" />
+<template is="dialogView" data="{{dialogView}}" />
+<view class="indexAddMy" wx:if="{{addMy==1}}" bindtap="handleAddMy" style="{{addMyBgColor?'background:'+addMyBgColor:''}}">
+	<view class="c"></view>
+	点击<view class="m"></view>添加到我的小程序，更方便<view class="z"></view>
+</view>
+
+<view class="index {{(listType.length && listType!='small' && listType!='shuffle') ? 'gr' : ''}}" style="{{bgcolor.length?'background:'+bgcolor:''}}">
+	<view class="header ge-bottom ge-light">
+		<template is="switchView" data="{{switchView}}" />
+	</view>
+
+    <template is="swiper" data="{{flashes}}" />
+
+	<view class="list">
+        <block wx:if="{{data.length>0}}">
+			<view class="li li{{item.type}} {{(!listType.length || listType=='small' || listType=='shuffle') ? 'ge-bottom ge-light' : ''}} {{listType}}" wx:for="{{data}}" wx:key="index">
+				<block wx:if="{{item.type==0}}">
+				<view class="type type{{item.type}} style{{item.style}} {{item.pic.length?'':'nonpic'}}" data-id="{{item.id}}" data-index="{{index}}" bindtap="handleShowDetail">
+					<block wx:if="{{item.style==0}}">
+					<view wx:if="{{item.pic.length}}" class="pic" style="background-image:url({{item.pic}});">
+						<text wx:if="{{listType=='big'}}">{{item.category_name}}</text>
+					</view>
+					<text class="span">{{item.title}}</text>
+					<view class="bottom">
+						{{item.add_time}}
+						<view class="div"><view class="i look"></view> {{item.clicks}}</view>
+						<view class="div"><view class="i share"></view> {{item.likes}}</view>
+					</view>
+					</block>
+					<block wx:else>
+					<text class="span">{{item.title}}</text>
+					<view class="pics">
+						<view wx:if="{{item.pic.length}}" style="background-image:url({{item.pic}});"></view>
+						<view wx:if="{{item.pic2.length}}" style="background-image:url({{item.pic2}});"></view>
+						<view wx:if="{{item.pic3.length}}" style="background-image:url({{item.pic3}});"></view>
+					</view>
+					<view class="bottom">
+						{{item.add_time}}
+						<view class="div"><view class="i look"></view> {{item.clicks}}</view>
+						<view class="div"><view class="i share"></view> {{item.likes}}</view>
+					</view>
+					</block>
+				</view>
+				</block>
+				<block wx:elif="{{item.type==1}}">
+				<view class="type type{{item.type}}" data-url="{{item.url}}" bindtap="handleShowAd" style="background-image:url({{item.pic}});"></view>
+				</block>
+				<block wx:elif="{{item.type==3}}">
+				<ad unit-id="{{item.adunit}}"></ad>
+				</block>
+				<block wx:elif="{{item.type==4}}">
+				<ad unit-id="{{item.adunit}}" ad-type="video" ad-theme="white"></ad>
+				</block>
+				<block wx:elif="{{item.type==5}}">
+				<view class="type type{{item.type}}">
+					<view class="pic" style="background-image:url({{item.pic}});" data-id="{{item.id}}" data-index="{{index}}" bindtap="handleShowDetail">
+						<text class="span">{{item.title}}</text>
+					</view>
+					<view class="bottom">
+						<text>{{item.clicks}}</text>
+						<view bindtap="handleLike" data-index="{{index}}">{{item.likes}}</view>
+					</view>
+				</view>
+				</block>
+				<text class="clear"></text>
+			</view>
+            <view class="loadmore {{loadmore}}"></view>
+        </block>
+        <block wx:else>
+            <view class="norecord">没有任何记录</view>
+        </block>
+	</view>
+</view>

@@ -1,0 +1,81 @@
+{include file="header"}
+<link type="text/css" href="/css/gm/css/jquery.jsonview.min.css" rel="stylesheet" />
+<script type="text/javascript" src="/css/gm/js/jquery.jsonview.min.js"></script>
+<style>
+.data-jsonview{ position:absolute; z-index:9999; left:0; top:0; right:0; bottom:0; margin:0!important; background:#fff; }
+.data-jsonview > div{ position:absolute; z-index:99; left:0; top:0; right:0; bottom:0; padding:15px; overflow:auto; }
+.data-jsonview > a{ display:block; position:absolute; z-index:100; top:10px; right:10px; text-decoration:none; width:20px; height:20px; background:url("data:image/svg+xml;charset=utf-8,%3Csvg%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2064%2064%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%3Cg%20class%3D%22transform-group%22%3E%3Cg%20transform%3D%22scale(0.0625%2C%200.0625)%22%3E%3Cpath%20d%3D%22M557.312%20513.248l265.28-263.904c12.544-12.48%2012.608-32.704%200.128-45.248-12.512-12.576-32.704-12.608-45.248-0.128l-265.344%20263.936-263.04-263.84C236.64%20191.584%20216.384%20191.52%20203.84%20204%20191.328%20216.48%20191.296%20236.736%20203.776%20249.28l262.976%20263.776L201.6%20776.8c-12.544%2012.48-12.608%2032.704-0.128%2045.248%206.24%206.272%2014.464%209.44%2022.688%209.44%208.16%200%2016.32-3.104%2022.56-9.312l265.216-263.808%20265.44%20266.24c6.24%206.272%2014.432%209.408%2022.656%209.408%208.192%200%2016.352-3.136%2022.592-9.344%2012.512-12.48%2012.544-32.704%200.064-45.248L557.312%20513.248z%22%20fill%3D%22%23000000%22%3E%3C%2Fpath%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E") no-repeat center center; background-size:cover; }
+</style>
+<div class="page-header">
+	<h6>
+		系统设置
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			操作日志
+		</small>
+	</h6>
+</div>
+
+<form class="form-inline" action="?" method="get">
+{if $is_op}
+<select name="type">
+<option value="">位置类型</option>
+<option value="0" {if $type=='0'}selected{/if}>前端</option>
+<option value="1" {if $type=='1'}selected{/if}>客户后台</option>
+<option value="2" {if $type=='2'}selected{/if}>代理后台</option>
+<option value="3" {if $type=='3'}selected{/if}>总后台</option>
+</select>
+{/if}
+<input type="text" class="input-medium" placeholder="操作内容" name="content" value="{$content}" />
+<input type="text" class="input-medium" placeholder="IP" name="ip" value="{$ip}" />
+<button type="submit" class="btn btn-info btn-sm">
+	<i class="ace-icon fa fa-search bigger-110"></i>搜索
+</button>
+</form>
+
+<div class="table-content">
+<table id="simple-table" class="table table-striped table-bordered table-hover">
+	<thead>
+		<tr>
+			<!--<th>ID</th>-->
+			<th>操作内容</th>
+			<th>IP</th>
+			<th>操作时间</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		{if count($rs)}
+		{foreach $rs as $row}
+		<tr>
+			<!--<td>{$row.id}</td>-->
+			<td><div class="limit" style="max-width:1000px;max-height:200px;">{$row.content|raw}</div></td>
+			<td>{$row.ip}</td>
+			<td>{:date('Y-m-d H:i:s', $row.add_time)}</td>
+		</tr>
+		{/foreach}
+		{else}
+		<tr bgcolor="white"><td colspan="13" height="50">暂无记录</td></tr>
+		{/if}
+
+	</tbody>
+</table>
+</div>
+<div class="mypage">
+	{$viewpage|raw} {$rs|raw}
+</div>
+
+{include file="footer"}
+
+<div class="data-jsonview hidden"><a href="javascript:void(0)"></a><div></div></div>
+<script>
+$(function(){
+	$('.data-view').on('click', function(){
+		let jsonview = $('.data-jsonview').removeClass('hidden');
+		jsonview.children('div').scrollTop(0).JSONView($(this).next().val());
+		jsonview.children('a').on('click', function(){
+			jsonview.addClass('hidden');
+		});
+	});
+});
+</script>

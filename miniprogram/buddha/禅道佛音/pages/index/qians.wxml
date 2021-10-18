@@ -1,0 +1,28 @@
+<wxs module="helper" src="../../common/helper.wxs"></wxs>
+<import src="../../common/template.wxml" />
+<template is="overload" data="{{overload}}" />
+<template is="dialogView" data="{{dialogView}}" />
+
+<text bindtap="handleBack" style="top:{{backBtnMargin}}"></text>
+
+<view class="home" style="background-image:url({{res.bg}});">
+	<view class="huan" style="background-image:url({{res.huan}});"></view>
+	<view class="gylay" style="background-image:url({{res.gylay}});"></view>
+	<view class="qian {{qianClass}}" style="background-image:url({{res.qian}});" bindtap="handleStart"></view>
+	<view class="font" style="background-image:url({{res.font}});" bindtap="handleStart"></view>
+</view>
+
+<view class="tips-dialog" wx:if="{{tipsShown==1}}">
+	<view class="weui-mask"></view>
+	<view class="weui-dialog" style="background-image:url({{res.tips}});" bindtap="handleTips">
+		<view class="weui-dialog__bd">
+			<view style="font-size:37rpx;color:#b30a0a;margin-bottom:23rpx;">温馨提示</view>
+			<view style="text-align:left;font-size:{{fontSize}};color:#b30a0a;">观音灵签是以大慈大悲救苦救难观世音菩萨的大悲愿力，为众生消灾祈福解难，有求必应。\n\n抽签前注意事项：\n1、观音灵签抽签前要专心一致，秉除杂念静心思考二分钟，默默许愿起势，今后要行善积德。\n2、抽签前双手合十，默念“救苦救难观世音菩萨”三遍。默念自己名字，出生时辰，年龄地址，请求指点。</view>
+		</view>
+		<view class="weui-dialog__ft">
+			<view class="weui-dialog__btn weui-dialog__btn_primary">点击抽签</view>
+		</view>
+	</view>
+</view>
+
+<view wx:if="{{addMy}}" class="addMy" style="top:{{addMyMargin}};" bindtap="handleAddMy">添加到我的小程序</view>

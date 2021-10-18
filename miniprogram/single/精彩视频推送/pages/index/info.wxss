@@ -1,0 +1,30 @@
+.info-index .header{position:relative; width:100%; height:257rpx; background:url(https://img.meke8.com/uploads/article/2020/08/27/20082711015078509.jpg) no-repeat center center; background-size:cover;}
+.info-index .header .shadow{position:absolute; left:0; right:0; top:0; bottom:0; z-index:1; padding:60rpx 46rpx 0 0; font-size:46rpx; color:#fff; font-weight:700; text-align:right; background:rgba(0, 3, 6, 0.3);}
+.info-index .header .shadow text{display:block; font-size:37rpx; color:#F7BD18;}
+
+.info-index .ul .li{box-sizing:border-box; text-align:left; font-size:46rpx; padding:70rpx 46rpx;}
+.info-index .ul .li:nth-child(2n){background:#F6F7F8;}
+.info-index .ul .li text{display:block; font-size:37rpx; color:#00818a; font-weight:700;}
+.info-index .ul .li label{font-weight:700;}
+.info-index .ul .li > view{font-size:37rpx; color:#777; margin-top:46rpx;}
+.info-index .ul .li .grid{height:auto; overflow:hidden; margin-bottom:-46rpx;}
+.info-index .ul .li .grid view{float:left; margin-right:46rpx; margin-bottom:46rpx; width:calc((100% - 46rpx) / 2); box-sizing:border-box; background:#fff; border-radius:16rpx; border:2rpx solid #DFDEED; text-align:left; font-size:37rpx; padding:46rpx;}
+.info-index .ul .li .grid2 view{border:none; margin-bottom:0; padding:46rpx 0;}
+.info-index .ul .li .grid view:nth-child(2n){margin-right:0;}
+.info-index .ul .li .grid view text{color:#171C36; font-weight:700;}
+
+.info-index .ul .email{position:relative; width:100%; height:796rpx; font-weight:400; background:url(https://img.shuyi88.cn/uploads/article/2020/08/27/20082714461812183.jpg) no-repeat center center; background-attachment:fixed; background-size:cover;}
+.info-index .ul .email .shadow{position:absolute; left:0; right:0; top:0; bottom:0; z-index:1; padding:70rpx 46rpx; font-size:37rpx; color:#fff; font-weight:700; text-align:left; background:rgba(0, 3, 6, 0.5);}
+.info-index .ul .email .shadow > text{display:block;}
+.info-index .ul .email .shadow > label{display:block; font-size:46rpx; font-weight:400;}
+.info-index .ul .email .shadow > label text{font-weight:700;}
+.info-index .ul .email .shadow > view{height:117rpx; box-sizing:border-box; background:#fff; padding:0 117rpx 0 35rpx; border-radius:16rpx; overflow:hidden;}
+.info-index .ul .email .shadow > view text{display:block; float:right; width:117rpx; height:100%; margin-right:-117rpx; background:#F7BD18 url("data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%201024%201024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M860.5%20191.78H163.19c-55.06%200-99.85%2049.97-99.85%20111.39v481.08c0%2061.42%2044.79%20111.39%2099.85%20111.39H860.5c55.06%200%2099.85-49.97%2099.85-111.39V303.17c0-61.42-44.79-111.39-99.85-111.39z%20m-27.92%2074.26l-320.1%20242.69-321.15-242.69h641.25z%20m27.92%20555.34H163.19c-18.35%200-33.28-16.66-33.28-37.13V309.31l347.49%20262.6c10.66%208.06%2022.87%2012.09%2035.09%2012.09%2012.24%200%2024.49-4.05%2035.17-12.15L893.8%20309.42v474.83c-0.01%2020.47-14.95%2037.13-33.3%2037.13z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E") no-repeat center center; background-size:56rpx auto;}
+.info-index .ul .email .shadow > view input{width:100%; height:100%; color:#171C36; border:none; background-color:transparent;}
+.info-index .ul .email .shadow > text:nth-child(3){margin-top:46rpx;}
+.info-index .ul .email .shadow > view:nth-child(4){margin-top:46rpx;}
+.info-index .ul .email .shadow > text:nth-child(5){margin-top:46rpx;}
+
+.info-index .footer{background:#101324; box-sizing:border-box; text-align:left; font-size:37rpx; padding:46rpx; color:#777;}
+.info-index .footer text{display:block; font-size:46rpx; color:#fff;}
+.info-index .footer label{font-weight:700;}

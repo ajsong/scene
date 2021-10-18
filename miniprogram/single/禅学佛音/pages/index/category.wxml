@@ -1,0 +1,29 @@
+<wxs module="helper" src="../../common/helper.wxs"></wxs>
+<import src="../../common/template.wxml" />
+<template is="overload" data="{{overload}}" />
+<template is="dialogView" data="{{dialogView}}" />
+<template is="shareView" data="{{shareView}}" />
+<template is="loginAuth" data="{{loginAuth}}" />
+
+<view class="indexAddMy" wx:if="{{addMy==1}}" bindtap="handleAddMy">
+	<view class="c"></view>
+	点击<view class="m"></view>添加到我的小程序，更方便<view class="z"></view>
+</view>
+
+<view class="box-placeholder" style="background-image:url({{bgimg}});"></view>
+
+<view class="box {{review==1?'review':''}}" style="background-image:url({{bg}});{{backgroundPosition}}">
+	<block wx:if="{{data}}">
+		<view class="bigger">
+			<text data-url="/pages/index/index?category_id={{data[1].id}}" bindtap="handleShowDetail">{{data[1].name}}</text>
+			<text data-url="/pages/index/index?category_id={{data[2].id}}" bindtap="handleShowDetail">{{data[2].name}}</text>
+			<text data-url="/pages/index/index?category_id={{data[3].id}}" bindtap="handleShowDetail">{{data[3].name}}</text>
+		</view>
+		<view class="smaller">
+			<text data-url="/pages/index/index?category_id={{data[0].id}}" bindtap="handleShowDetail">{{data[0].name}}</text>
+		</view>
+	</block>
+	<navigator url="/pages/index/qians" hover-class="none">观音灵签</navigator>
+</view>
+
+<view wx:if="{{audio}}" class="music {{musicPosition}} {{isPlaying}}" bindtap="handleMusic"></view>

@@ -1,0 +1,44 @@
+{include file="header"}
+<body>
+<div class="scene-copy scene-video">
+	<div class="header">
+		<a href="javascript:void(0)" class="eqf-wrong" coo-click="dialogClose"></a>
+		<h4>视频组件</h4>
+		<span>把视频通用代码复制到框中即可使用</span>
+	</div>
+	<ul class="view">
+		<li>视频通用代码：<a href="/scene/help" target="_blank">什么是视频通用代码？</a></li>
+		<li class="textarea"><textarea placeholder="把视频的通用代码粘贴到这里即可。"></textarea></li>
+		<li>支持的视频：<a href="https://www.youku.com" target="_blank">优酷网</a>、<a href="https://v.qq.com" target="_blank">腾讯视频</a></li>
+	</ul>
+	<div class="btns">
+		<a href="javascript:void(0)">确定</a>
+		<a href="javascript:void(0)">取消</a>
+	</div>
+</div>
+
+{include file="footer"}
+<script>
+$(function(){
+	let data = window.top.getVideo();
+	$('textarea').val(data);
+	$('.btns a').click(function(){
+		switch($(this).index()){
+			case 0:
+				let textarea = $('textarea'), value = textarea.removeClass('error').val();
+				if(!value.length || value.indexOf('</iframe>')===-1){
+					textarea.addClass('error');
+					return;
+				}
+				let obj = { code:value, control:window.top.getControl() };
+				window.top.setVideo(obj);
+				window.top.sceneSaved = false;
+				dialogClose();
+				break;
+			case 1:
+				dialogClose();
+				break;
+		}
+	});
+});
+</script>

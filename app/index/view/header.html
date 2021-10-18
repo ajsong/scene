@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+{if isset($cache_control)}<meta http-equiv="cache-control" content="max-age={$cache_control}" />{/if}
+{if isset($cache_expires)}<meta http-equiv="Expires" content="{$cache_expires}" />{/if}
+<meta name="viewport" content="width=320,minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0,user-scalable=no,viewport-fit=cover" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="format-detection" content="email=no" />
+<meta name="format-detection" content="address=no" />
+<title>{$WEB_TITLE}</title>
+{if isset($WEB_DESCRIPTION)}<meta name="description" content="{$WEB_DESCRIPTION}"/>{/if}
+{if isset($WEB_KEYWORDS)}<meta name="keywords" content="{$WEB_KEYWORDS}" />{/if}
+<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="/js/coo.js?import=coo.pc,coo.mobile"></script>
+{if isset($app) && $app=='wap'}
+<link type="text/css" href="/css/mobile.css" rel="stylesheet" />
+<script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript" src="/js/mobile.js"></script>
+<script type="text/javascript" src="/js/scene.js"></script>
+<script type="text/javascript" src="/js/inobounce.js"></script>
+<link type="text/css" href="/css/animation.css" rel="stylesheet" />
+<script type="text/javascript" src="/js/echarts.min.js"></script>
+{else}
+<link type="text/css" href="/css/fonts/eqf.css" rel="stylesheet" />
+<link type="text/css" href="/css/style.css" rel="stylesheet" />
+<script type="text/javascript" src="/js/common.js"></script>
+{/if}
+</head>
+

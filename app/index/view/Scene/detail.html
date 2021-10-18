@@ -1,0 +1,64 @@
+{include file="header"}
+<script type="text/javascript" src="/js/clipboard.js"></script>
+<script type="text/javascript" src="/js/jquery.qrcode.js"></script>
+<body>
+<div class="scene-detail">
+	<div class="info">
+		<div class="return"><a href="/" class="eqf-left"></a></div>
+		<a href="/scene/{$data.id}#showSet"><em class="eqf-scene-setting"></em> 设置场景</a>
+		<a href="/scene/{$data.id}"><em class="eqf-write"></em> 编辑场景</a>
+		<a href="/v/{$data.code}" target="_blank"><em class="eqf-eye"></em> 预览场景</a>
+		<div class="cover" style="{if strlen($data.cover)}background-image:url({$data.cover});{/if}"></div>
+		<div class="title">{$data.title}</div>
+		<span>{if strlen($data.memo)}{$data.memo}{else}未添加描述{/if}</span>
+		<span>创建时间：{:date('Y年m月d日',$data.add_time)}　　最后更新：{:date('Y-m-d H:i',$data.edit_time)}</span>
+		<span>发布状态：{if $data.is_publish==0}未发布{else}已发布{/if}{if $data.is_publish==1}　　场景状态：<label class="checkbox-app"><input type="checkbox" name="app" coo-change="setStatus" {if $data.status==1}checked{/if} /><div></div></label>{/if}</span>
+	</div>
+	<div class="section">
+		<div class="title">社交渠道分享</div>
+		<div class="qrcode">
+			<div>
+				<span>下载二维码</span>
+				<button size="256">小 (256px)</button>
+				<button size="512">中 (512px)</button>
+				<button size="1024">大 (1024px)</button>
+			</div>
+		</div>
+		<div class="tips">扫一扫分享到微信</div>
+		<div class="url-info">
+			复制链接分享
+			<span>
+				<input type="text" value="{$data.url}" id="url" readonly />
+				<button data-clipboard-action="copy" data-clipboard-target="#url"><em class="eqf-scene-copy"></em> 复制链接</button>
+			</span>
+		</div>
+	</div>
+</div>
+
+{include file="footer"}
+<script>
+$(function(){
+	var clipboard = new ClipboardJS('.url-info button');
+	clipboard.on('success', function(e) {
+		$.overloadSuccess('复制成功');
+	});
+	clipboard.on('error', function(e) {
+		//alert($.debug(e));
+	});
+	$('.qrcode').qrcode({
+		width: 160,
+		height: 160,
+		logo: '{$data.cover}',
+		text: '{$data.url}'
+	}).find('button').click(function(){
+		var size = $(this).attr('size');
+		$(this).qrcode({
+			render: 'output',
+			width: size,
+			height: size,
+			logo: '{$data.cover}',
+			text: '{$data.url}'
+		});
+	});
+});
+</script>

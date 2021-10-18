@@ -1,0 +1,19 @@
+{include file="header"}
+
+<div class="home-name">
+	<div>{$WEB_NAME}</div>
+	{if $defines.WX_LOGIN_GM==1 && $admin.openid==''}<a href="/core/weixin_auth?active=1">绑定微信</a>{/if}
+</div>
+<div class="col-overview">
+	上次登录IP：{$admin.last_ip}<br />
+	上次登录时间：{:date('Y-m-d H:i:s', $admin.last_time)}
+</div>
+{if $has_order && $check_order_permission}{
+<ul class="col-overview home-overview">
+	<li><a href="/order/index?status=1">{$data.order_status1}</a><span>待发货订单</span></li>
+	<li><a href="/order/index">{$data.order_yesterday}</a><span>昨日订单</span></li>
+	<li><a href="/order/index"><i>￥</i>{:number_format($data.order_yesterday_money,2,'.','')}</a><span>昨日交易额</span></li>
+	<li><a href="/order/index">{$data.order_pay}</a><span>已支付订单</span></li>
+</ul>
+{/if}
+{include file="footer"}

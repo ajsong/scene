@@ -1,0 +1,480 @@
+{include file="header"}
+<style>
+.tips-list a font{ color:#38f; }
+</style>
+<div class="page-header">
+	<h6>
+		微信管理
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			小程序管理
+		</small>
+		{if $is_wechat_setting}
+		<div>
+			{if $admin.id==1}
+			<a class="sync-article btn-danger" href="javascript:void(0)">同步图文代码</a>
+			<!--<a class="sync-video btn-info" href="javascript:void(0)">同步视频代码</a>
+			<a class="sync-blessing btn-success" href="javascript:void(0)">同步祝福代码</a>
+			<a class="sync-buddha btn-purple" href="javascript:void(0)">同步佛学代码</a>-->
+			<!--<a class="tips" href="javascript:void(0)" tips-follow="auto" tips-list="[{foreach $component as $g}{ text:通过{$g.name}注册{if $g.fast_count>0} ({$g.fast_count}){/if}, attr:'data-id=`{$g.id}`', callback:'miniprogram_create' },{/foreach}]">快速注册小程序</a>-->
+			{/if}
+			<a class="tips" href="javascript:void(0)" tips-follow="auto" tips-list="[{foreach $component as $g}{ text:绑定到{$g.name} ({$g.miniprogram_count}), attr:'data-appid=`{$g.appid}`', callback:'component_auth' },{/foreach}]">绑定小程序</a>
+		</div>
+		{/if}
+	</h6>
+</div>
+
+<form class="form-inline" action="?" method="get">
+{if $is_wechat_setting}
+<button type="button" class="btn btn-grey btn-sm tips" style="float:right;margin-right:0;" tips-follow="bottom" tips-list="[{foreach $component as $g}{ text:{$g.name}的额度, cls:'queryquota', attr:'data-name=`{$g.name}` data-component_id=`{$g.id}`' },{/foreach}]">提审限额</button>
+{if $admin.id==1}
+<button type="button" class="btn btn-default btn-sm tips" style="float:right;" tips-follow="bottom" tips-list="[{foreach $component as $g}{ text:{$g.name}清零, cls:'clearquota', attr:'data-component_id=`{$g.id}` data-component_id=`{$g.id}`' },{/foreach}]">次数清零</button>
+<!--<button type="button" class="btn btn-purple btn-sm tips" style="float:right;" tips-follow="bottom" tips-list="[{foreach $component as $g}{ text:提交到{$g.name}{if $g.buddha_count>0} <font class=`fa fa-check`></font>{/if}, cls:'template', attr:'data-type=`3` data-component_id=`{$g.id}`' },{/foreach}]">佛学模板</button>
+<button type="button" class="btn btn-success btn-sm tips" style="float:right;" tips-follow="bottom" tips-list="[{foreach $component as $g}{ text:提交到{$g.name}{if $g.blessing_count>0} <font class=`fa fa-check`></font>{/if}, cls:'template', attr:'data-type=`2` data-component_id=`{$g.id}`' },{/foreach}]">祝福模板</button>
+<button type="button" class="btn btn-info btn-sm tips" style="float:right;" tips-follow="bottom" tips-list="[{foreach $component as $g}{ text:提交到{$g.name}{if $g.video_count>0} <font class=`fa fa-check`></font>{/if}, cls:'template', attr:'data-type=`1` data-component_id=`{$g.id}`' },{/foreach}]">视频模板</button>-->
+<button type="button" class="btn btn-danger btn-sm tips" style="float:right;" tips-follow="bottom" tips-list="[{foreach $component as $g}{ text:提交到{$g.name}{if $g.article_count>0} <font class=`fa fa-check`></font>{/if}, cls:'template', attr:'data-type=`0` data-component_id=`{$g.id}`' },{/foreach}]">图文模板</button>
+{/if}
+{/if}
+<input type="text" placeholder="ID" name="id" value="{$id}" style="width:32px;" />
+<input type="text" class="input-small" placeholder="关键词" name="keyword" value="{$keyword}" />
+<select name="admin_id">
+	<option value="">管理员</option>
+	{foreach $admins as $g}
+	<option value="{$g.id}" {if $admin_id==$g.id}selected{/if}>{$g.name}</option>
+	{/foreach}
+</select>
+{if $admin.id==1}
+<select name="source">
+	<option value="">源模板</option>
+	<option value="0" {if $source=='0'}selected{/if}>否</option>
+	<option value="1" {if $source=='1'}selected{/if}>是</option>
+</select>
+{/if}
+<select name="type">
+	<option value="">类型</option>
+	<option value="0" {if $type=='0'}selected{/if}>图文</option>
+	<option value="1" {if $type=='1'}selected{/if}>视频</option>
+	<option value="2" {if $type=='2'}selected{/if}>祝福</option>
+	<option value="3" {if $type=='3'}selected{/if}>佛学</option>
+</select>
+<select name="component_id">
+	<option value="">第三方平台</option>
+	{foreach $component as $g}
+	<option value="{$g.id}" {if $component_id==$g.id}selected{/if}>{$g.name}</option>
+	{/foreach}
+</select>
+<select name="audit_status">
+	<option value="">状态</option>
+	<option value="0" {if $audit_status=='0'}selected{/if}>待提交</option>
+	<option value="2" {if $audit_status=='2'}selected{/if}>已发布</option>
+	<option value="-1" {if $audit_status=='-1'}selected{/if}>其他</option>
+</select>
+<button type="submit" class="btn btn-info btn-sm">
+	<i class="ace-icon fa fa-search bigger-110"></i>搜索
+</button>
+</form>
+
+<div class="table-content">
+<table id="simple-table" class="table table-striped table-bordered table-hover">
+	<thead>
+		<tr>
+			<th width="50"><input type="checkbox" data-type="ace" data-seleteAll=".checkbox" class="checkboxes" title="全选" /></th>
+			<th width="100">ID</th>
+			<th>小程序</th>
+			<th>平台</th>
+			<th>AppID</th>
+			<th>类型</th>
+			<th>二维码</th>
+			<th>原始ID</th>
+			<!--<th>类目</th>-->
+			<th>所属</th>
+			<th>总点击</th>
+			<th>昨点击</th>
+			<th>今点击</th>
+			{if $is_wechat_setting}
+			<th>屏蔽视频</th>
+			<th>提审</th>
+			<th>推广</th>
+			{/if}
+			<th>版本</th>
+			<th>状态</th>
+			<th width="100">操作</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		{if count($rs)}
+		{foreach $rs as $row}
+		<tr>
+			<td><input type="checkbox" data-type="ace" name="checkbox[]" class="checkbox" id="{$row.id}" value="{$row.id}" /></td>
+			<td>{$row.id}</td>
+			<td><div style="width:100px;"><img src="{$row.pic}" width="30" style="float:left;margin-right:5px;border-radius:2px;" />
+				{if $is_wechat_setting}
+				<a href="/wechat/miniprogram_config?id={$row.id}" class="iframe-layer">{$row.name}</a>
+				{else}
+				{$row.name}
+				{/if}
+				<div style="color:#999;">{$row.alias}</div>
+			</div></td>
+			<td>{$row.component_name}</td>
+			<td>{$row.appid}</td>
+			<td>
+				{if $row.type==0}<font color="red">图文</font>
+				{elseif $row.type==1}<font color="blue">视频</font>
+				{elseif $row.type==2}<font color="green">祝福</font>
+				{elseif $row.type==3}<font color="#9370db">佛学</font>
+				{/if}
+			</td>
+			<td><a href="{$row.qrcode}" target="_blank" data-preview-image="{$row.qrcode}" data-padding="15" data-width="300" data-height="300"><img src="{$row.qrcode}" width="30" /></a></td>
+			<td>{$row.username}</td>
+			<!--<td>{$row.first} - {$row.second}</td>-->
+			<td>{if strlen($row.admin_name)}{$row.admin_name}{else}-{/if}</td>
+			<td><font color="blue">{$row.clicks}</font></td>
+			<td><font color="red">{$row.yesterday_clicks}</font></td>
+			<td><font color="green">{$row.today_clicks}</font></td>
+			{if $is_wechat_setting}
+			<td><input type="checkbox" class="only_pic" data-type="app" data-id="{$row.id}" {if $row.only_pic==1}checked{/if} /></td>
+			<td><input type="checkbox" class="review" data-type="app" data-id="{$row.id}" {if $row.review==1}checked{/if} /></td>
+			<td><input type="checkbox" class="promote_status" data-type="app" data-id="{$row.id}" {if $row.promote_status==1}checked{/if} /></td>
+			{/if}
+			<td>{if intval(str_replace('.','',$row.version))>=100}{$row.version}{else}-{/if}</td>
+			<td>
+				{if $row.audit_status==0}<font color="gray">待提交</font>
+				{elseif $row.audit_status==1}<font color="orange">审核中</font> <a class="audit" data-id="{$row.id}" href="javascript:void(0)">查询状态</a><font color="gray" style="display:block;">{:date('Y-m-d H:i:s',$row.audit_submit_time)}</font>
+				{elseif $row.audit_status==2}<font color="green">已发布</font>
+				{elseif $row.audit_status==-1}<font color="red">审核不通过</font><div style="color:#999;min-width:240px;max-width:370px;word-break:break-all;white-space:pre-wrap;">{$row.audit_reason}</div>
+				{elseif $row.audit_status==-2}<font color="gray">已撤回</font>
+				{/if}
+			</td>
+			<td>
+				<a href="javascript:void(0)" class="tips" data-id="{$row.id}" data-source="{$row.source}" data-type="{$row.type}" tips-list="[{if $is_wechat_setting}{ cls:'iframe-layer',text:'设置参数',url:'/wechat/miniprogram_config?id={$row.id}' },{/if}{ cls:'iframe-layer',text:'设置模板消息',url:'/wechat/template?parent_type=1&parent_id={$row.id}' }{if $row.type==0},{ cls:'iframe-layer',text:'设置隐藏的文章',url:'/article/hidden?miniprogram_id={$row.id}' }{/if},{ text:'更新小程序资料',url:'/wechat/miniprogram_update?id={$row.id}' }{if $admin.id==1},{ text:'{if $row.source==0}设为{else}取消{/if}源模板',url:'/wechat/miniprogram_source?id={$row.id}' }{/if}]" tips-follow="top" tips-fixy="-5" tips-bgcolor="#333">
+					<button type="button" class="btn btn-xs btn-grey">
+					<i class="ace-icon fa fa-cog bigger-120"></i>
+				</button>
+				</a>
+				{if $is_wechat_setting}
+				<a class="tester tips" data-id="{$row.id}" href="javascript:void(0)" title="绑定体验者" tips-follow="top" tips-fixy="-5" tips-bgcolor="#333">
+					<button type="button" class="btn btn-xs btn-success">
+					<i class="ace-icon fa fa-users bigger-120"></i>
+				</button>
+				</a>
+				<a class="qrcode tips" data-preview-image="/wechat/miniprogram_qrcode?id={$row.id}" data-title="{$row.name}体验版" data-logo="{$row.pic}" href="javascript:void(0)" title="体验二维码" tips-follow="top" tips-fixy="-5" tips-bgcolor="#333">
+					<button type="button" class="btn btn-xs btn-info">
+					<i class="ace-icon fa fa-qrcode bigger-120"></i>
+				</button>
+				</a>
+				{if $row.audit_status==1}
+				<a class="unreview tips" data-id="{$row.id}" href="javascript:void(0)" title="撤销审核" tips-follow="top" tips-fixy="-5" tips-bgcolor="#333">
+					<button type="button" class="btn btn-xs btn-pink">
+					<i class="ace-icon fa fa-ban bigger-120"></i>
+				</button>
+				</a>
+				{else}
+				<a class="review tips" data-id="{$row.id}" href="javascript:void(0)" title="提交审核" tips-follow="top" tips-fixy="-5" tips-bgcolor="#333">
+					<button type="button" class="btn btn-xs btn-warning">
+					<i class="ace-icon fa fa-upload bigger-120"></i>
+				</button>
+				</a>
+				{/if}
+				<a href="/wechat/miniprogram_delete?id={$row.id}" class="delete tips" title="删除小程序!" tips-follow="top" tips-fixy="-5" tips-color="#fff" tips-bgcolor="#b74635">
+					<button type="button" class="btn btn-xs btn-danger">
+					<i class="ace-icon far fa-trash-alt bigger-120"></i>
+				</button>
+				</a>
+				{/if}
+			</td>
+		</tr>
+		{/foreach}
+		{literal}
+		<tr class="template">
+			<td><input type="checkbox" data-type="ace" name="checkbox[]" class="checkbox" id="{$row.id}" value="{$row.id}" /></td>
+			<td>{$row.id}</td>
+			<td><div style="width:100px;"><img src="{$row.pic}" width="30" style="float:left;margin-right:5px;border-radius:2px;" />
+		{/literal}
+				{if $is_wechat_setting}
+				{literal}<a href="/wechat/miniprogram_config?id={$row.id}" class="iframe-layer">{$row.name}</a>{/literal}
+				{else}
+				{literal}{$row.name}{/literal}
+				{/if}
+		{literal}
+				<div style="color:#999;">{$row.alias}</div>
+			</div></td>
+			<td>{$row.component_name}</td>
+			<td>{$row.appid}</td>
+			<td>
+				{if $row.type==0}<font color="red">图文</font>
+				{else if $row.type==1}<font color="blue">视频</font>
+				{else if $row.type==2}<font color="green">祝福</font>
+				{else if $row.type==3}<font color="#9370db">佛学</font>
+				{/if}
+			</td>
+			<td><a href="{$row.qrcode}" target="_blank" data-preview-image="{$row.qrcode}" data-padding="15" data-width="300" data-height="300"><img src="{$row.qrcode}" width="30" /></a></td>
+			<td>{$row.username}</td>
+			<td>{if $row.admin_name && $row.admin_name.length}{$row.admin_name}{else}-{/if}</td>
+			<td><font color="blue">{$row.clicks}</font></td>
+			<td><font color="red">{$row.yesterday_clicks}</font></td>
+			<td><font color="green">{$row.today_clicks}</font></td>
+		{/literal}
+			{if $is_wechat_setting}
+		{literal}
+			<td><input type="checkbox" class="only_pic" data-type="app" data-id="{$row.id}" data-template-attr="{if $row.only_pic==1}checked{/if}" /></td>
+			<td><input type="checkbox" class="review" data-type="app" data-id="{$row.id}" data-template-attr="{if $row.review==1}checked{/if}" /></td>
+			<td><input type="checkbox" class="promote_status" data-type="app" data-id="{$row.id}" data-template-attr="{if $row.promote_status==1}checked{/if}" /></td>
+		{/literal}
+			{/if}
+		{literal}
+			<td>{if Number($row.version.replace(/\./g,''))>=100}{$row.version}{else}-{/if}</td>
+			<td>
+				{if $row.audit_status==0}<font color="gray">待提交</font>
+				{else if $row.audit_status==1}<font color="orange">审核中</font> <a class="audit" data-id="{$row.id}" href="javascript:void(0)">查询状态</a><font color="gray" style="display:block;">{Number(row.audit_submit_time).formatDate('yyyy-m-d h:i:s')}</font>
+				{else if $row.audit_status==2}<font color="green">已发布</font>
+				{else if $row.audit_status==-1}<font color="red">审核不通过</font><div style="color:#999;min-width:240px;max-width:370px;word-break:break-all;white-space:pre-wrap;">{$row.audit_reason}</div>
+				{else if $row.audit_status==-2}<font color="gray">已撤回</font>
+				{/if}
+			</td>
+			<td>
+				<a href="javascript:void(0)" class="tips" data-id="{$row.id}" data-source="{$row.source}" data-type="{$row.type}" tips-list="getTipsList" tips-follow="top" tips-fixy="-5" tips-bgcolor="#333">
+					<button type="button" class="btn btn-xs btn-grey">
+					<i class="ace-icon fa fa-cog bigger-120"></i>
+				</button>
+				</a>
+		{/literal}
+			{if $is_wechat_setting}
+		{literal}
+				<a class="tester tips" data-id="{$row.id}" href="javascript:void(0)" title="绑定体验者" tips-follow="top" tips-fixy="-5" tips-bgcolor="#333">
+					<button type="button" class="btn btn-xs btn-success">
+					<i class="ace-icon fa fa-users bigger-120"></i>
+				</button>
+				</a>
+				<a class="qrcode tips" data-preview-image="/wechat/miniprogram_qrcode?id={$row.id}" data-title="{$row.name}体验版" data-logo="{$row.pic}" href="javascript:void(0)" title="体验二维码" tips-follow="top" tips-fixy="-5" tips-bgcolor="#333">
+					<button type="button" class="btn btn-xs btn-info">
+					<i class="ace-icon fa fa-qrcode bigger-120"></i>
+				</button>
+				</a>
+				{if $row.audit_status==1}
+				<a class="unreview tips" data-id="{$row.id}" href="javascript:void(0)" title="撤销审核" tips-follow="top" tips-fixy="-5" tips-bgcolor="#333">
+					<button type="button" class="btn btn-xs btn-pink">
+					<i class="ace-icon fa fa-ban bigger-120"></i>
+				</button>
+				</a>
+				{else}
+				<a class="review tips" data-id="{$row.id}" href="javascript:void(0)" title="提交审核" tips-follow="top" tips-fixy="-5" tips-bgcolor="#333">
+					<button type="button" class="btn btn-xs btn-warning">
+					<i class="ace-icon fa fa-upload bigger-120"></i>
+				</button>
+				</a>
+				{/if}
+				<a href="/wechat/miniprogram_delete?id={$row.id}" class="delete tips" title="删除小程序!" tips-follow="top" tips-fixy="-5" tips-color="#fff" tips-bgcolor="#b74635">
+					<button type="button" class="btn btn-xs btn-danger">
+					<i class="ace-icon far fa-trash-alt bigger-120"></i>
+				</button>
+				</a>
+		{/literal}
+			{/if}
+		{literal}
+			</td>
+		</tr>
+		{/literal}
+		{else}
+		<tr bgcolor="white"><td colspan="18" height="50">暂无记录</td></tr>
+		{/if}
+
+	</tbody>
+</table>
+</div>
+{if $is_wechat_setting}
+<div><button type="button" class="btn btn-xs btn-warning mulreview" style="border-radius:2px;"><i class="ace-icon fa fa-upload bigger-120"></i>批量提交审核</button></div>
+<div><button type="button" class="btn btn-xs btn-pink mulunreview" style="border-radius:2px;"><i class="ace-icon fa fa-ban bigger-120"></i>批量撤销审核</button></div>
+<div><button type="button" class="btn btn-xs btn-danger muldelete" style="border-radius:2px;"><i class="ace-icon far fa-trash-alt bigger-120"></i>批量删除!</button></div>
+{/if}
+<div class="mypage">
+	{$viewpage|raw} {$rs|raw}
+</div>
+{include file="footer"}
+<script>
+function component_auth(){
+	//$.overlay(window.location.protocol+'//'+window.location.host+'/wx_interface?act=component_auth&component_appid='+$(this).attr('data-appid')+'||80%*80%||scrolling=no');
+	$.overlay('{$host}/wx_interface?act=component_auth&component_appid='+$(this).attr('data-appid')+'||80%*80%||scrolling=no');
+}
+function getTipsList(){
+	let list = [
+		/*{if $is_wechat_setting}*/{ cls:'iframe-layer', text:'设置参数', url:'/wechat/miniprogram_config?id='+this.attr('data-id') },/*{/if}*/
+		{ cls:'iframe-layer', text:'设置模板消息', url:'/wechat/template?parent_type=1&parent_id='+this.attr('data-id') },
+		{ text:'更新小程序资料', url:'/wechat/miniprogram_update?id='+this.attr('data-id') }
+	];
+	/*{if $admin.id==1}*/
+	list.push({ text:(Number(this.attr('data-source'))===0?'设为':'取消')+'源模板', url:'/wechat/miniprogram_source?id='+this.attr('data-id') });
+	/*{/if}*/
+	if(Number(this.attr('data-type'))===0)list.push({ cls:'iframe-layer', text:'设置隐藏的文章', url:'/article/hidden?miniprogram_id='+this.attr('data-id') });
+	return list;
+}
+function miniprogram_create(){
+	let component_id = $(this).attr('data-id');
+	let app_name = prompt('请输入小程序名称', '');
+	if(!app_name)return;
+	if(!app_name.length){
+		$.overloadError('请输入小程序名称');
+		return;
+	}
+	$.overload('名称检测中');
+	$.getJSON('/wechat/miniprogram_checkname', { component_id:component_id, app_name:app_name }, function(json){
+		if(json.data.length){
+			alert(json.data);
+			return;
+		}
+		let name = prompt('请输入企业名', '');
+		if(!name)return;
+		if(!name.length){
+			$.overloadError('请输入企业名');
+			return;
+		}
+		let code = prompt('请输入企业代码', '');
+		if(!code)return;
+		if(!code.length){
+			$.overloadError('请输入企业代码');
+			return;
+		}
+		let legal_persona_wechat = prompt('请输入法人微信', '');
+		if(!legal_persona_wechat)return;
+		if(!legal_persona_wechat.length){
+			$.overloadError('请输入法人微信');
+			return;
+		}
+		let legal_persona_name = prompt('请输入法人姓名', '');
+		if(!legal_persona_name)return;
+		if(!legal_persona_name.length){
+			$.overloadError('请输入法人姓名');
+			return;
+		}
+		let component_phone = prompt('请输入第三方联系电话(选填)', '');
+		if(!component_phone || !component_phone.length){
+			component_phone = '';
+			//$.overloadError('请输入第三方联系电话');
+			//return;
+		}
+		$.overload();
+		$.postJSON('/wechat/miniprogram_create', { component_id:component_id, app_name:app_name, name:name, code:code, legal_persona_wechat:legal_persona_wechat, legal_persona_name:legal_persona_name, component_phone:component_phone }, function(){
+			$.overloadSuccess('提交成功');
+		});
+	});
+}
+$(function(){
+	$('.sync-article').on('click', function(){
+		$.overload();
+		$.postJSON('/wechat/syncArticle', null, function(){
+			$.overloadSuccess('同步成功');
+		});
+	});
+	$('.mulreview').on('click', function(){
+		let ids = [];
+		$('.checkbox:checked').each(function(){
+			ids.push($(this).val());
+		});
+		if(!ids.length){
+			$.overloadError('请选择小程序');
+			return;
+		}
+		$.overload();
+		$.postJSON('/wechat/mulreview', { ids:ids.join(',') }, function(json){
+			window.location.reload();
+		});
+	});
+	$('.mulunreview').on('click', function(){
+		let ids = [];
+		$('.checkbox:checked').each(function(){
+			ids.push($(this).val());
+		});
+		if(!ids.length){
+			$.overloadError('请选择小程序');
+			return;
+		}
+		$.overload();
+		$.postJSON('/wechat/mulunreview', { ids:ids.join(',') }, function(json){
+			window.location.reload();
+		});
+	});
+	$('.muldelete').on('click', function(){
+		if(!confirm('确定要删除？'))return;
+		let ids = [];
+		$('.checkbox:checked').each(function(){
+			ids.push($(this).val());
+		});
+		if(!ids.length){
+			$.overloadError('请选择小程序');
+			return;
+		}
+		$.overload();
+		$.postJSON('/wechat/muldelete', { ids:ids.join(',') }, function(json){
+			window.location.reload();
+		});
+	});
+	$(document).on('click', '.component', function(){
+		$.overlay('/wechat/miniprogram_change_component?component_appid='+$(this).attr('data-appid')+'||80%*80%||scrolling=no');
+	});
+	$(document).on('click', '.template', function(){
+		$.overload();
+		$.postJSON('/wechat/miniprogram_template', { type:$(this).attr('data-type'), component_id:$(this).attr('data-component_id') }, function(){
+			$.overloadSuccess('提交成功');
+		});
+	});
+	$(document).on('click', '.queryquota', function(){
+		let name = $(this).attr('data-name');
+		$.overload();
+		$.getJSON('/wechat/miniprogram_queryquota?component_id='+$(this).attr('data-component_id'), function(json){
+			alert('\n'+name+'\n提审剩余值: '+json.data.rest+'\n当月分配提审次数: '+json.data.limit+'\n剩余加急次数: '+json.data.speedup_rest+'\n当月分配加急次数: '+json.data.speedup_limit);
+		});
+	});
+	$(document).on('click', '.clearquota', function(){
+		let id = $(this).attr('data-component_id');
+		$.overload();
+		$.postJSON('/wechat/miniprogram_clear_quota', { component_id:id }, function(){
+			$.overloadSuccess('清除成功');
+		});
+	});
+	$(document).on('change', '.only_pic', function(){
+		$.postJSON('/wechat/miniprogram_only_pic', { id:$(this).attr('data-id') });
+	});
+	$(document).on('change', '.review', function(){
+		$.postJSON('/wechat/miniprogram_status', { id:$(this).attr('data-id') });
+	});
+	$(document).on('click', '.tester', function(){
+		let name = prompt('输入体验者微信号', '');
+		if(!name || !name.length)return;
+		$.overload();
+		$.postJSON('/wechat/miniprogram_tester', { id:$(this).attr('data-id'), name:name }, function(json){
+			$.overloadSuccess('绑定成功');
+		});
+	});
+	$(document).on('click', '.audit', function(){
+		$.overload();
+		$.getJSON('/wechat/miniprogram_audit_status', { id:$(this).attr('data-id') }, function(json){
+			let msg = json.data.status_name;
+			if(json.data.status===1)msg += '\n'+json.data.reason;
+			alert(msg);
+		});
+	});
+	$(document).on('click', 'a.review', function(){
+		if(!confirm('确定提交审核吗？'))return;
+		let id = $(this).attr('data-id');
+		$.overload();
+		$.postJSON('/wechat/miniprogram_review', { id:id }, {
+			success: function(json){
+				location.reload();
+			},
+			error: function(json){
+				$.overloadError(json.msg);
+			}
+		});
+	});
+	$(document).on('click', '.unreview', function(){
+		if(!confirm('确定撤销审核吗？'))return;
+		$.overload();
+		$.postJSON('/wechat/miniprogram_unreview', { id:$(this).attr('data-id') }, function(json){
+			location.reload();
+		});
+	});
+	$(document).on('click', '.promote_status', function(){
+		$.postJSON('/wechat/miniprogram_promote_status', { id:$(this).attr('data-id') });
+	});
+});
+</script>

@@ -1,0 +1,47 @@
+{include file="header"}
+<script type="text/javascript" src="/js/jquery.ZResize.js"></script>
+<script type="text/javascript" src='/js/jquery.excelTable.js'></script>
+<script type="text/javascript" src="/js/echarts.min.js"></script>
+<body style="overflow:hidden;">
+<div class="scene-menu"></div>
+<div class="scene">
+	<div class="container">
+		<div class="pages">
+			<div class="con">
+				<a href="javascript:void(0)" coo-click="pageAdd"><em class="eqf-plus2"></em><span>新增</span></a>
+				<a href="javascript:void(0)" class="copy" coo-click="pageCopy"><em class="eqf-scene-copy"></em><span>复制</span></a>
+				<a href="javascript:void(0)" class="del" coo-click="pageDel"><em class="eqf-scene-delete"></em><span>删除</span></a>
+				<a href="javascript:void(0)" class="temp" coo-click="pageTemplate"><em class="eqf-top-svae"></em><span>模板</span></a>
+			</div>
+			<ul array="pages"></ul>
+		</div>
+		<div class="parent {if strlen($data.pad)}show" face="{$data.pad}{/if}">
+			<div class="phone">
+				<div class="boxer">
+					<div class="wrapper">
+						<div class="viewer" page="0"><section class="hidden"><canvas></canvas></section></div>
+					</div>
+					<div class="music {if $data.music_position==1}right{/if} {if !strlen($data.music)}hidden{/if}"></div>
+					<section><div>向上滑动继续浏览<img src="/images/touch.jpg" /></div></section>
+					<div class="loading hidden"></div>
+				</div>
+				<div class="facer"></div>
+			</div>
+		</div>
+		<span class="preview-out"><em class="eqf-left"></em></span>
+	</div>
+	<div class="set"></div>
+	<input type="hidden" name="id" id="id" value="{$data.id}" />
+	<input type="hidden" name="cover" id="cover" value="{$data.cover}" />
+	<input type="hidden" name="grid" id="grid" value="{$data.grid}" />
+	<input type="hidden" name="ruler" id="ruler" value="{$data.ruler}" />
+	<input type="hidden" name="pad" id="pad" value="{$data.pad}" />
+	<input type="hidden" name="status" id="status" value="{$data.status}" />
+	<input type="hidden" name="music" id="music" value="{$data.music}" />
+	<input type="hidden" name="music_name" id="music_name" value="{$data.music_name}" />
+	<input type="hidden" name="music_pic" id="music_pic" value="{$data.music_pic}" />
+	<textarea class="data hidden">Mario{:base64_encode(json_encode($data))}</textarea>
+	<audio id="audio"></audio>
+</div>
+
+{include file="footer"}

@@ -1,0 +1,50 @@
+<wxs module="helper" src="../../common/helper.wxs"></wxs>
+<import src="../../common/template.wxml" />
+<template is="overload" data="{{overload}}" />
+<template is="dialogView" data="{{dialogView}}" />
+<view class="indexAddMy" wx:if="{{addMy==1}}" bindtap="handleAddMy">
+	<view class="c"></view>
+	点击<view class="m"></view>添加到我的小程序，更方便<view class="z"></view>
+</view>
+
+<view class="index">
+	<view class="header" style="background-image:url({{material.header}});">
+		<view class="avatar">
+			<view><open-data class="userAvatar" type="userAvatarUrl"></open-data></view>
+			<text style="background-image:url({{material.avatar}});"></text>
+		</view>
+		<view class="bottom" style="background-image:url({{material.header_bottom}});">
+			<view>{{material.nongli}}</view>
+			<text>{{material.date}}</text>
+		</view>
+	</view>
+	<view class="list">
+        <block wx:if="{{data.length>0}}">
+			<view class="li" wx:for="{{data}}" wx:key="index">
+				<block wx:if="{{item.type==0}}">
+				<view class="type type{{item.type}} ge-top ge-light" data-id="{{item.id}}" data-index="{{index}}" bindtap="handleShowDetail" style="background-image:url({{material.list_bg}});">
+					<view class="pic">
+						<text style="background-image:url({{item.pic}});"></text>
+						<view style="background-image:url({{item.top_avatar_pic}});"></view>
+					</view>
+					<text class="span">{{item.title}}</text>
+				</view>
+				</block>
+				<block wx:elif="{{item.type==1}}">
+				<view class="type type{{item.type}}" data-url="{{item.url}}" bindtap="handleShowAd" style="background-image:url({{item.pic}});"></view>
+				</block>
+				<block wx:elif="{{item.type==3}}">
+				<ad unit-id="{{item.adunit}}"></ad>
+				</block>
+				<block wx:elif="{{item.type==4}}">
+				<ad unit-id="{{item.adunit}}" ad-type="video" ad-theme="white"></ad>
+				</block>
+				<text class="clear"></text>
+			</view>
+            <view class="loadmore {{loadmore}}"></view>
+        </block>
+        <block wx:else>
+            <view class="norecord">没有任何记录</view>
+        </block>
+	</view>
+</view>

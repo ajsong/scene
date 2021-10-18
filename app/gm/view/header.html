@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+		<title>{$WEB_NAME} - BOARD</title>
+
+		<meta name="description" content="top menu &amp; navigation" />
+		<meta name="viewport" content="width=320, initial-scale=1.0, maximum-scale=1.0" />
+		<!-- bootstrap & fontawesome -->
+		<link rel="stylesheet" href="/css/ace/css/bootstrap.css" />
+		<link rel="stylesheet" href="/css/ace/css/font-awesome.css" />
+		<link rel="stylesheet" href="/css/ace/fontawesome-5.7.2/css/all.css" />
+
+		<!-- page specific plugin styles -->
+
+		<!-- text fonts -->
+		<link rel="stylesheet" href="/css/ace/css/ace-fonts.css" />
+
+		<!-- ace styles -->
+		<link rel="stylesheet" href="/css/ace/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+		<!--[if lte IE 9]>
+			<link rel="stylesheet" href="/css/ace/css/ace-part2.css" class="ace-main-stylesheet" />
+		<![endif]-->
+
+		<!--[if lte IE 9]>
+		  <link rel="stylesheet" href="/css/ace/css/ace-ie.css" />
+		<![endif]-->
+
+		<!-- inline styles related to this page -->
+
+		<!-- ace settings handler -->
+		<script src="/css/ace/js/ace-extra.js"></script>
+		<script src="/js/jquery-3.4.1.min.js"></script>
+		<script src="/js/coo.js?import=coo.pc,coo.mobile"></script>
+		<script src="/css/gm/js/common.js"></script>
+		<!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+		<script src="/css/ace/js/ace/elements.scroller.js"></script>
+		<script src="/css/ace/js/ace.js"></script>
+		<script src="/css/ace/js/bootstrap.js"></script>
+		<script src="/js/ckeditor/ckeditor.js"></script>
+
+		<!--[if lte IE 8]>
+		<script src="/css/ace/js/html5shiv.js"></script>
+		<script src="/css/ace/js/respond.js"></script>
+		<![endif]-->
+		<link rel="stylesheet" href="/css/gm/css/custom.css" />
+		{if $admin.menu_direction==1}<link rel="stylesheet" href="/css/gm/css/theme.css" />{/if}
+
+		<!--<script type="text/javascript" src="/js/city.js"></script>
+		<link rel="stylesheet" href="/css/alertUI.css" />-->
+		<link rel="stylesheet" href="/css/datepicker.css" />
+
+	</head>
+
+	<body class="no-skin">
+		<!-- #section:basics/navbar.layout -->
+		<div id="navbar" class="navbar navbar-default    navbar-collapse       h-navbar">
+			<script type="text/javascript">
+				try { ace.settings.check('navbar' , 'fixed') } catch(e) { }
+			</script>
+
+			<div class="navbar-container container" id="navbar-container">
+				<div class="navbar-header pull-left">
+					<!-- #section:basics/navbar.layout.brand -->
+					<a href="?" class="navbar-brand" style="{if $admin.menu_direction==1 && strlen($admin.bgcolor)}background:{$admin.bgcolor} !important;{/if}">
+						<small>
+							{$WEB_NAME}
+						</small>
+					</a>
+
+					<a href="javascript:void(0)" class="side-hidden el-icon-d-arrow-left"></a>
+					<a href="javascript:void(0)" class="refresh el-icon-refresh-right"></a>
+
+					<!-- /section:basics/navbar.layout.brand -->
+
+					<!-- #section:basics/navbar.toggle -->
+					<button class="pull-right navbar-toggle navbar-toggle-img collapsed" type="button" data-toggle="collapse" data-target=".navbar-buttons,.navbar-menu">
+						<span class="sr-only">Toggle user menu</span>
+
+						<img src="/css/ace/images/avatar.png" alt="Jason's Photo" />
+					</button>
+
+					<button class="pull-right navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#sidebar">
+						<span class="sr-only">Toggle sidebar</span>
+
+						<span class="icon-bar"></span>
+
+						<span class="icon-bar"></span>
+
+						<span class="icon-bar"></span>
+					</button>
+
+					<!-- /section:basics/navbar.toggle -->
+				</div>
+
+				<!-- #section:basics/navbar.dropdown -->
+				<div class="navbar-buttons navbar-header pull-right  collapse navbar-collapse" role="navigation">
+					<ul class="nav ace-nav">
+						<li class="transparent">
+							<a  href="/index/info">
+								欢迎您，{if strlen($admin.real_name)}{$admin.real_name}{else}{$admin.name}{/if}
+							</a>
+						</li>
+						<!-- #section:basics/navbar.user_menu -->
+						<!--
+						<li class="light-blue user-min">
+							<a href="?app=home&act=message">
+								<i class="ace-icon fa fa-envelope"></i>
+							</a>
+							<script type="text/javascript">
+								function polling_message(){
+									$.getJSON('api.php?app=home&act=polling_message', function(json){
+										var envelope = $('.navbar-buttons .fa-envelope'), parent = envelope.parent();
+										if(json.data.count>0){
+											if(!parent.find('span').length)parent.append('<span>'+json.data.count+'</span>');
+											else parent.find('span').html(json.data.count);
+											envelope.addClass('icon-animated-vertical');
+										}
+										else{
+											parent.find('span').remove();
+											envelope.removeClass('icon-animated-vertical');
+										}
+										if(json.data.alert.length)alert(json.data.alert);
+										setTimeout(polling_message, 3000);
+									});
+								}
+								if(window.top.document==window.document){
+									$(function(){ polling_message() });
+								}
+							</script>
+						</li>
+						-->
+						{if $admin.super==1}
+						<li class="light-blue user-min">
+							<a class="setting_clear" href="javascript:void(0)">
+								<i class="ace-icon far fa-trash-alt"></i>
+								缓存
+							</a>
+						</li>
+						<script>
+						$('.setting_clear').on('click', function(){
+							$.overload();
+							$.get('/setting/clear', function(){
+								$.overloadSuccess('清除完毕');
+							});
+						});
+						</script>
+						{/if}
+						<li class="light-blue user-min">
+							<a href="/index/info">
+								<i class="ace-icon far fa-user"></i>
+								资料
+							</a>
+						</li>
+						<li class="light-blue user-min">
+							<a href="/index/password">
+								<i class="ace-icon far fa-lock"></i>
+								密码
+							</a>
+						</li>
+						<li class="light-blue user-min">
+							<a href="/index/logout">
+								<i class="ace-icon fa fa-power-off"></i>
+								退出
+							</a>
+						</li>
+						<!-- /section:basics/navbar.user_menu -->
+					</ul>
+				</div>
+
+				<!-- /section:basics/navbar.dropdown -->
+				<nav role="navigation" class="navbar-menu pull-left collapse navbar-collapse">
+					<!-- #section:basics/navbar.nav -->
+					<!--
+					<ul class="nav navbar-nav">
+						<li>
+							<a href="?app=order&act=index">
+								<i class="ace-icon fa fa-envelope"></i>
+								新订单
+								<span class="badge badge-warning">0</span>
+							</a>
+						</li>
+					</ul>
+					-->
+					<!-- /section:basics/navbar.nav -->
+				</nav>
+			</div><!-- /.navbar-container -->
+		</div>
+		<script>
+		$('.navbar-header .side-hidden').on('click', function(){
+			let _body = $('body');
+			if(_body.hasClass('side-hidden')){
+				_body.removeClass('side-hidden');
+			}else{
+				_body.addClass('side-hidden');
+			}
+		});
+		$('.navbar-header .refresh').on('click', function(){
+			location.reload();
+		});
+		</script>
+		<!-- /section:basics/navbar.layout -->
+
+		{include file="menu"}

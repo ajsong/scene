@@ -1,0 +1,217 @@
+{include file="header"}
+{literal}
+<style>
+.search-mp{max-width:970px; height:34px; overflow:hidden;}
+.search-mp .navbar-form.form-search{padding-left:0;}
+.search-mp .navbar-form.form-search input[type=text]{background-color:#eee;}
+.search-mp .navbar-form .btn-info2{background-color:#eee !important; border-color:#eee;}
+.search-mp span{line-height:34px;}
+.search-mp span font{color:#3493f9; margin:0 3px;}
+.search-mp .btn-success{float:right; height:34px; font-size:12px; line-height:1; border-radius:2px;}
+.search-mp .navbar-form .btn-info2{width:34px;}
+.search-mp .navbar-form.form-search{margin:0; margin-bottom:15px;}
+.search-mp .navbar-form.form-search input[type=text], .search-mp .navbar-form .btn-info2{height:34px;}
+.mps, .mps li{list-style:none; margin:0; padding:0;}
+.mps{margin:10px 0; max-width:970px; height:40px; font-size:0; overflow:auto; overflow-y:hidden; white-space:nowrap;}
+.mps::-webkit-scrollbar{width:6px; height:6px;}
+.mps::-webkit-scrollbar-track{display:none;}
+.mps::-webkit-scrollbar-thumb{background:#666; border-radius:3px;}
+.mps li{display:inline-block; width:30px; height:30px; margin-right:10px; border-radius:2px; background:no-repeat center center; background-size:cover;}
+.list{max-width:970px; height:300px; overflow:auto; overflow-x:hidden;}
+.list::-webkit-scrollbar{width:6px; height:6px;}
+.list::-webkit-scrollbar-track{background:#f5f5f5; border-radius:3px;}
+.list::-webkit-scrollbar-thumb{background:#666; border-radius:3px;}
+.list label{float:left; display:block; margin:0 10px 10px 0; width:230px; height:60px; overflow:hidden; position:relative; background:#eee; cursor:pointer;}
+.list label input{display:none;}
+.list label div{padding:15px; height:30px; text-align:left;}
+.list label div i{display:block; width:30px; height:30px; margin-right:5px; float:left; border-radius:2px; background:no-repeat center center; background-size:cover;}
+.list label div span, .list label div font{display:block; line-height:15px; font-size:12px;}
+.list label div font{color:#999;}
+.list label input:checked + div:before{content:""; display:block; position:absolute; left:0; top:0; right:0; bottom:0; box-sizing:border-box; border:1px solid #3493f9;}
+.list label input:checked + div:after{content:""; display:block; position:absolute; right:0; top:0; width:24px; height:24px; background:url(/images/selected.png) no-repeat center center; background-size:cover;}
+
+.preview{width:330px; height:80px; line-height:80px; font-size:14px;}
+</style>
+{/literal}
+<div class="page-header">
+	<h6>
+		微信管理
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			{if $row.id}编辑{else}添加{/if}客服消息
+		</small>
+	</h6>
+</div>
+<div class="row">
+<div class="col-xs-12">
+	<form class="form-horizontal" role="form" method="post" action="/wechat/customer_edit" enctype="multipart/form-data">
+		<input type="hidden" name="id" id="id" value="{$row.id}" />
+		<div class="form-group" style="background:#f9f9f9;">
+			<label class="col-sm-2 control-label no-padding-right">选择公众号</label>
+			<div class="col-sm-10">
+				<div class="search-mp">
+					<button class="btn btn-success" type="button">
+						<i class="ace-icon fa fa-check bigger-110"></i>
+						<font>全选</font>
+					</button>
+					<div class="navbar-form navbar-left form-search">
+						<div class="form-group">
+							<input type="text" class="mpKeyword" placeholder="搜索公众号" />
+						</div>
+						<button type="button" class="btn btn-mini btn-info2">
+							<i class="ace-icon fa fa-search icon-only bigger-110"></i>
+						</button>
+					</div>
+					<span>预计共发送给<font>0</font>人</span>
+					<input type="hidden" name="predict_count" id="predict_count" value="{$row.predict_count}" />
+				</div>
+				<ul class="mps"></ul>
+				<div class="list">
+					{foreach $list as $g}
+					<label data-name="{$g.name}" data-alias="{$g.alias}" data-appid="{$g.appid}" data-alive_fans="{$g.alive_fans}">
+						<input type="checkbox" name="mp[]" value="{$g.id}" data-pic="{$g.pic}" data-name="{$g.name}" {if strpos(cat(',', $row.mp, ','), cat(',', $g.id, ','))!==false}checked{/if} />
+						<div><i style="background-image:url({$g.pic});"></i><span>{$g.name}</span><font>{$g.alias}</font></div>
+					</label>
+					{/foreach}
+				</div>
+			</div>
+		</div>
+		<div class="form-group" style="background:#f9f9f9;">
+			<label class="col-sm-2 control-label no-padding-right" for="name">消息名称</label>
+			<div class="col-sm-10">
+				<input type="text" id="name" name="name" value="{$row.name}" class="col-xs-6 coo-need" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="title">消息标题</label>
+			<div class="col-sm-10">
+				<input type="text" id="title" name="title" value="{$row.title}" class="col-xs-6 coo-need" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="memo">消息描述</label>
+			<div class="col-sm-10">
+				<input type="text" id="memo" name="memo" value="{$row.memo}" class="col-xs-6 coo-need" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="pic">消息图片</label>
+			<div class="col-sm-10">
+				<input type="hidden" name="origin_pic" id="origin_pic" value="{$row.pic}" />
+				<div class="col-file col-xs-3"><input type="file" id="pic" name="pic" value="" /></div>
+				{if $row.pic}<a href="{$row.pic}" target="_blank"><img src="{$row.pic}" height="34" onerror="this.src='/images/nopic.png'" /></a>{/if}
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="url">消息链接</label>
+			<div class="col-sm-10">
+				<input type="text" id="url" name="url" value="{$row.url}" class="col-xs-6 coo-need" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="send_time">群发时间</label>
+			<div class="col-sm-10">
+				<input type="text" id="send_time" name="send_time" value="{if $row.send_time>0}{:date('Y-m-d H:i', $row.send_time)}{/if}" class="col-xs-2 coo-need" />
+				<span class="some-block-inline">快速选择：</span>
+				<span class="some-switch">
+					<label><input type="radio" name="s" value="11:00" /><div>11:00</div></label>
+					<label><input type="radio" name="s" value="15:00" /><div>15:00</div></label>
+					<label><input type="radio" name="s" value="17:00" /><div>17:00</div></label>
+					<label><input type="radio" name="s" value="20:00" /><div>20:00</div></label>
+				</span>
+			</div>
+		</div>
+		
+		<div class="clearfix form-actions">
+			<div class="col-md-offset-3 col-md-9">
+				<button class="btn btn-info" type="submit">
+					<i class="ace-icon fa fa-check bigger-110"></i>
+					提交
+				</button>
+				&nbsp; &nbsp; &nbsp;
+				<button class="btn btn-warning" type="button">
+					<i class="ace-icon fa fa-weixin bigger-110"></i>
+					预览
+				</button>
+				&nbsp; &nbsp; &nbsp;
+				<button class="btn" type="reset">
+					<i class="ace-icon fa fa-undo bigger-110"></i>
+					重置
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+{include file="footer"}
+<script>
+function setPredictCount(){
+	let count = 0;
+	$('.list :checked').each(function(){
+		count += Number($(this).parent().attr('data-alive_fans'));
+	});
+	$('.search-mp span font').html(count);
+	$('#predict_count').val(count);
+	setMps();
+}
+function setMps(){
+	let html = '';
+	$('.list :checked').each(function(){
+		let _this = $(this);
+		html += '<li style="background-image:url('+_this.attr('data-pic')+')" class="tips" title="'+_this.attr('data-name')+'" tips-follow="top">';
+	});
+	$('.mps').html(html);
+	$('.mps .tips').tips();
+}
+$(function(){
+	setPredictCount();
+	$('#send_time').datepicker({ showTime:true, showSecond:false, minuteStep:5, format:'yyyy-mm-dd hh:nn', readonly:true });
+	$('.mpKeyword').on('input', function(){
+		let val = $.trim($(this).val()), div = $('.list label');
+		if(!val.length){
+			div.show();
+		}else{
+			div.hide();
+			div.each(function(){
+				if($(this).attr('data-name').indexOf(val)>-1 || $(this).attr('data-alias').indexOf(val)>-1 || $(this).attr('data-appid').indexOf(val)>-1)$(this).show();
+			});
+		}
+	});
+	$('.list :checkbox').on('change', function(){
+		setPredictCount();
+	});
+	$('.search-mp .btn-success').on('click', function(){
+		let _this = $(this);
+		if(!!_this.data('selected')){
+			_this.removeData('selected').find('font').html('全选');
+			$('.list :checkbox').prop('checked', false);
+			setPredictCount();
+		}else{
+			_this.data('selected', true).find('font').html('反选');
+			$('.list :checkbox').prop('checked', true);
+			setPredictCount();
+		}
+	});
+	$('.some-switch :radio').on('change', function(){
+		let val = $('.some-switch :checked').val(), date = new Date();
+		if(Number(date.formatDate('hhnn')) > Number(val.replace(':', '')))date = date.dateAdd('d', 1);
+		$('#send_time').val(date.formatDate('yyyy-mm-dd')+' '+val);
+	});
+	$('.btn-warning').on('click', function(){
+		let form = $('.form-horizontal'), param = form.param();
+		param.preview = 1;
+		param.id = 0;
+		delete param.pic;
+		delete param.s;
+		$('#pic').html5upload({
+			url: form.attr('action'),
+			name: 'pic',
+			data: param,
+			rightnow: true,
+			success: function(json){
+				alert('发送 '+json.data+' 到随便一个勾选的公众号查看预览效果');
+			}
+		});
+	});
+});
+</script>

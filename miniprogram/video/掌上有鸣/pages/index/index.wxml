@@ -1,0 +1,40 @@
+<wxs module="helper" src="../../common/helper.wxs"></wxs>
+<import src="../../common/template.wxml" />
+<template is="overload" data="{{overload}}" />
+<template is="dialogView" data="{{dialogView}}" />
+<view class="index">
+    <view class="header ge-bottom ge-light">
+		<template is="switchView" data="{{switchView}}" />
+    </view>
+
+	<view class="list">
+        <block wx:if="{{data.length>0}}">
+			<view class="li" wx:for="{{data}}" wx:key="index">
+				<block wx:if="{{item.type==0}}">
+				<view class="type type{{item.type}}" data-id="{{item.id}}" bindtap="handleShowDetail" style="background-image:url({{item.img}});"><text class="span">{{item.title}}</text></view>
+				<view class="bottom">
+					<view bindtap="handleLike" data-index="{{index}}">{{item.likes}}</view>
+					<text>{{item.played}}</text>
+					<button open-type="share" data-id="{{item.id}}" data-title="{{item.title}}" data-img="{{item.img}}">分享</button>
+				</view>
+				</block>
+				<block wx:elif="{{item.type==1}}">
+				<view class="type type{{item.type}}" data-url="{{item.url}}" bindtap="handleShowAd" style="background-image:url({{item.img}});"></view>
+				</block>
+				<block wx:elif="{{item.type==2}}">
+				<navigator class="type type{{item.type}}" target="miniProgram" app-id="{{item.appid}}" style="background-image:url({{item.img}});" version="trial"></navigator>
+				</block>
+				<block wx:elif="{{item.type==3}}">
+				<ad unit-id="{{item.adunit}}"></ad>
+				</block>
+				<block wx:elif="{{item.type==4}}">
+				<ad unit-id="{{item.adunit}}" ad-type="video" ad-theme="white"></ad>
+				</block>
+			</view>
+            <view class="loadmore {{loadmore}}"></view>
+        </block>
+        <block wx:else>
+            <view class="norecord">没有任何视频</view>
+        </block>
+	</view>
+</view>

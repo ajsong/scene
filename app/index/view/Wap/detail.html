@@ -1,0 +1,12 @@
+{include file="header"}
+
+<body>
+<div class="wap-detail">
+	<ul></ul>
+	{if strlen($data.music)}
+	<div class="music"></div>
+	<audio id="audio" src="{$data.music}" autoplay="autoplay" loop="loop"></audio>
+	{/if}
+</div>
+<input type="hidden" id="data" value="Mario{:base64_encode(json_encode($data))}" />
+{include file="footer"}

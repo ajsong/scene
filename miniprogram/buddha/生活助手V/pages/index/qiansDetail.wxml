@@ -1,0 +1,72 @@
+<wxs module="helper" src="../../common/helper.wxs"></wxs>
+<import src="../../common/libs/wxParse/wxParse.wxml" />
+<import src="../../common/template.wxml" />
+<template is="overload" data="{{overload}}" />
+<template is="dialogView" data="{{dialogView}}" />
+
+<view class="result" style="padding-bottom:{{paddingBottom}};">
+	<block wx:if="{{banner.enable==1}}">
+	<view wx:if="{{banner.type==1}}" class="banner" data-url="{{banner.url}}" bindtap="handleShowAd" style="background-image:url({{banner.image}});"></view>
+	<ad wx:elif="{{banner.type==2}}" unit-id="{{banner.adunit}}"></ad>
+	<ad wx:elif="{{banner.type==3}}" unit-id="{{banner.adunit}}" ad-type="video" ad-theme="white"></ad>
+	<button wx:elif="{{banner.type==4}}" class="banner" open-type="contact" show-message-card="true" send-message-title="{{banner.message_title}}" send-message-path="{{banner.message_path}}" send-message-img="{{banner.message_image}}" style="background-image:url({{banner.image}});"></button>
+	</block>
+
+	<view class="h1">{{self}}抽到了命运簽：{{name}}</view>
+	<button class="click" open-type="contact" show-message-card="true">解签请点这里哦 <text>{{res.time}}</text></button>
+	<view class="tips">
+		<view style="background-image:url({{res.jt}});"></view><view style="background-image:url({{res.jt}});"></view><view style="background-image:url({{res.jt}});"></view>
+		点击上方“<text>解签请点这里哦</text>”免费解读命运簽。{{tips}}
+	</view>
+	<view class="img {{hiddenResult}}">
+		<template is="wxParse" data="{{wxParseData:result.nodes}}" />
+		<view style="background-image:url({{res.layer}});">分享到微信群查看簽文</view>
+	</view>
+
+	<view class="tipsFooter">
+		点击下面<text>查看更多详细运势</text>。
+		<view style="background-image:url({{res.jt}});"></view><view style="background-image:url({{res.jt}});"></view><view style="background-image:url({{res.jt}});"></view>
+	</view>
+	<view class="btnView"><button class="show" open-type="contact">查看更多详细运势</button></view>
+	<!-- <view wx:if="{{isShare==0}}" class="btnView"><button class="show" open-type="share">点击秀出自己的命运簽！</button></view>
+	<view wx:else class="btnView"><button class="btn" bindtap="handleRedirect">点击这里抽取您的命运簽</button></view> -->
+
+	<block wx:if="{{footer.enable==1}}">
+	<view wx:if="{{footer.type==1}}" class="footer" data-url="{{footer.url}}" bindtap="handleShowAd" style="background-image:url({{footer.image}});"></view>
+	<ad wx:elif="{{footer.type==2}}" unit-id="{{footer.adunit}}"></ad>
+	<ad wx:elif="{{footer.type==3}}" unit-id="{{footer.adunit}}" ad-type="video" ad-theme="white"></ad>
+	<button wx:elif="{{footer.type==4}}" class="footer" open-type="contact" show-message-card="true" send-message-title="{{footer.message_title}}" send-message-path="{{footer.message_path}}" send-message-img="{{footer.message_image}}" style="background-image:url({{footer.image}});"></button>
+	</block>
+</view>
+
+<view wx:if="{{tipsShown==1 && isShare==0}}">
+	<view class="weui-mask"></view>
+	<view class="weui-dialog">
+		<view class="weui-dialog__bd">
+			<view style="font-size:42rpx;color:#0bb20c;margin-bottom:25rpx;">温馨提示</view>
+			<view style="font-size:37rpx;color:#f00;">恭喜您！求到{{qian}}！</view>
+			<view><text style="font-size:37rpx;">分享到</text><text style="font-size:37rpx;color:#f00;">微信群</text></view>
+			<view><text style="font-size:37rpx;">立刻查看您的签文讲解</text></view>
+		</view>
+		<view class="weui-dialog__ft">
+			<button class="weui-dialog__btn weui-dialog__btn_primary" open-type="share">立即分享</button>
+		</view>
+	</view>
+</view>
+
+<view wx:if="{{tipsShown==1 && isShare==1}}">
+	<view class="weui-mask"></view>
+	<view class="weui-dialog">
+		<view class="weui-dialog__bd">
+			<view style="font-size:42rpx;color:#0bb20c;margin-bottom:25rpx;">温馨提示</view>
+			<view style="font-size:37rpx;color:#f00;">您的朋友抽到了命运簽</view>
+			<view style="font-size:37rpx;">{{name}}</view>
+			<view><text style="font-size:37rpx;color:#f00;">该签为{{qian}}！</text></view>
+		</view>
+		<view class="weui-dialog__ft">
+			<button class="weui-dialog__btn weui-dialog__btn_primary" bindtap="handleMark">看签文</button>
+		</view>
+	</view>
+</view>
+
+<view wx:if="{{addMy}}" class="addMy" bindtap="handleAddMy">添加到我的小程序</view>

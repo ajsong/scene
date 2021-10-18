@@ -1,0 +1,16 @@
+{
+	"pages": [
+		"pages/index/index",
+		"pages/index/list",
+		"pages/index/detail",
+		"pages/index/web"
+	],
+	"window": {
+		"backgroundTextStyle": "dark",
+		"navigationBarBackgroundColor": "#338dc1",
+		"navigationBarTitleText": "楚姐祝福",
+		"navigationBarTextStyle": "white",
+		"onReachBottomDistance": 0
+	},
+	"sitemapLocation": "sitemap.json"
+}

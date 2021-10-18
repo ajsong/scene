@@ -1,0 +1,165 @@
+{include file="header"}
+{literal}
+<style>
+.color{display:inline-block; width:20px; height:20px; overflow:hidden; margin-left:10px; margin-top:7px; cursor:pointer; border-radius:100%; box-shadow:0 0 5px rgba(0,0,0,0.4);}
+</style>
+{/literal}
+<div class="page-header">
+	<h6>
+		祝福管理
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			{if $row.id}编辑{else}添加{/if}祝福
+		</small>
+	</h6>
+</div>
+<div class="row">
+<div class="col-xs-12">
+	<form class="form-horizontal" role="form" method="post" action="/blessing/edit" enctype="multipart/form-data">
+		<input type="hidden" name="id" id="id" value="{$row.id}" />
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="title">标题</label>
+			<div class="col-sm-10">
+				<input type="text" id="title" name="title" value="{$row.title}" class="col-xs-6" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="text_color">文字颜色</label>
+			<div class="col-sm-10">
+				<input type="text" id="text_color" name="text_color" value="{$row.text_color}" class="col-xs-2" />
+				 <span class="color text_color" style="background:{$row.text_color};"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="border_color">标题底线颜色</label>
+			<div class="col-sm-10">
+				<input type="text" id="border_color" name="border_color" value="{$row.border_color}" class="col-xs-2" />
+				 <span class="color border_color" style="background:{$row.border_color};"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="pic">主图</label>
+			<div class="col-sm-10">
+				<input type="hidden" name="origin_pic" id="origin_pic" value="{$row.pic}" />
+				<div class="col-file col-xs-3"><input type="file" id="pic" name="pic" value="" /></div>
+				{if $row.pic}<a href="{$row.pic}" target="_blank"><img src="{$row.pic}" height="34" onerror="this.src='/images/nopic.png'" /></a>{/if}
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="bg_pic">背景图</label>
+			<div class="col-sm-10">
+				<input type="hidden" name="origin_bg_pic" id="origin_bg_pic" value="{$row.bg_pic}" />
+				<div class="col-file col-xs-3"><input type="file" id="bg_pic" name="bg_pic" value="" /></div>
+				{if $row.bg_pic}<a href="{$row.bg_pic}" target="_blank"><img src="{$row.bg_pic}" height="34" onerror="this.src='/images/nopic.png'" /></a>{/if}
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="share_pic">分享图</label>
+			<div class="col-sm-10">
+				<input type="hidden" name="origin_share_pic" id="origin_share_pic" value="{$row.share_pic}" />
+				<div class="col-file col-xs-3"><input type="file" id="share_pic" name="share_pic" value="" /></div>
+				{if $row.share_pic}<a href="{$row.share_pic}" target="_blank"><img src="{$row.share_pic}" height="34" onerror="this.src='/images/nopic.png'" /></a>{/if}
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="top_avatar_pic">顶部头像花圈</label>
+			<div class="col-sm-10">
+				<input type="hidden" name="origin_top_avatar_pic" id="origin_top_avatar_pic" value="{$row.top_avatar_pic}" />
+				<div class="col-file col-xs-3"><input type="file" id="top_avatar_pic" name="top_avatar_pic" value="" /></div>
+				{if $row.top_avatar_pic}<a href="{$row.top_avatar_pic}" target="_blank"><img src="{$row.top_avatar_pic}" height="34" onerror="this.src='/images/nopic.png'" /></a>{/if}
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="bottom_avatar_pic">底部头像花圈</label>
+			<div class="col-sm-10">
+				<input type="hidden" name="origin_bottom_avatar_pic" id="origin_bottom_avatar_pic" value="{$row.bottom_avatar_pic}" />
+				<div class="col-file col-xs-3"><input type="file" id="bottom_avatar_pic" name="bottom_avatar_pic" value="" /></div>
+				{if $row.bottom_avatar_pic}<a href="{$row.bottom_avatar_pic}" target="_blank"><img src="{$row.bottom_avatar_pic}" height="34" onerror="this.src='/images/nopic.png'" /></a>{/if}
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="bg_music">背景音乐</label>
+			<div class="col-sm-10">
+				<a href="?app=home&act=music" class="music iframe-layer">{if $row.music_name}<h5><font color="blue">{$row.music_name}</font></h5>{else}<h5>未选择任何音乐</h5>{/if}</a>
+				<input type="hidden" id="bg_music" name="bg_music" value="{$row.bg_music}" />
+				<input type="checkbox" data-type="app" data-style="margin-left:15px;" name="music_enable" value="1" {if $row.music_enable==1}checked{/if} />
+				{if $row.bg_music}<div class="audio" style="margin-top:15px;"><audio src="{$row.bg_music}" controls></audio></div>{/if}
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="content">
+				内容
+				<div class="clear"></div>
+				<div class="checkbox not-mobile" >
+					<label><input type="checkbox" class="premobile ace" /> <span class="lbl">预览</span></label>
+				</div>
+			</label>
+			<div class="col-sm-10">
+				<textarea class="ckeditor_custom" name="content" id="content" rows="20">{$row.content|raw}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="sort">排序</label>
+			<div class="col-sm-10">
+				<input type="text" name="sort" id="sort" value="{$row.sort}" class="col-xs-2" />
+				<span class="some-line">数字越小，排在越前</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="status">状态</label>
+			<div class="col-sm-10">
+				<div class="radio">
+					<label>
+						<input type="radio" name="status" value="1" class="ace" {if $row.status==1}checked{/if} />
+						<span class="lbl">显示</span></label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type="radio" name="status" value="0" class="ace" {if $row.status==0}checked{/if} />
+						<span class="lbl">隐藏</span></label>
+				</div>
+			</div>
+		</div>
+
+		<div class="clearfix form-actions">
+			<div class="col-md-offset-3 col-md-9">
+				<button class="btn btn-info" type="submit">
+					<i class="ace-icon fa fa-check bigger-110"></i>
+					提交
+				</button>
+
+				&nbsp; &nbsp; &nbsp;
+				<button class="btn" type="reset">
+					<i class="ace-icon fa fa-undo bigger-110"></i>
+					重置
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+{include file="footer"}
+<script>
+$(function(){
+	ckeditorUploadPath('content', 'blessing');
+	window.top.selectMusic = function(name, url){
+		$('#music_name').val(name);
+		$('#bg_music').val(url).prev().html('<h5><font color="blue">'+name+'</font></h5>');
+		$('#bg_music').parent().find('.audio').remove();
+		$('#bg_music').parent().append('<div class="audio" style="margin-top:15px;"><audio src="'+url+'" controls></audio></div>');
+		$.iframeLayer(false);
+	};
+	$('#text_color, .text_color').colorpicker({
+		target: '#text_color',
+		callback: function(c){
+			$('.text_color').css('background', c);
+		}
+	});
+	$('#border_color, .border_color').colorpicker({
+		target: '#border_color',
+		callback: function(c){
+			$('.border_color').css('background', c);
+		}
+	});
+});
+</script>

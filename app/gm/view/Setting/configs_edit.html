@@ -1,0 +1,114 @@
+{include file="header"}
+
+<div class="page-header">
+	<h6>
+		系统设置
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			参数设置
+		</small>
+	</h6>
+</div>
+<div class="row">
+<div class="col-xs-12">
+	<form class="form-horizontal" role="form" method="post" action="/setting/configs_edit" enctype="multipart/form-data">
+		<div class="form-group hidden">
+			<label class="col-sm-2 control-label no-padding-right" for="id">ID</label>
+			<div class="col-sm-10">
+				<input type="text" id="id" name="id" readonly value="{$row.id}" class="col-xs-2" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="id">参数标识</label>
+			<div class="col-sm-10">
+				<input type="text" id="name" name="name" value="{$row.name}" readonly class="col-xs-6" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="id">参数说明</label>
+			<div class="col-sm-10">
+				<input type="text" id="memo" name="memo" value="{:str_replace('"','&#34',$row.memo)}" readonly class="col-xs-6" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right">参数值</label>
+			<div class="col-sm-10">
+				{if $row.type=='file'}
+				<input type="hidden" id="origin_content" name="origin_content" value="{$row.content}" />
+				<div class="col-file col-xs-3"><input type="file" name="content" {$row.file_attr} /></div>
+				{if $row.content}
+					{if $row.is_image==1}
+					<a href="{$row.image}" target="_blank"><img src="{$row.image}" height="34" onerror="this.src='/images/nopic.png'" /></a>
+					{else}
+					<span class="some-line"><a href="{$row.content}" target="_blank">打开文件</a></span>
+					{/if}
+				{/if}
+				{elseif $row.type=='radio' || $row.type=='checkbox' || $row.type=='select' || $row.type=='switch'}
+				{$row.parse_content|raw}
+				{elseif $row.type=='color'}
+				{$row.parse_content|raw}
+				{elseif $row.type=='textarea'}
+				<textarea class="form-control" name="content" rows="5" placeholder="{$row.placeholder}">{$row.content|raw}</textarea>
+				{else}
+				<input class="form-control" type="text" name="content" value="{$row.content}" placeholder="{$row.placeholder}" />
+				{/if}
+			</div>
+		</div>
+		{foreach $row.subconfig as $g}
+		<div class="form-group" style="display:none;" data-parent{$g.parent_id}-value=",{$g.parent_value},">
+			<label class="col-sm-2 control-label no-padding-right">{$g.memo}</label>
+			<div class="col-sm-10">
+				{if $g.type=='file'}
+				<input type="hidden" id="origin_{$g.name}" name="origin_{$g.name}" value="{$g.content}" />
+				<div class="col-file col-xs-3"><input type="file" name="{$g.name}" {$g.file_attr} /></div>
+				{if $g.content}
+					{if $g.is_image==1}
+					<a href="{$g.image}" target="_blank"><img src="{$g.image}" height="34" onerror="this.src='/images/nopic.png'" /></a>
+					{else}
+					<span class="some-line"><a href="{$g.content}" target="_blank">打开文件</a></span>
+					{/if}
+				{/if}
+				{elseif $g.type=='radio' || $g.type=='checkbox' || $g.type=='select' || $g.type=='switch'}
+				{$g.parse_content|raw}
+				{elseif $g.type=='color'}
+				{$g.parse_content|raw}
+				{elseif $g.type=='textarea'}
+				<textarea class="form-control" name="{$g.name}" rows="5" placeholder="{$g.placeholder}">{$g.content|raw}</textarea>
+				{else}
+				<input class="form-control" type="text" name="{$g.name}" value="{$g.content}" placeholder="{$g.placeholder}" />
+				{/if}
+			</div>
+		</div>
+		{/foreach}
+
+		<div class="clearfix form-actions">
+			<div class="col-md-offset-3 col-md-9">
+				<button class="btn btn-info" type="submit">
+					<i class="ace-icon fa fa-check bigger-110"></i>
+					提交 
+				</button>
+
+				&nbsp; &nbsp; &nbsp;
+				<button class="btn" type="reset">
+					<i class="ace-icon fa fa-undo bigger-110"></i>
+					重置
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+
+{include file="footer"}
+<script>
+$(function(){
+	$('.some-color').colorpicker({
+		target: function(){
+			return this.prev();
+		},
+		callback: function(c){
+			$(this).css('background', c);
+		}
+	});
+});
+</script>

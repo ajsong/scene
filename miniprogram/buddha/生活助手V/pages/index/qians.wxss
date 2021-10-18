@@ -1,0 +1,46 @@
+page{height:100%;}
+page > text{display:block; position:fixed; z-index:9999; left:0; top:0; width:44px; height:44px; background:url(data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%201024%201024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M255.72%20511.99%20250.279%20517.451%20686.469%20953.646%20773.721%20866.412%20419.317%20511.99%20773.721%20157.608%20686.469%2070.354%20250.279%20506.568Z%22%20fill%3D%22%23000000%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E) no-repeat 5px center; background-size:20px 20px;}
+
+.home{height:100%; overflow:hidden; background:#e8dfd0 no-repeat center bottom; background-size:100% auto;}
+.home .huan{position:absolute; left:50%; bottom:843rpx; z-index:1; margin-left:-244rpx; width:464rpx; height:464rpx; background:no-repeat center center; background-size:cover; -webkit-animation:rotate-spin 15s steps(500) infinite; animation:rotate-spin 15s steps(500) infinite;}
+.home .gylay{position:absolute; left:0; bottom:825rpx; z-index:1; width:100%; height:126rpx; background:no-repeat center center; background-size:auto 100%;}
+.home .qian{position:absolute; left:50%; bottom:398rpx; z-index:1; margin-left:-75rpx; width:150rpx; height:318rpx; background:no-repeat center center; background-size:cover; -webkit-animation:play-spin 2s steps(9) infinite; animation:play-spin 2s steps(9) infinite;}
+.home .qian-fast{-webkit-animation-duration:0.5s; animation-duration:0.5s;}
+.home .font{position:absolute; z-index:1; left:0; bottom:281rpx; width:100%; height:58rpx; background:no-repeat center center; background-size:auto 100%;}
+@keyframes rotate-spin{100%{transform:rotate(360deg);}}
+@-webkit-keyframes rotate-spin{100%{-webkit-transform:rotate(360deg);}}
+@keyframes play-spin{
+0%{transform:rotate(0);}
+24%{transform:rotate(30deg);}
+25%{transform:rotate(30deg);}
+26%{transform:rotate(30deg);}
+50%{transform:rotate(0);}
+74%{transform:rotate(-30deg);}
+75%{transform:rotate(-30deg);}
+76%{transform:rotate(-30deg);}
+100%{transform:rotate(0);}
+}
+@-webkit-keyframes play-spin{
+0%{-webkit-transform:rotate(0);}
+24%{-webkit-transform:rotate(30deg);}
+25%{-webkit-transform:rotate(30deg);}
+26%{-webkit-transform:rotate(30deg);}
+50%{-webkit-transform:rotate(0);}
+74%{-webkit-transform:rotate(-30deg);}
+75%{-webkit-transform:rotate(-30deg);}
+76%{-webkit-transform:rotate(-30deg);}
+100%{-webkit-transform:rotate(0);}
+}
+
+.addMy{position:fixed; z-index:1000; right:35rpx; top:64px; width:375rpx; height:60rpx; line-height:60rpx; border-radius:30rpx; background:#fff; font-size:28rpx; color:#333; text-align:center; box-shadow:0 0 23rpx rgba(0,0,0,0.15); -webkit-animation:addMy-spin 0.5s steps(12, end) infinite; animation:addMy-spin 0.5s steps(12, end) infinite;}
+.addMy:before{content:""; display:block; position:absolute; right:24%; top:0; width:0; height:0; overflow:hidden; border:11rpx solid; border-color:transparent transparent #fff transparent; -webkit-transform:translate(-50%,-100%); transform:translate(-50%,-100%);}
+.addMy:after{content:""; display:block; position:absolute; right:0; top:0; width:60rpx; height:60rpx; background:url(data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%220%200%201024%201024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M511.1%20459.5l256.6-256.6c15.2-15.2%2039.8-15.2%2055%200%2015.2%2015.2%2015.2%2039.8%200%2055L566%20514.4%20822.6%20771c15.2%2015.2%2015.2%2039.8%200%2055-15.2%2015.2-39.8%2015.2-55%200L511.1%20569.4%20254.4%20826.1c-15.2%2015.2-39.8%2015.2-55%200-15.2-15.2-15.2-39.8%200-55L456%20514.5%20199.4%20257.8c-15.2-15.2-15.2-39.8%200-55%2015.2-15.2%2039.8-15.2%2055%200l256.7%20256.7z%22%20fill%3D%22%23333333%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E) no-repeat center center; background-size:32rpx 32rpx;}
+@-webkit-keyframes addMy-spin{0%{-webkit-transform:translateY(0);}50%{-webkit-transform:translateY(23rpx);}100%{-webkit-transform:translateY(0);}}
+@keyframes addMy-spin{0%{transform:translateY(0);}50%{transform:translateY(23rpx);}100%{transform:translateY(0);}}
+
+.tips-dialog .weui-mask{background:rgba(0,0,0,0);}
+.tips-dialog .weui-dialog{width:656rpx; height:583rpx; box-shadow:0 0 35rpx rgba(0,0,0,0.4); background:no-repeat center center; background-size:cover; border-radius:32rpx;}
+.tips-dialog .weui-dialog__bd{box-sizing:border-box; padding:35rpx 46rpx 0 46rpx; word-break:break-all; white-space:pre-wrap;}
+.tips-dialog .weui-dialog__ft{height:70rpx; line-height:70rpx; font-size:37rpx; margin-top:23rpx;}
+.tips-dialog .weui-dialog__ft:before{display:none;}
+.tips-dialog .weui-dialog__btn, .tips-dialog  .weui-dialog__btn_primary{background:#d90400; margin:0 117rpx; color:#ffe4b0; border-radius:35rpx; text-shadow:0 2rpx 4rpx rgba(0,0,0,0.5);}

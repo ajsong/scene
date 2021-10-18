@@ -1,0 +1,309 @@
+{include file="header"}
+<style>
+.preview-box{ position:absolute; z-index:11; right:15px; top:15px; width:320px; }
+.iframe .preview-box{ position:fixed; z-index:11; right:15px; top:15px; width:320px; }
+.template-preview{ box-sizing:border-box; border:1px solid #e7e7e7; border-radius:5px; background:#fff; }
+.template-preview .hd{ padding:15px; height:62px; box-sizing:border-box; line-height:32px; color:#999; border-bottom:1px solid #e7e7e7; }
+.template-preview .hd i{ display:block; width:32px; height:32px; border-radius:100%; float:left; margin-right:15px; background:no-repeat center center; background-size:cover; }
+.template-preview .bd{ padding:15px; box-sizing:border-box; min-height:260px; text-align:left; line-height:20px; }
+.template-preview .bd div{ margin-bottom:6px; overflow:hidden; padding-left:90px; }
+.template-preview .bd div:after{ clear:both; }
+.template-preview .bd div font{ display:block; float:left; color:#999; width:90px; margin-left:-90px; }
+.template-preview .bd div span{ display:block; }
+.template-preview .ft{ padding:0 15px; height:40px; line-height:40px; border-top:1px solid #e7e7e7; }
+.template-preview .ft div{ height:100%; color:#999; background:url("data:image/svg+xml;charset=utf-8,%3Csvg%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2064%2064%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%3Cg%20class%3D%22transform-group%22%3E%3Cg%20transform%3D%22scale(0.0625%2C%200.0625)%22%3E%3Cpath%20d%3D%22M761.056%20532.128c0.512-0.992%201.344-1.824%201.792-2.848%208.8-18.304%205.92-40.704-9.664-55.424L399.936%20139.744c-19.264-18.208-49.632-17.344-67.872%201.888-18.208%2019.264-17.376%2049.632%201.888%2067.872l316.96%20299.84-315.712%20304.288c-19.072%2018.4-19.648%2048.768-1.248%2067.872%209.408%209.792%2021.984%2014.688%2034.56%2014.688%2012%200%2024-4.48%2033.312-13.44l350.048-337.376c0.672-0.672%200.928-1.6%201.6-2.304%200.512-0.48%201.056-0.832%201.568-1.344C757.76%20538.88%20759.2%20535.392%20761.056%20532.128z%22%20fill%3D%22%23000000%22%3E%3C%2Fpath%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E") no-repeat right center; background-size:auto 12px; }
+</style>
+<div class="page-header">
+	<h6>
+		微信管理
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			{if $row.id}编辑{else}添加{/if}模板消息
+		</small>
+	</h6>
+</div>
+<div class="row">
+<div class="col-xs-12">
+	
+	<div class="preview-box">
+		<div class="template-preview">
+			<div class="hd clear-after"><i style="background-image:url({$wechat->pic});"></i>{$wechat->name}</div>
+			<div class="bd"></div>
+			<div class="ft"><div>查看详情</div></div>
+		</div>
+	</div>
+	
+	<form class="form-horizontal" role="form" method="post" action="/wechat/template_edit?parent_id={$parent_id}&parent_type={$parent_type}" enctype="multipart/form-data" onsubmit="return setData()">
+		<input type="hidden" name="id" id="id" value="{$row.id}" />
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="template_id">选择模板</label>
+			<div class="col-sm-10">
+				<select name="template_id" id="template_id" style="min-width:120px;margin-right:15px;">
+					<option value="">请选择</option>
+					{foreach $templates as $g}
+					<option value="{$g.priTmplId}" data-content="{$g.content}" {if $g.priTmplId==$row.template_id}selected{/if}>{$g.title}</option>
+					{/foreach}
+				</select>
+				<button type="button" class="btn btn-xs btn-success btn-async" data-id="{$parent_id}" data-type="{$parent_type}">
+					<i class="ace-icon fa fa-refresh"></i>
+					同步模板
+				</button>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right"></label>
+			<div class="col-sm-10">
+				<h5>模板管理，请前往微信公众号后台添加</h5>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="url">消息链接</label>
+			<div class="col-sm-10">
+				<input type="text" id="url" name="url" value="{$row.url}" class="col-xs-6" />
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right"></label>
+			<div class="col-sm-10">
+				<h5>请填写完整的链接，电话请填写 tel:10086</h5>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="type">跳转小程序</label>
+			<div class="col-sm-10">
+				<input type="checkbox" id="type" name="type" value="1" data-type="app" data-style="float:left;" {if $row.type==1}checked{/if} />
+				<span class="some-line">开启后消息链接将无效</span>
+			</div>
+		</div>
+		
+		<div class="form-block form-miniprogram hidden">
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="appid">小程序appId</label>
+			<div class="col-sm-10">
+				<input type="text" id="appid" name="appid" value="{if strlen($row.appid)}{$row.appid}{elseif $parent_type==1}{$wechat->appid}{/if}" class="col-xs-3" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="pagepath">小程序pagepath</label>
+			<div class="col-sm-10">
+				<input type="text" id="pagepath" name="pagepath" value="{$row.pagepath}" class="col-xs-3" />
+			</div>
+		</div>
+		</div>
+		
+		<div class="template-data"></div>
+
+		<div class="clearfix form-actions">
+			<div class="col-md-offset-3 col-md-9">
+				<button class="btn btn-info" type="submit">
+					<i class="ace-icon fa fa-check bigger-110"></i>
+					提交
+				</button>
+
+				&nbsp; &nbsp; &nbsp;
+				<button class="btn" type="reset">
+					<i class="ace-icon fa fa-undo bigger-110"></i>
+					重置
+				</button>
+			</div>
+		</div>
+		<input type="hidden" id="parent_type" value="{$parent_type}" />
+		<input type="hidden" id="origin_template_id" value="{$row.template_id}" />
+		<input type="hidden" id="name" name="name" value="{$row.name}" />
+		<textarea name="content" id="content" class="hidden">{$row.content|raw}</textarea>
+		<textarea name="content_data" id="content_data" class="hidden">{$row.content_data|raw}</textarea>
+	</form>
+</div>
+</div>
+{include file="footer"}
+{literal}
+<script>
+let contentData = {};
+function changeMiniprogram(){
+	if($('#type')[0].checked){
+		$('.form-miniprogram').removeClass('hidden');
+	}else{
+		$('.form-miniprogram').addClass('hidden');
+	}
+}
+function changePreview(data){
+	let bd = $('.template-preview .bd');
+	let content = bd.html().replace(new RegExp('<span class="(\\w+)">{{'+data.mark+'.DATA}}<\/span>'), '<span class="$1"'+(data.color?' style="color:'+data.color+';"':'')+'>'+data.value+'<\/span>');
+	bd.html(content);
+}
+function setData(){
+	if(!$('#template_id').val().length){
+		$.overloadError('请选择模板');
+		return false;
+	}
+	let getLength = function(str){
+		let realLength = 0;
+		for(let i=0; i<str.length; i++){
+			let charCode = str.charCodeAt(i);
+			if(charCode>=0 && charCode<=128)realLength += 1;
+			else realLength += 2;
+		}
+		return realLength;
+	};
+	contentData = {};
+	let content = $('#content').val();
+	let r = content.match(/{{(\w+)\.DATA}}/g), returnVal = true;
+	//https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/subscribe-message/subscribeMessage.send.html
+	for(let key in r){
+		let matcher = r[key].match(/{{(\w+)\.DATA}}/), mark = matcher[1], textarea = $('[data-id='+mark+']'), val = textarea.val();
+		if(/^thing/.test(mark) && val.length>20){
+			returnVal = false;
+		}else if(/^number/.test(mark) && (!/^[\d.]+$/.test(val) || val.length>32)){
+			returnVal = false;
+		}else if(/^letter/.test(mark) && (!/^[a-zA-Z]+$/.test(val) || val.length>32)){
+			returnVal = false;
+		}else if(/^symbol/.test(mark) && (!/^['"[]|\\\/,.<>{}~`!@#\$%\^&*\(\)]+$/.test(val) || val.length>5)){
+			returnVal = false;
+		}else if(/^character_string/.test(mark) && (/^[\u4e00-\u9fa5]+$/.test(val) || val.length>32)){
+			returnVal = false;
+		}else if(/^time/.test(mark) && !/^(\d{1,2}:\d{1,2}|\d{4}年\d{1,2}月\d{1,2}日 \d{1,2}:\d{1,2})$/.test(val)){
+			returnVal = false;
+		}else if(/^date/.test(mark) && !/^(\d{4}年\d{1,2}月\d{1,2}日|\d{4}年\d{1,2}月\d{1,2}日 \d{1,2}:\d{1,2})$/.test(val)){
+			returnVal = false;
+		}else if(/^amount/.test(mark) && val.length>11){
+			returnVal = false;
+		}else if(/^phone_number/.test(mark) && val.length>17){
+			returnVal = false;
+		}else if(/^car_number/.test(mark) && val.length>8){
+			returnVal = false;
+		}else if(/^name/.test(mark) && getLength(val)>20){
+			returnVal = false;
+		}else if(/^phrase/.test(mark) && (!/^[\u4e00-\u9fa5]+$/.test(val) || getLength(val)>10)){
+			returnVal = false;
+		}
+		if(returnVal){
+			let data = {value:val};
+			if(textarea.next().val())data.color = textarea.next().val();
+			contentData[mark] = data;
+		}else{
+			$('[data-id="'+mark+'"]').addClass('error');
+			break;
+		}
+	}
+	if(returnVal)$('#content_data').val($.jsonString(contentData));
+	return returnVal;
+}
+$(function(){
+	changeMiniprogram();
+	$('#type').on('change', changeMiniprogram);
+	$('.btn-async').on('click', function(){
+		let _this = $(this);
+		$.overload();
+		$.getJSON('/wechat/get_template_list?parent_id='+_this.attr('data-id')+'&parent_type='+_this.attr('data-type'), function(json){
+			let origin = $('#origin_template_id').val(), html = '<option value="">请选择</option>';
+			$.each(json.data, function(){
+				html += '<option value="'+this.priTmplId+'" '+(this.priTmplId===origin?'selected':'')+' data-content="'+this.content+'">'+this.title+'</option>';
+			});
+			$('.template-preview .bd').html('');
+			$('.template-data').html('');
+			$('#template_id').html(html).trigger('change');
+		});
+	});
+	$('#template_id').on('change', function(){
+		let parent_type = Number($('#parent_type').val()), option = $(this).selected(), content = option.attr('data-content');
+		if(!option.val().length){
+			$('#name').val('');
+			$('#content').val('');
+			$('.template-preview .bd').html('');
+			$('.template-data').html('');
+			return;
+		}
+		$('#name').val(option.text());
+		$('#content').val(content);
+		if(parent_type===1)content = option.text()+'\n\n' + content;
+		content = content.replace(/\n\n/g, '<br /><br /><div><font>').replace(/:/g, '').replace(/\n$/, '').replace(/\n/g, '</div><div><font>').replace(/{{(\w+)\.DATA}}/g, function(_$, $1){
+			return '</font><span class="'+$1+'">{{'+$1+'.DATA}}</span>';
+		});
+		$('.template-preview .bd').html(content);
+		let r = content.match(/{{(\w+)\.DATA}}/g), html = '';
+		for(let key in r){
+			let matcher = r[key].match(/{{(\w+)\.DATA}}/), mark = matcher[1], placeholder = '';
+			if(/^thing/.test(mark)){
+				placeholder = '20个以内字符，可汉字、数字、字母或符号组合';
+			}else if(/^number/.test(mark)){
+				placeholder = '32位以内数字，只能数字，可带小数';
+			}else if(/^letter/.test(mark)){
+				placeholder = '32位以内字母，只能字母';
+			}else if(/^symbol/.test(mark)){
+				placeholder = '5位以内符号，只能符号';
+			}else if(/^character_string/.test(mark)){
+				placeholder = '32位以内数字、字母或符号，可数字、字母或符号组合';
+			}else if(/^time/.test(mark)){
+				placeholder = '24小时制时间格式（支持+年月日），例如：15:01，或：2019年10月1日 15:01';
+			}else if(/^date/.test(mark)){
+				placeholder = '年月日格式（支持+24小时制时间），例如：2019年10月1日，或：2019年10月1日 15:01';
+			}else if(/^amount/.test(mark)){
+				placeholder = '1个币种符号+10位以内纯数字，可带小数，结尾可带“元”，可带小数';
+			}else if(/^phone_number/.test(mark)){
+				placeholder = '17位以内，数字、符号，电话号码，例：+86-0766-66888866';
+			}else if(/^car_number/.test(mark)){
+				placeholder = '8位以内，第一位与最后一位可为汉字，其余为字母或数字，车牌号码：粤A8Z888挂';
+			}else if(/^name/.test(mark)){
+				placeholder = '10个以内纯汉字或20个以内纯字母或符号，中文名10个汉字内；纯英文名20个字母内；中文和字母混合按中文名算，10个字内';
+			}else if(/^phrase/.test(mark)){
+				placeholder = '5个以内汉字，5个以内纯汉字，例如：配送中';
+			}
+			html += '<div class="form-group">\
+				<label class="col-sm-2 control-label no-padding-right" for="'+mark+'">'+mark+'</label>\
+				<div class="col-sm-10">\
+					<textarea data-id="'+mark+'" value="" class="col-xs-6 content" placeholder="'+placeholder+'" style="height:100px;">'+(typeof(contentData[mark])!=='undefined'?contentData[mark].value:'')+'</textarea>\
+					<input type="hidden" value="'+(typeof(contentData[mark])!=='undefined'?contentData[mark].color:'')+'" />\
+					<span class="some-color" style="background:'+(typeof(contentData[mark])!=='undefined'?contentData[mark].color:'')+';" data-mark="'+mark+'"></span>\
+				</div>\
+			</div>';
+		}
+		if(html.length){
+			$('.template-data').html(html);
+			$('.template-data .some-color').colorpicker({
+				transparent: true,
+				callback: function(c){
+					let _span = $(this);
+					c = c==='transparent' ? '' : c;
+					_span.css('background', c).prev().val(c);
+					$('.template-preview .bd .'+_span.attr('data-mark')).css('color', c);
+				}
+			});
+			$('.template-data textarea').on('keydown', function(e){
+				if(e.keyCode===13)return false;
+			}).on('keyup', function(){
+				let _textarea = $(this), mark = _textarea.attr('data-id');
+				if(!_textarea.val().length){
+					$('.template-preview .bd .'+mark).html('{{'+mark+'.DATA}}');
+				}else{
+					$('.template-preview .bd .'+mark).html(_textarea.val());
+				}
+			});
+		}
+	});
+	$('.template-data textarea').on('keydown', function(){
+		$(this).removeClass('error');
+	});
+	
+	let content = $('#content').val(), datas = $('#content_data').val();
+	if(datas.length){
+		contentData = $.json(datas);
+		if(content.length){
+			for(let key in contentData){
+				let data = contentData[key];
+				data.mark = key;
+				(function(d){
+					setTimeout(function(){
+						changePreview(d);
+					}, 300);
+				})(data);
+			}
+			$('#template_id').trigger('change');
+		}
+	}
+});
+</script>
+{/literal}

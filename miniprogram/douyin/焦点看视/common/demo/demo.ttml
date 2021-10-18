@@ -1,0 +1,8 @@
+<wxs module="helper" src="../../common/helper.wxs"></wxs>
+<import src="../../common/template.ttml" />
+<template is="overload" data="{{overload}}" />
+<template is="dialogView" data="{{dialogView}}" />
+<template is="loginAuth" data="{{loginAuth}}" />
+<view class="member-index">
+
+</view>

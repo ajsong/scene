@@ -1,0 +1,21 @@
+{
+	"pages": [
+		"pages/index/category",
+		"pages/index/index",
+		"pages/index/detail",
+		"pages/index/web",
+		"pages/index/qians",
+		"pages/index/qiansDetail"
+	],
+	"window": {
+		"backgroundTextStyle": "dark",
+		"navigationBarBackgroundColor": "#fff",
+		"navigationBarTitleText": "禅学佛音",
+		"navigationBarTextStyle": "black",
+		"onReachBottomDistance": 0
+	},
+	"sitemapLocation": "sitemap.json",
+	"requiredBackgroundModes": [
+		"audio"
+	]
+}

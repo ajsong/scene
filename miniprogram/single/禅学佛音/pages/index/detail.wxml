@@ -1,0 +1,220 @@
+<wxs module="helper" src="../../common/helper.wxs"></wxs>
+<import src="../../common/libs/wxParse/wxParse.wxml" />
+<import src="../../common/template.wxml" />
+<template is="overload" data="{{overload}}" />
+<template is="dialogView" data="{{dialogView}}" />
+<template is="shareView" data="{{shareView}}" />
+
+<canvas type="2d" id="canvas" style="position:fixed;left:-9999px;top:-9999px;"></canvas>
+
+<view class="nav {{nav_shown}} {{nav_x}}">
+	<text class="return {{returnWhite}}" bindtap="handleGoHome"></text>
+	<block wx:if="{{review==1}}">
+	<view class="title">详情</view>
+	</block>
+	<block wx:else>
+		<block wx:if="{{!shareView.show}}">
+		<view class="play" wx:if="{{audioGoOn}}" bindtap="audioPause"><text></text>播放中</view>
+		<view class="play pause" wx:if="{{!audioGoOn}}" bindtap="audioGoOn"><text></text>已暂停</view>
+		</block>
+	</block>
+</view>
+
+<view class="detail" style="margin-bottom:{{paddingBottom}}; background-image:url({{bg}});  background-size:{{bgsize}};">
+
+	<view wx:if="{{review==0}}" class="header {{header_hidden}} {{header_x}}">
+		<view class="bg" style="background-image:url({{data.pic}});"></view>
+		<view class="view">
+			<view class="title">{{data.title}}</view>
+			<view class="pic" style="background-image:url({{data.pic}});"><text wx:if="{{data.clicks}}">{{data.clicks}}</text></view>
+			<view class="box">
+				<view class="slider">
+					<slider bindchange="audioSlider" block-size="12px" step="2" value="{{audioOffset}}" max="{{audioMax}}" selected-color="#FFCE44" />
+					<view>
+						<text>{{audioDuration}}</text>
+						<text>{{audioTime}}</text>
+					</view>
+				</view>
+				<view class="btns">
+					<view class="btn next {{nextPageClass}}" bindtap="audioNext"></view>
+					<view class="btn prev {{prevPageClass}}" bindtap="audioPrev"></view>
+					<view class="btn" bindtap="audioPlay" wx:if="{{!audioPlay}}"></view>
+					<view class="btn pause" bindtap="audioPause" wx:if="{{audioPlay}}"></view>
+				</view>
+			</view>
+		</view>
+	</view>
+	<block wx:else>
+	<view class="title {{title_x}}">{{data.title}}</view>
+	<view class="time">{{data.add_time}}</view>
+	</block>
+
+	<view wx:if="{{trans && trans.title && trans.title.length}}" class="trans ge-bottom ge-light" data-url="{{trans.url}}" bindtap="handleShowAd">
+		<view class="btn {{btn_x}}">免费订阅</view>
+		<view class="pic" style="{{trans.image?'background-image:url('+trans.image+');':''}}"></view>
+		<view class="tit">{{trans.title}}</view>
+		<view class="tip">点击右边按钮免费订阅</view>
+	</view>
+
+	<view class="bannerBox {{bannerClass}}" style="{{bannerHidden}}" wx:if="{{banner.enable==1}}">
+	<view wx:if="{{banner.type==1}}" class="banner" data-url="{{banner.url}}" bindtap="handleShowAd" style="background-image:url({{banner.image}});"></view>
+	<ad wx:elif="{{banner.type==2}}" unit-id="{{banner.adunit}}"></ad>
+	<ad wx:elif="{{banner.type==3}}" unit-id="{{banner.adunit}}" ad-type="video" ad-theme="white"></ad>
+	<button wx:elif="{{banner.type==4}}" class="banner" open-type="contact" show-message-card="true" send-message-title="{{banner.message_title}}" send-message-path="{{banner.message_path}}" send-message-img="{{banner.message_image}}" style="background-image:url({{banner.image}});"></button>
+	</view>
+
+	<view class="content clear-after">
+		<rich-text nodes="{{data.content}}"></rich-text>
+	</view>
+	<view class="content_next" wx:if="{{content_next==1}}">
+		<view bindtap="handleContentNext">点击查看剩余内容</view>
+	</view>
+
+    <view class="feedbackTips" wx:if="{{feedback}}">
+        若对本文内容有疑议，点击<text bindtap="handleFeedbackShow">投诉举报</text>
+    </view>
+
+	<view wx:if="{{tips.enable}}" class="tips">
+		<text wx:if="{{tips.text}}">{{tips.text}}</text>
+		<view class="finger"></view>
+		<view class="btns">
+			<button wx:if="{{tips.redirect.length}}" data-url="{{tips.redirect}}" bindtap="handleShowAd"><view></view>分享到群</button>
+			<button wx:else open-type="share"><view></view>分享到群</button>
+			<block wx:if="{{posad && posad.url.length}}">
+			<button wx:if="{{posad.url=='contact'}}" class="posad kefu" open-type="contact" show-message-card="true" send-message-title="{{posad.message_title}}" send-message-path="{{posad.message_path}}" send-message-img="{{posad.message_image}}" style="background-image:url({{posad.image}});"><view></view>联系客服</button>
+			<button wx:else class="posad" data-url="{{posad.url}}" bindtap="handleShowAd"><view></view>随喜赞叹</button>
+			</block>
+		</view>
+	</view>
+
+	<view class="footerBox {{footerClass}}" style="{{footerHidden}}" wx:if="{{footer.enable==1}}">
+	<view wx:if="{{footer.type==1}}" class="footer" data-url="{{footer.url}}" bindtap="handleShowAd" style="background-image:url({{footer.image}});"></view>
+	<ad wx:elif="{{footer.type==2}}" unit-id="{{footer.adunit}}"></ad>
+	<ad wx:elif="{{footer.type==3}}" unit-id="{{footer.adunit}}" ad-type="video" ad-theme="white"></ad>
+	<button wx:elif="{{footer.type==4}}" class="footer" open-type="contact" show-message-card="true" send-message-title="{{footer.message_title}}" send-message-path="{{footer.message_path}}" send-message-img="{{footer.message_image}}" style="background-image:url({{footer.image}});"></button>
+	</view>
+
+	<view class="list" wx:if="{{list.length>0}}">
+		<view class="tips">更多推荐<label wx:if="{{review==0}}">欣赏</label></view>
+		<view class="li ge-bottom ge-light" wx:for="{{list}}" wx:key="index">
+			<block wx:if="{{item.type==0}}">
+            <view class="type type{{item.type}} {{item.pic.length?'':'nonpic'}}" data-index="{{index}}" bindtap="handleShowDetail">
+                <view wx:if="{{item.pic.length}}" class="pic {{review==1?'review':''}}" style="background-image:url({{item.pic}});"></view>
+				<text class="span">{{item.title}}</text>
+				<view class="bottom">
+					<view class="ico"><view class="i look"></view> {{item.clicks}}</view>
+					<view class="ico"><view class="i share"></view> {{item.likes}}</view>
+					{{item.add_time}}
+				</view>
+			</view>
+			</block>
+			<block wx:elif="{{item.type==1}}">
+			<view class="type type{{item.type}}" data-url="{{item.url}}" bindtap="handleShowAd" style="background-image:url({{item.pic}});"></view>
+			</block>
+			<block wx:elif="{{item.type==3}}">
+			<ad unit-id="{{item.adunit}}"></ad>
+			</block>
+			<block wx:elif="{{item.type==4}}">
+			<ad unit-id="{{item.adunit}}" ad-type="video" ad-theme="white"></ad>
+			</block>
+			<block wx:if="{{item.type==5}}">
+            <view class="type type{{item.type}}" data-index="{{index}}" bindtap="handleShowDetail">
+				<view style="background-image:url({{item.pic}});" class="i">
+					<view>{{item.title}}</view>
+				</view>
+				<text class="span">{{item.clicks}}播放</text>
+			</view>
+			</block>
+		</view>
+        <view class="loadmore {{loadmore}}" wx:if="{{commentHidden==1}}"></view>
+    </view>
+
+    <view class="comment" wx:if="{{commentHidden==0}}">
+		<view class="tips">网友评论</view>
+    	<block wx:if="{{comment.length>0}}">
+		<view class="li ge-bottom ge-light" wx:for="{{comment}}" wx:key="index">
+			<block wx:if="{{item.type==0}}">
+			<view class="type{{item.type}}">
+				<view class="avatar" style="background-image:url({{item.member_avatar}});"></view>
+				<view class="name">
+					<view bindtap="handleCommentLike" data-index="{{index}}"><view class="i share"></view> {{item.likes}}</view>
+					{{item.member_name}}
+				</view>
+				<view class="content">{{item.content}}</view>
+				<view class="time">{{item.add_time}}</view>
+			</view>
+			</block>
+			<block wx:elif="{{item.type==1}}">
+			<view class="type type{{item.type}}" data-url="{{item.url}}" bindtap="handleShowAd" style="background-image:url({{item.pic}});"></view>
+			</block>
+			<block wx:elif="{{item.type==3}}">
+			<ad unit-id="{{item.adunit}}"></ad>
+			</block>
+			<block wx:elif="{{item.type==4}}">
+			<ad unit-id="{{item.adunit}}" ad-type="video" ad-theme="white"></ad>
+			</block>
+		</view>
+		<view class="loadmore {{loadmore}}"></view>
+    	</block>
+    	<block wx:else>
+		<view class="comment-norecode">
+			<text>暂无任何网友评论</text>
+			<view bindtap="handleCommentShow">我来抢占首席</view>
+		</view>
+		</block>
+	</view>
+</view>
+
+<view class="positionBottom ge-top ge-light" style="padding-bottom:{{paddingBottom}};">
+	<view>
+		<text>{{data.clicks}}</text>
+		<view>{{data.likes}}</view>
+	</view>
+	<view>
+		<button wx:if="{{tips.redirect.length}}" data-url="{{tips.redirect}}" bindtap="handleShowAd"><view></view>分享</button>
+		<button wx:else open-type="share"><view></view>分享</button>
+	</view>
+	<view>
+        <view bindtap="handleGoHome">返回</view>
+		<text bindtap="handleCommentShow" wx:if="{{commentHidden==0}}"></text>
+	</view>
+</view>
+
+<block wx:if="{{commentHidden==0}}">
+<view class="commentLayer {{commentLayerShow}}" bindtap="handleCommentShow"></view>
+<view class="commentView ge-top ge-light {{commentTransform}}" style="margin-bottom:{{paddingBottom}};">
+	<view bindtap="handleCommentSend">发送</view>
+	<input type="text" bindinput="handleCommentInput" bindconfirm="handleCommentSend" maxlength="200" placeholder="优质评论将被优先展示" value="{{commentContent}}" />
+</view>
+</block>
+
+<view wx:if="{{addMy}}" class="addMy {{addmy_x}}" bindtap="handleAddMy">添加到我的小程序</view>
+
+<!-- <view wx:if="{{(newyear && (newyearMusic.length || newyearMusic2.length)) || bgmusic.length}}" class="music {{isPlaying}}" bindtap="handleMusic"></view> -->
+<view class="cover {{cover}}" bindtap="showShare"></view>
+<view wx:if="{{newyear}}" class="newyear" style="height:{{newyearHeight}}rpx;"><template is="wxParse" data="{{wxParseData:newyear.nodes}}" /></view>
+
+<view class="shareLayer {{shareLayerShow}}"></view>
+<view class="shareView {{shareViewShow}}">
+	<text bindtap="handleShareView"></text>
+	<view class="pic finger"></view>
+	<button class="text" open-type="share">分享给朋友查看更多精彩内容</button>
+	<button open-type="share"><view></view>分享给朋友</button>
+</view>
+
+<template is="toast" data="{{toast}}" />
+<view class="dialog-bg" wx:if="{{feedbackShown}}"></view>
+<view class="dialog-view wx feedback" wx:if="{{feedbackShown}}">
+<text class="dialog-title">请选择举报原因</text>
+<view class="dialog-content">
+    <view class="{{feedbackContent==item?'this':''}}" wx:for-items="{{feedbackItems}}" wx:key="index" data-value="{{item}}" bindtap="handleFeedbackChange">{{item}}</view>
+</view>
+<view class="dialog-btns">
+    <view class="dialog-btn blue">
+        <button bindtap="handleFeedbackSubmit">提交</button>
+    </view>
+    <view class="dialog-btn cancel">
+        <button bindtap="handleFeedbackShow">取消</button>
+    </view>
+</view>
+</view>

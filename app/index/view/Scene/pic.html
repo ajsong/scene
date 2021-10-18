@@ -1,0 +1,220 @@
+{include file="header"}
+<body>
+<div class="scene-lib scene-lib-pic">
+	<div class="header">
+		<a href="javascript:void(0)" class="eqf-wrong" coo-click="dialogClose"></a>
+		<h4>素材库</h4>
+	</div>
+	<div class="view">
+		<ul class="list">
+			<li><a href="javascript:void(0)" coo-click="selectGroup(0)">全局</a></li>
+			{foreach $data.list as $g}
+			<li><a href="javascript:void(0)" coo-click="selectGroup({$g.id})">{$g.title}</a></li>
+			{/foreach}
+			<a href="javascript:addGroup()"><em class="eqf-plus2"></em> 添加分组</a>
+		</ul>
+		<ul class="rs">
+			{if count($data.rs)}
+			{foreach $data.rs as $g}
+			<li><a href="javascript:void(0)" id="{$g.id}" url="{$g.pic}" style="background-image:url({$g.pic}?imageMogr2/thumbnail/200x200);"><div><em class="eqf-scene-list"></em></div></a></li>
+			{/foreach}
+			{else}
+			<span>通过本地电脑上传图片</span>
+			{/if}
+		</ul>
+	</div>
+	<div class="multiple hidden"><div>将.png和.jpg文件拖放到这里<span>(最多可添加6张图片)</span></div></div>
+	<div class="btns">
+		<a href="javascript:void(0)" class="right manage {if !count($data)}hidden{/if}"><em class="eqf-option"></em>管理</a>
+		<a href="javascript:void(0)" class="right del hidden"><em class="eqf-exclamation-sign"></em>删除</a>
+		<a href="javascript:void(0)" class="right cancel hidden"><em class="eqf-wrong"></em>取消</a>
+		<a href="javascript:void(0)" class="uploadImage"><em class="eqf-update"></em>上传</a>
+		<a href="javascript:void(0)" class="multipleImage"><em class="eqf-top-pics"></em>批量</a>
+	</div>
+	<ul class="group hidden">
+		<div>转到分组</div>
+		<li><a href="javascript:void(0)" coo-click="transferGroup(0)">全局</a></li>
+		{foreach $data.list as $g}
+		<li><a href="javascript:void(0)" coo-click="transferGroup({$g->id})">{$g.title}</a></li>
+		{/foreach}
+	</ul>
+</div>
+
+{include file="footer"}
+<script>
+let uploading = false, managing = false, gid = 0;
+function selectGroup(group_id){
+	$('.view .list a').removeClass('this');
+	gid = Number(group_id);
+	if(Number(group_id)<=0){
+		group_id = '';
+	}else{
+		$(this).addClass('this');
+	}
+	$.getJSON('/scene/pic', { group_id:group_id }, function(json){
+		let html = '';
+		if($.isArray(json.data.rs) && json.data.rs.length){
+			$.each(json.data.rs, function(){
+				html += '<li><a href="javascript:void(0)" id="'+this.id+'" url="'+this.pic+'" style="background-image:url('+this.pic+'?imageMogr2/thumbnail/200x200);"><div><em class="eqf-scene-list"></em></div></a></li>';
+			});
+		}else{
+			html = '<span>通过本地电脑上传图片</span>';
+		}
+		$('.view .rs').html(html);
+	});
+}
+function addGroup(){
+	let title = prompt('请填写分组名称', '');
+	if(!title)return;
+	if(!title.length){
+		$.overloadError('请填写分组名称');
+		return;
+	}
+	$.postJSON('/scene/addGroup', { type:'pic', title:title }, function(json){
+		$('.view .list > a').before('<li><a href="javascript:void(0)" gid="'+json.data+'" coo-click="selectGroup('+json.data+')">'+title+'</a></li>');
+		$('.group').append('<li><a href="javascript:void(0)" coo-click="transferGroup('+json.data+')">'+title+'</a></li>');
+	});
+}
+function transferGroup(group_id){
+	if(group_id<0)group_id = 0;
+	group_id = Number(group_id);
+	let obj = $('.group').data('obj');
+	$.postJSON('/scene/transferGroup', { type:'pic', group_id:group_id, id:obj.attr('id') }, function(){
+		$('.group').addClass('hidden');
+		let group = $('.list .this');
+		if(group.length && group_id!==gid)obj.parent().remove();
+		$.overloadSuccess('转组成功');
+	});
+}
+function restore(json){
+	uploading = false;
+	$.overload(false);
+	$('.manage').removeClass('hidden');
+	$('.view .rs > span').remove();
+	$('.view .rs').prepend('<li><a href="javascript:void(0)" id="'+json.data.id+'" url="'+json.data.pic+'" style="background-image:url('+json.data.pic+'?imageMogr2/thumbnail/200x200);"><div><em class="eqf-scene-list"></em></div></a></li>');
+}
+$(function(){
+	$(document.body).data('overload.caller', document.body);
+	$('.uploadImage').ajaxupload({
+		url: '/scene/pic',
+		data: { group_id:gid },
+		beforeSelect: function(){
+			if(uploading)return false;
+			uploading = true;
+		},
+		cancel: function(){
+			uploading = false;
+			$.overload(false);
+		},
+		uploading: function(){
+			$.overload(null, '.load-animate load-animate2');
+		},
+		callback: function(json){
+			restore(json);
+		}
+	});
+	$('.multipleImage').click(function(){
+		let multiple = $('.multiple');
+		if(multiple.hasClass('hidden')){
+			multiple.removeClass('hidden');
+		}else{
+			multiple.addClass('hidden');
+		}
+	});
+	$('.multiple div').html5upload({
+		url: '/scene/pic',
+		data: { group_id:gid },
+		progress: function(){
+			$.overload(null, '.load-animate load-animate2');
+		},
+		success: function(res){
+			$.overload(false);
+			$('.multiple').addClass('hidden');
+			$.each(res, function(){
+				restore(this);
+			});
+		}
+	});
+	$('.manage').click(function(){
+		managing = true;
+		$('.manage').addClass('hidden');
+		$('.uploadImage').addClass('hidden');
+		$('.multipleImage').addClass('hidden');
+		$('.multiple').addClass('hidden');
+		$('.del').removeClass('hidden');
+		$('.cancel').removeClass('hidden');
+		$('.view').addClass('delete');
+	});
+	$('.del').click(function(){
+		let ids = [], checked = $('.view .rs a.checked');
+		if(!checked.length){
+			alert('请选择要删除的文件');
+			return;
+		}
+		if(!confirm('真的要删除吗？'))return;
+		checked.each(function(){
+			ids.push($(this).attr('id'));
+		});
+		$.overload(null, '.load-animate load-animate2');
+		$.postJSON('/scene/deleteImage', { ids:ids }, function(){
+			checked.parent().remove();
+			if(!$('.view .rs a').length){
+				$('.view .rs').html('<span>通过本地电脑上传图片</span>');
+				$('.manage').addClass('hidden');
+			}
+		});
+	});
+	$('.cancel').click(function(){
+		managing = false;
+		$('.manage').removeClass('hidden');
+		$('.uploadImage').removeClass('hidden');
+		$('.multipleImage').removeClass('hidden');
+		$('.del').addClass('hidden');
+		$('.cancel').addClass('hidden');
+		$('.view').removeClass('delete');
+		$('.view .rs a.checked').removeClass('checked');
+	});
+	$(document).on('mousedown', function(e){
+		let o = e.target||e.srcElement;
+		do{
+			if($(o).is('em, .group'))return false;
+			o = o.parentNode;
+		}while(o.parentNode);
+		$('.group').addClass('hidden');
+		return true;
+	});
+	$('.view .rs').on('click', 'a', function(e){
+		let o = e.target||e.srcElement;
+		do{
+			if($(o).is('em')){
+				let em = $(o), ul = $('.group').removeClass('hidden').data('obj', em.parent().parent());
+				ul.css({ left:em.offset().left, top:em.offset().top+em.outerHeight(false)+3 });
+				return false;
+			}
+			o = o.parentNode;
+		}while(o.parentNode);
+		let _this = $(this);
+		if(managing){
+			if(_this.hasClass('checked')){
+				_this.removeClass('checked');
+			}else{
+				_this.addClass('checked');
+			}
+			return;
+		}
+		let obj = { url:_this.attr('url') };
+		/*{if $data.type=='bg'}*/
+		window.top.setBg(obj);
+		/*{elseif $data.type=='cover'}*/
+		window.top.setCover(obj);
+		/*{elseif $data.type=='music'}*/
+		window.top.setMusicPic(obj);
+		/*{else}*/
+		obj.control = window.top.getControl();
+		window.top.setPic(obj);
+		window.top.sceneSaved = false;
+		/*{/if}*/
+		dialogClose();
+	});
+});
+</script>

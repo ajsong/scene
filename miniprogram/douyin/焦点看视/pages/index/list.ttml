@@ -1,0 +1,58 @@
+<sjs module="helper" src="../../common/helper.sjs"></sjs>
+<import src="../../common/template.ttml" />
+<template is="overload" data="{{overload}}" />
+<template is="dialogView" data="{{dialogView}}" />
+<view class="index">
+	<view class="list">
+        <block tt:if="{{data.length>0}}">
+			<view class="li shuffle ge-bottom ge-light" tt:for="{{data}}" tt:key="index">
+				<block tt:if="{{item.type==0}}">
+				<view class="type type{{item.type}} style{{item.style}}" data-id="{{item.id}}" data-index="{{index}}" bindtap="handleShowDetail">
+					<block tt:if="{{item.style==0}}">
+					<view class="pic" style="background-image:url({{item.pic}});"></view>
+					<text class="span">{{item.title}}</text>
+					<view class="bottom">
+						{{item.add_time}}
+						<view class="i look"></view> {{item.clicks}}
+						<view class="i share"></view> {{item.likes}}
+					</view>
+					</block>
+					<block tt:else>
+					<text class="span">{{item.title}}</text>
+					<view class="pics">
+						<view tt:if="{{item.pic.length}}" style="background-image:url({{item.pic}});"></view>
+						<view tt:if="{{item.pic2.length}}" style="background-image:url({{item.pic2}});"></view>
+						<view tt:if="{{item.pic3.length}}" style="background-image:url({{item.pic3}});"></view>
+					</view>
+					</block>
+				</view>
+				</block>
+				<block tt:elif="{{item.type==1}}">
+				<view class="type type{{item.type}}" data-url="{{item.url}}" bindtap="handleShowAd" style="background-image:url({{item.pic}});"></view>
+				</block>
+				<block tt:elif="{{item.type==3}}">
+				<ad unit-id="{{item.adunit}}"></ad>
+				</block>
+				<block tt:elif="{{item.type==4}}">
+				<ad unit-id="{{item.adunit}}" ad-type="video" ad-theme="white"></ad>
+				</block>
+				<block tt:elif="{{item.type==5}}">
+				<view class="type type{{item.type}}">
+					<view class="pic" style="background-image:url({{item.pic}});" data-id="{{item.id}}" data-index="{{index}}" bindtap="handleShowDetail">
+						<text class="span">{{item.title}}</text>
+					</view>
+					<view class="bottom">
+						<text>{{item.clicks}}</text>
+						<view bindtap="handleLike" data-index="{{index}}">{{item.likes}}</view>
+					</view>
+				</view>
+				</block>
+				<text class="clear"></text>
+			</view>
+            <view class="loadmore {{loadmore}}"></view>
+        </block>
+        <block tt:else>
+            <view class="norecord">没有任何记录</view>
+        </block>
+	</view>
+</view>

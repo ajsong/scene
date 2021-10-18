@@ -1,0 +1,39 @@
+{include file="header"}
+
+<div class="page-header">
+	<h6>
+		消息中心
+		<div>
+			<a href="?app=home&act=readed_all">全部已读</a>
+		</div>
+	</h6>
+</div>
+
+<div class="table-content">
+<table id="simple-table" class="table table-striped table-bordered table-hover">
+	<thead>
+		<tr>
+			<th width="100">ID</th>
+			<th>内容</th>
+			<th width="150">时间</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		{foreach $rs as $row}
+		<tr>
+			<td>{$row.id}</td>
+			<td>{$row.content}</td>
+			<td>{:date('Y-m-d H:i:s',$row.add_time)}</td>
+		</tr>
+		{foreachelse}
+		<tr bgcolor="white"><td colspan="13" height="50">暂无记录</td></tr>
+		{/foreach}
+
+	</tbody>
+</table>
+</div>
+<div class="mypage">
+	{$rs|raw}
+</div>
+{include file="footer"}

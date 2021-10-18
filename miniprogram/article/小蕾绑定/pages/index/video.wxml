@@ -1,0 +1,74 @@
+<wxs module="helper" src="../../common/helper.wxs"></wxs>
+<import src="../../common/template.wxml" />
+<template is="overload" data="{{overload}}" />
+<template is="dialogView" data="{{dialogView}}" />
+<view class="detail">
+	<view class="video-view" style="height:{{videoHeight}}rpx;">
+		<view class="video">
+			<video wx:if="{{wxVideoAd.enable==1}}" id="player" src="{{video.url}}" poster="{{video.pic}}" autoplay="true" controls="false" bindtimeupdate="timeupdate" unit-id="{{wxVideoAd.adunit}}"></video>
+			<video wx:else id="player" src="{{video.url}}" poster="{{video.pic}}" autoplay="true" controls="false" bindtimeupdate="timeupdate"></video>
+		</view>
+	</view>
+	<view class="btns">
+		<button open-type='share'>发送给好友</button>
+		<button open-type='share'>分享到群</button>
+	</view>
+	<view class="title">{{video.title}}</view>
+	<view class="font">
+		<view class="date">
+			<button open-type='contact'>联系客服</button>
+			<button open-type='share'>分享这个视频</button>
+			<text class="span">{{date}}</text>
+		</view>
+		<view class="opa">
+			<view wx:if="{{btn.enable==1}}" data-url="{{btn.url}}" bindtap="handleShowAd">{{btn.text}}</view>
+			<text class="likes" bindtap="handleLike">{{video.likes}}</text>
+			<text class="played">{{video.clicks}}</text>
+		</view>
+	</view>
+	<view class="ul list">
+		<view class="tips">更多推荐欣赏</view>
+		<block wx:if="{{list.length>0}}">
+			<view class="li ge-bottom ge-light" wx:for="{{list}}" wx:key="index">
+				<block wx:if="{{item.type==0}}">
+				<navigator class="type type{{item.type}}" url="/pages/index/detail?id={{item.id}}" hover-class="none">
+					<view class="pic" style="background-image:url({{item.pic}});"></view>
+					<text class="span">{{item.title}}</text>
+					<view class="bottom">
+						{{item.add_time}}
+						<view class="i look"></view> {{item.clicks}}
+						<view class="i share"></view> {{item.likes}}
+					</view>
+				</navigator>
+				</block>
+				<block wx:elif="{{item.type==1}}">
+				<view data-url="{{item.url}}" bindtap="handleShowAd" style="background-image:url({{item.img}});"></view>
+				</block>
+				<block wx:elif="{{item.type==3}}">
+				<ad unit-id="{{item.adunit}}"></ad>
+				</block>
+				<block wx:elif="{{item.type==4}}">
+				<ad unit-id="{{item.adunit}}" ad-type="video" ad-theme="white"></ad>
+				</block>
+				<block wx:if="{{item.type==5}}">
+				<navigator class="type type{{item.type}}" url="/pages/index/video?id={{item.id}}" hover-class="none">
+					<view style="background-image:url({{item.pic}});" class="i">
+						<view>{{item.title}}</view>
+					</view>
+					<text class="span">{{item.clicks}}播放</text>
+				</navigator>
+				</block>
+			</view>
+            <view class="loadmore {{loadmore}}"></view>
+        </block>
+        <block wx:else>
+            <view class="norecord">没有更多推荐</view>
+        </block>
+	</view>
+</view>
+
+<navigator class="home" open-type="reLaunch" url="/pages/index/index">首页</navigator>
+
+<view wx:if="{{addMy}}" class="addMy" bindtap="handleAddMy">添加到我的小程序</view>
+
+<view class="cover {{cover}}" bindtap="showShare"></view>

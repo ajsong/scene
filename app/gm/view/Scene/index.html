@@ -1,0 +1,106 @@
+{include file="header"}
+<script type="text/javascript" src="/js/clipboard.js"></script>
+<script type="text/javascript" src="/js/jquery.qrcode.js"></script>
+<div class="page-header">
+	<h6>
+		场景管理
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			场景列表
+		</small>
+		<div>
+			<!--<a href="/member/export?where={ where}">导出到EXCEL</a>-->
+		</div>
+	</h6>
+</div>
+
+<div class="table-content">
+<table id="simple-table" class="table table-striped table-bordered table-hover">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>所属会员</th>
+			<th>场景名称</th>
+			<th>场景网址</th>
+			<th>二维码</th>
+			<th>点击数</th>
+			<th>分享数</th>
+			<th>状态</th>
+			<th>发布</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		{if count($rs)}
+		{foreach $rs as $row}
+		<tr>
+			<td>{$row.id}</td>
+			<td>{$row.member_name}</td>
+			<td>{$row.title}</td>
+			<td><a href="{$row.url}" target="_blank">{$row.url}</a></td>
+			<td><div class="qrcode" url="{$row.url}" style="width:120px;height:120px;"></div></td>
+			<td>{$row.click}</td>
+			<td>{$row.share}</td>
+			<td>{if $row.status == 1}<font class="fa fa-check"></font>{else}<font class="fa fa-close"></font>{/if}</td>
+			<td>{if $row.is_publish == 1}<font class="fa fa-check"></font>{else}<font class="fa fa-close"></font>{/if}</td>
+			<td>
+				<a class="parasitic tips" data-id="{$row.id}" href="javascript:void(0)" tips-list="getParasiticList" tips-follow="top" tips-fixy="-5">
+					<button type="button" class="btn btn-xs btn-pink">
+					<i class="ace-icon fa fa-home bigger-120"></i>
+				</button>
+				</a>
+				<a href="/scene/delete?id={$row.id}" class="delete">
+					<button type="button" class="btn btn-xs btn-danger">
+					<i class="ace-icon far fa-trash-alt bigger-120"></i>
+				</button>
+				</a>
+			</td>
+		</tr>
+		{/foreach}
+		{else}
+		<tr bgcolor="white"><td colspan="13" height="50">暂无记录</td></tr>
+		{/if}
+
+	</tbody>
+</table>
+</div>
+<div class="mypage">
+	{$rs|raw}
+</div>
+{include file="footer"}
+<script>
+function getParasiticList(){
+	return [
+		{ cls:'parasitic-list', text:'寄生到驴妈妈', attr:'data-id=`'+this.attr('data-id')+'` data-type=`lmm`' },
+		{ cls:'parasitic-list', text:'寄生到名爵点评', attr:'data-id=`'+this.attr('data-id')+'` data-type=`mjdp`' }
+	];
+}
+$(function(){
+	$('body').on('click', 'a.parasitic-list', function(){
+		let self = $(this);
+		$.overload();
+		$.getJSON('/scene/oss/id/'+self.attr('data-id')+'/type/'+self.attr('data-type'), function(json){
+			let parasitic = new ClipboardJS(self[0], {
+				rightnow: true,
+				text: function(){
+					return json.data;
+				}
+			});
+			parasitic.on('success', function() {
+				setTimeout(function(){
+					$.overloadSuccess('复制成功');
+				}, 300);
+			});
+		});
+	});
+	$('tbody .qrcode').each(function(){
+		let _this = $(this);
+		_this.qrcode({
+			width: _this.width(),
+			height: _this.height(),
+			text: _this.attr('url')
+		});
+	});
+});
+</script>

@@ -1,0 +1,77 @@
+{include file="header"}
+<body>
+<div class="scene-copy scene-link">
+	<div class="header">
+		<a href="javascript:void(0)" class="eqf-wrong" coo-click="dialogClose"></a>
+		<h4>链接组件</h4>
+		<span>两种链接：可以跳转到场景外部的链接，或者内部场景页面</span>
+	</div>
+	<ul class="view">
+		<li>
+			<span><label class="radio"><input type="radio" name="type" id="web" value="web" /><div></div></label> <label for="web">网站地址</label></span>
+			<input type="text" id="href" placeholder="网站地址" />
+		</li>
+		<li>
+			<span><label class="radio"><input type="radio" name="type" id="page" value="page" /><div></div></label> <label for="page">场景页面</label></span>
+			<select>
+				<option value="">选择场景页面</option>
+			</select>
+		</li>
+	</ul>
+	<div class="btns">
+		<a href="javascript:void(0)">确定</a>
+		<a href="javascript:void(0)">取消</a>
+	</div>
+</div>
+
+{include file="footer"}
+<script>
+$(function(){
+	let param = window.top.getPages(), href = $('#href'), selete = $('select');
+	$.each(param.pages, function(i){
+		selete.append('<option value="'+i+'">'+this.title+'</option>');
+	});
+	let data = window.top.getLink();
+	$('#'+data.type).prop('checked', true);
+	if(data.type==='web'){
+		href.val(data.value);
+	}else{
+		selete.selected(Number(data.value)+1, false);
+	}
+	$('[name="type"]').change(function(){
+		$('#href, select').removeClass('error');
+	});
+	href.keydown(function(){
+		$('[name="type"]').checked(0);
+	});
+	selete.change(function(){
+		$('[name="type"]').checked(1);
+	});
+	$('.btns a').click(function(){
+		switch($(this).index()){
+			case 0:
+				$('#href, select').removeClass('error');
+				let type = $('[name="type"]:checked').val(), value = '';
+				if(type==='web'){
+					value = href.val();
+					if(!value.replace(/^http(s)?:\/\//, '').length){
+						href.addClass('error');
+						return;
+					}
+				}else{
+					value = selete.selected().val();
+					if(!value.length){
+						selete.addClass('error');
+						return;
+					}
+				}
+				window.top.setLink(type, value);
+				dialogClose();
+				break;
+			case 1:
+				dialogClose();
+				break;
+		}
+	});
+});
+</script>

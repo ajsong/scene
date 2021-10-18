@@ -1,0 +1,86 @@
+{include file="header"}
+
+<div class="page-header">
+	<h6>
+		管理员列表
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			{if isset($id)}修改{else}添加{/if}管理员
+		</small>
+	</h6>
+</div>
+<div class="row">
+<div class="col-xs-12">
+	<form class="form-horizontal" role="form" method="post" action="/setting/manager_edit" enctype="multipart/form-data">
+		<input type="hidden" name="id" value="{$row.id}" />
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="name">账号</label>
+			<div class="col-sm-10">
+				<input type="text" id="name" name="name" value="{$row.name}" class="col-xs-2" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="password">密码</label>
+			<div class="col-sm-10">
+				<input type="password" id="password" name="password" value="" class="col-xs-2" />
+				{if isset($id)}<span class="some-line">不修改请留空</span>{/if}
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="real_name">姓名</label>
+			<div class="col-sm-10">
+				<input type="text" id="real_name" name="real_name" value="{$row.real_name}" class="col-xs-2" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="mobile">电话</label>
+			<div class="col-sm-10">
+				<input type="text" id="mobile" name="mobile" value="{$row.mobile}" class="col-xs-2" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="qq">QQ</label>
+			<div class="col-sm-10">
+				<input type="text" id="qq" name="qq" value="{$row.qq}" class="col-xs-2" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="weixin">微信</label>
+			<div class="col-sm-10">
+				<input type="text" id="weixin" name="weixin" value="{$row.weixin}" class="col-xs-2" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="status">状态</label>
+			<div class="col-sm-10">
+				<div class="radio">
+					<label>
+						<input {if $row.status==1}checked{/if} value="1" name="status" type="radio" class="ace" />
+						<span class="lbl">正常</span></label>
+				</div>
+				<div class="radio">
+					<label>
+						<input {if $row.status==0}checked{/if} value="0" name="status" type="radio" class="ace" />
+						<span class="lbl">冻结</span></label>
+				</div>
+			</div>
+		</div>
+		<div class="clearfix form-actions">
+			<div class="col-md-offset-3 col-md-9">
+				<button class="btn btn-info" type="submit">
+					<i class="ace-icon fa fa-check bigger-110"></i>
+					提交
+				</button>
+
+				&nbsp; &nbsp; &nbsp;
+				<button class="btn" type="reset">
+					<i class="ace-icon fa fa-undo bigger-110"></i>
+					重置
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+
+{include file="footer"}

@@ -1,0 +1,70 @@
+{include file="header"}
+<body class="grl">
+<div class="home-login">
+	<div class="login register"></div>
+<script>
+function toggleLogin(){
+	let view = $('.home-login .login');
+	if(!view.hasClass('register')){
+		let html = '<div class="nav"><a href="javascript:void(0)" coo-click="toggleLogin">登录</a></div>\
+		<div class="view">\
+			<div class="title"><span>注册账号</span></div>\
+			<div class="box input"><input type="text" id="username" maxlength="16" placeholder="用户名" /><i></i></div>\
+			<div class="box input password"><input type="password" id="password" maxlength="16" placeholder="6-16个字符（英文字母或数字，区分大小写）" /><i></i></div>\
+			<a class="box btn" href="javascript:void(0)" data-type="register" coo-click="login">注册</a>\
+			<div class="box account-error"><span></span></div>\
+			<div class="box tips">为了获得更好的使用，建议使用Chrome谷歌浏览器</div>\
+			<a class="box about" href="/index/about">关于{$WEB_NAME}</a>\
+		</div>';
+		view.addClass('register').html(html);
+	}else{
+		let html = '<div class="nav">{if intval($data.G_REGISTER)==1}<a href="javascript:void(0)" coo-click="toggleLogin">注册</a>{/if}</div>\
+		<div class="view">\
+			<div class="title"><span>登录</span></div>\
+			<div class="box input"><div><label class="checkbox"><input type="checkbox" id="remember" /><span></span></label><label for="remember">记住登录</label></div><input type="text" id="username" maxlength="16" placeholder="用户名" /><i></i></div>\
+			<div class="box input password"><input type="password" id="password" maxlength="16" placeholder="密码" /><i></i></div>\
+			<a class="box btn" href="javascript:void(0)" data-type="login" coo-click="login">登录</a>\
+			<div class="box account-error"><span></span></div>\
+			<div class="box tips">为了获得更好的使用，建议使用Chrome谷歌浏览器</div>\
+			<a class="box about" href="/index/about">关于{$WEB_NAME}</a>\
+		</div>';
+		view.removeClass('register').html(html);
+		$('#password').onkey(function(code){
+			if(code===13)$('.btn').click();
+		});
+	}
+}
+function login(){
+	let _this = $(this), username = $('#username'), password = $('#password'), type = _this.attr('data-type');
+	if(username.val().length<=0 || password.val().length<=0)return;
+	let text = _this.html(), data = { username:username.val(), password:password.val() };
+	if($('#remember:checked').length)data.remember = 1;
+	_this.html('<div class="preloader"></div>');
+	$.postJSON('/passport/'+type, data, {
+		success: function(){
+			location.href = '/index';
+			/*$.get(location.origin, function(html){
+				let matcher = html.match(/<body[^>]*>([\s\S]+?)<\/body>/);
+				$('body').css('overflow', 'hidden').prepend(matcher[1]);
+				setTimeout(function(){
+					$('.home-login').addClass('home-login-out');
+					window.history.pushState(null, '', '/index/home');
+					setTimeout(function(){
+						$('.home-login').remove();
+						$('body').css('overflow', '');
+					}, 300);
+				}, 300);
+			});*/
+		},
+		error: function(json){
+			_this.html(text);
+			$('.home-login .account-error span').html(json.msg).fadeIn(300);
+		}
+	});
+}
+$(function(){
+	toggleLogin();
+});
+</script>
+</div>
+{include file="footer"}

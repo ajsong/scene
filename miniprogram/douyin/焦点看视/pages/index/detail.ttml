@@ -1,0 +1,197 @@
+<sjs module="helper" src="../../common/helper.sjs"></sjs>
+<import src="../../common/libs/wxParse/wxParse.ttml" />
+<import src="../../common/template.ttml" />
+<template is="overload" data="{{overload}}" />
+<template is="dialogView" data="{{dialogView}}" />
+<view class="detail" style="margin-bottom:{{paddingBottom}};">
+	<view class="bannerBox {{bannerClass}} {{banner.type==3?'videoAdMinHeight':''}}" style="{{bannerHidden}}" tt:if="{{banner.enable==1}}">
+	<view tt:if="{{banner.type==1}}" class="banner" data-url="{{banner.url}}" bindtap="handleShowAd" style="background-image:url({{banner.image}});"></view>
+	<ad tt:elif="{{banner.type==2}}" unit-id="{{banner.adunit}}"></ad>
+	<ad tt:elif="{{banner.type==3}}" unit-id="{{banner.adunit}}" ad-type="video" ad-theme="white"></ad>
+	<button tt:elif="{{banner.type==4}}" class="banner" open-type="contact" show-message-card="true" send-message-title="{{banner.message_title}}" send-message-path="{{banner.message_path}}" send-message-img="{{banner.message_image}}" style="background-image:url({{banner.image}});"></button>
+	</view>
+
+	<view class="title">{{data.title}}</view>
+
+    <view class="time">
+        <view tt:if="{{btn.enable==1}}" data-url="{{btn.url}}" bindtap="handleShowAd">{{btn.text}}</view>
+		<text class="mp-title" tt:if="{{mp && mp.title && mp.title.length}}" data-url="{{mp.url}}" bindtap="handleShowAd">{{mp.title}}</text>{{data.add_time}}
+    </view>
+    <view tt:if="{{mp && mp.title && mp.title.length}}" class="mp-img" style="{{mp.image?'background-image:url('+mp.image+');':''}}" data-url="{{mp.url}}" bindtap="handleShowAd"></view>
+    <view class="subscribe-img" tt:elif="{{subscribe_id.length}}" style="{{subscribe_img?'background-image:url('+subscribe_img+');':''}}" bindtap="handleShowSubscribe"></view>
+
+	<view tt:if="{{trans && trans.title && trans.title.length}}" class="trans" data-url="{{trans.url}}" bindtap="handleShowAd">
+		<view class="btn">接受</view>
+		<view class="pic" style="{{trans.image?'background-image:url('+trans.image+');':''}}"></view>
+		<view class="tit">{{trans.title}}</view>
+		<view class="tip">点击“<text>接受</text>”添加好友</view>
+	</view>
+
+	<block tt:if="{{content}}">
+	<view class="content clear-after">
+		<template is="wxParse" data="{{wxParseData:content.nodes}}" />
+	</view>
+	</block>
+	<block tt:else>
+	<view class="content clear-after">
+		<rich-text nodes="{{data.nodes}}"></rich-text>
+	</view>
+	<view class="content_next" tt:if="{{content_next==1}}">
+		<view bindtap="handleContentNext">点击查看剩余内容</view>
+	</view>
+	</block>
+
+	<view class="feedbackTips" tt:if="{{feedback}}">
+		若对本文内容有疑议，点击<text bindtap="handleFeedbackShow">投诉举报</text>
+	</view>
+
+	<view tt:if="{{tips.enable}}" class="tips">
+		<text tt:if="{{tips.text.length}}">{{tips.text}}</text>
+		<view class="finger"></view>
+		<button tt:if="{{tips.redirect.length}}" data-url="{{tips.redirect}}" bindtap="handleShowAd"><view></view>分享到群</button>
+		<button tt:else open-type="share"><view></view>分享到群</button>
+	</view>
+
+	<view class="footerBox {{footerClass}} {{footer.type==3?'videoAdMinHeight':''}}" style="{{footerHidden}}" tt:if="{{footer.enable==1}}">
+	<view tt:if="{{footer.type==1}}" class="footer" data-url="{{footer.url}}" bindtap="handleShowAd" style="background-image:url({{footer.image}});"></view>
+	<ad tt:elif="{{footer.type==2}}" unit-id="{{footer.adunit}}"></ad>
+	<ad tt:elif="{{footer.type==3}}" unit-id="{{footer.adunit}}" ad-type="video" ad-theme="white"></ad>
+	<button tt:elif="{{footer.type==4}}" class="footer" open-type="contact" show-message-card="true" send-message-title="{{footer.message_title}}" send-message-path="{{footer.message_path}}" send-message-img="{{footer.message_image}}" style="background-image:url({{footer.image}});"></button>
+	</view>
+
+	<view class="list" tt:if="{{list.length>0}}">
+		<view class="tips">更多推荐欣赏</view>
+		<view class="li ge-bottom ge-light" tt:for="{{list}}" tt:key="index">
+			<block tt:if="{{item.type==0}}">
+			<view class="type type{{item.type}} {{item.pic.length?'':'nonpic'}}" data-index="{{index}}" bindtap="handleShowDetail">
+				<view tt:if="{{item.pic.length}}" class="pic" style="background-image:url({{item.pic}});"></view>
+				<text class="span">{{item.title}}</text>
+				<view class="bottom">
+					{{item.add_time}}
+					<view class="i look"></view> {{item.clicks}}
+					<view class="i share"></view> {{item.likes}}
+				</view>
+			</view>
+			</block>
+			<block tt:elif="{{item.type==1}}">
+			<view class="type type{{item.type}}" data-url="{{item.url}}" bindtap="handleShowAd" style="background-image:url({{item.pic}});"></view>
+			</block>
+			<block tt:elif="{{item.type==3}}">
+			<ad unit-id="{{item.adunit}}"></ad>
+			</block>
+			<block tt:elif="{{item.type==4}}">
+			<ad unit-id="{{item.adunit}}" ad-type="video" ad-theme="white"></ad>
+			</block>
+			<block tt:if="{{item.type==5}}">
+			<view class="type type{{item.type}}" data-index="{{index}}" bindtap="handleShowDetail">
+				<view style="background-image:url({{item.pic}});" class="i">
+					<view>{{item.title}}</view>
+				</view>
+				<text class="span">{{item.clicks}}播放</text>
+			</view>
+			</block>
+		</view>
+		<view class="loadmore {{loadmore}}" tt:if="{{commentHidden==1}}"></view>
+	</view>
+
+	<view class="comment" tt:if="{{commentHidden==0}}">
+		<view class="tips">网友评论</view>
+    	<block tt:if="{{comment.length>0}}">
+		<view class="li ge-bottom ge-light" tt:for="{{comment}}" tt:key="index">
+			<block tt:if="{{item.type==0}}">
+			<view class="type{{item.type}}">
+				<view class="avatar" style="background-image:url({{item.member_avatar}});"></view>
+				<view class="name">
+					<view bindtap="handleCommentLike" data-index="{{index}}"><view class="i share"></view> {{item.likes}}</view>
+					{{item.member_name}}
+				</view>
+				<view class="content">{{item.content}}</view>
+				<view class="time">{{item.add_time}}</view>
+			</view>
+			</block>
+			<block tt:elif="{{item.type==1}}">
+			<view class="type type{{item.type}}" data-url="{{item.url}}" bindtap="handleShowAd" style="background-image:url({{item.pic}});"></view>
+			</block>
+			<block tt:elif="{{item.type==3}}">
+			<ad unit-id="{{item.adunit}}"></ad>
+			</block>
+			<block tt:elif="{{item.type==4}}">
+			<ad unit-id="{{item.adunit}}" ad-type="video" ad-theme="white"></ad>
+			</block>
+		</view>
+		<view class="loadmore {{loadmore}}"></view>
+    	</block>
+    	<block tt:else>
+		<view class="comment-norecode">
+			<text>暂无任何网友评论</text>
+			<view bindtap="handleCommentShow">我来抢占首席</view>
+		</view>
+		</block>
+	</view>
+</view>
+
+<view class="positionBottom ge-top ge-light" style="padding-bottom:{{paddingBottom}};">
+	<view>
+		<text>{{data.clicks}}</text>
+		<view>{{data.likes}}</view>
+		<!-- <view bindtap="handleLike">{{data.likes}}</view> -->
+	</view>
+	<view>
+		<button tt:if="{{tips.redirect.length}}" data-url="{{tips.redirect}}" bindtap="handleShowAd"><view></view>分享</button>
+		<button tt:else open-type="share"><view></view>分享</button>
+	</view>
+	<view>
+		<view bindtap="handleGoHome">返回</view>
+		<view bindtap="handleCommentShow" tt:if="{{commentHidden==0}}"></view>
+	</view>
+</view>
+
+<block tt:if="{{posad && posad.url.length}}">
+<button tt:if="{{posad.url=='contact'}}" class="posad" open-type="contact" show-message-card="true" send-message-title="{{posad.message_title}}" send-message-path="{{posad.message_path}}" send-message-img="{{posad.message_image}}" style="background-image:url({{posad.image}});"></button>
+<view tt:else class="posad" style="background-image:url({{posad.image}});" bindtap="handleShowAd" data-url="{{posad.url}}"></view>
+</block>
+
+<block tt:if="{{position && position.enable}}">
+<view tt:if="{{position.type==1}}" class="home" bindtap="handleTop">顶部</view>
+<navigator tt:elif="{{position.type==2}}" class="home" url="/pages/index/list">更多</navigator>
+<navigator tt:else class="home position" open-type="reLaunch" url="{{position.url}}">{{position.text}}</navigator>
+</block>
+
+<block tt:if="{{commentHidden==0}}">
+<view class="commentLayer {{commentLayerShow}}" bindtap="handleCommentShow"></view>
+<view class="commentView ge-top ge-light {{commentTransform}}" style="margin-bottom:{{paddingBottom}};">
+	<view bindtap="handleCommentSend">发送</view>
+	<input type="text" bindinput="handleCommentInput" bindconfirm="handleCommentSend" maxlength="200" placeholder="优质评论将被优先展示" value="{{commentContent}}" />
+</view>
+</block>
+
+<view tt:if="{{addMy}}" class="addMy" bindtap="handleAddMy">添加到我的小程序</view>
+
+<view tt:if="{{(newyear && (newyearMusic.length || newyearMusic2.length)) || bgmusic.length}}" class="music {{isPlaying}}" bindtap="handleMusic"></view>
+<view class="cover {{cover}}" bindtap="showShare"></view>
+<view tt:if="{{newyear}}" class="newyear" style="height:{{newyearHeight}}rpx;"><template is="wxParse" data="{{wxParseData:newyear.nodes}}" /></view>
+
+<view class="shareLayer {{shareLayerShow}}"></view>
+<view class="shareView {{shareViewShow}}">
+	<text bindtap="handleShareView"></text>
+	<view class="pic finger"></view>
+	<button class="text" open-type="share">分享给朋友查看更多精彩内容</button>
+	<button open-type="share"><view></view>分享给朋友</button>
+</view>
+
+<template is="toast" data="{{toast}}" />
+<view class="dialog-bg" tt:if="{{feedbackShown}}"></view>
+<view class="dialog-view wx feedback" tt:if="{{feedbackShown}}">
+	<text class="dialog-title">请选择举报原因</text>
+	<view class="dialog-content clear-after">
+		<view class="{{feedbackContent==item?'this':''}}" tt:for-items="{{feedbackItems}}" tt:key="index" data-value="{{item}}" bindtap="handleFeedbackChange">{{item}}</view>
+	</view>
+	<view class="dialog-btns">
+		<view class="dialog-btn blue">
+			<button bindtap="handleFeedbackSubmit">提交</button>
+		</view>
+		<view class="dialog-btn cancel">
+			<button bindtap="handleFeedbackShow">取消</button>
+		</view>
+	</view>
+</view>
